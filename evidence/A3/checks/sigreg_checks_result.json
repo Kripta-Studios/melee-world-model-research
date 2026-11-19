@@ -1,0 +1,123 @@
+{
+ "C1_api": {
+  "readme_call_num_points": "TypeError: EppsPulley.__init__() got an unexpected keyword argument 'num_points'",
+  "n_points_call": "ok",
+  "defaults": {
+   "t_max": 3.0,
+   "n_points": 17
+  }
+ },
+ "C2_equivalence": {
+  "lewm": 1.0917847156524658,
+  "lejepa_EppsPulley_mean": 1.0917847156524658,
+  "abs_diff": 0.0
+ },
+ "C3_cost": [
+  {
+   "N": 128,
+   "D": 192,
+   "M": 1024,
+   "K": 17,
+   "fwd_bwd_ms_cpu_2threads": 45.42,
+   "largest_intermediate_MB": 8.5
+  },
+  {
+   "N": 256,
+   "D": 192,
+   "M": 1024,
+   "K": 17,
+   "fwd_bwd_ms_cpu_2threads": 69.45,
+   "largest_intermediate_MB": 17.0
+  },
+  {
+   "N": 256,
+   "D": 192,
+   "M": 256,
+   "K": 17,
+   "fwd_bwd_ms_cpu_2threads": 7.4,
+   "largest_intermediate_MB": 4.2
+  },
+  {
+   "N": 256,
+   "D": 64,
+   "M": 1024,
+   "K": 17,
+   "fwd_bwd_ms_cpu_2threads": 57.37,
+   "largest_intermediate_MB": 17.0
+  }
+ ],
+ "C4_sigreg_values_N256_D192_M1024": {
+  "gaussian_iid": 0.9614811301231384,
+  "noise_independent_of_input (identical distribution to gaussian_iid; carries zero information)": 1.213832402229309,
+  "collapsed_constant": 122.31737060546875,
+  "rank8_scaled_unit_total_var": 8.71635627746582,
+  "rank8_isotropic_in_8dims_zero_elsewhere": 88.30273132324218,
+  "one_binary_pm1_coordinate_rest_gaussian": 1.0820572137832642,
+  "16_binary_pm1_coordinates_rest_gaussian": 1.0901411771774292,
+  "all_192_binary_pm1": 1.0264647960662843,
+  "gaussian_times_3_(wrong_scale)": 131.93476257324218
+ },
+ "C5_toy_invariance_probe": {
+  "jitter_only": [
+   {
+    "facing_linear_acc": 1.0,
+    "phase_linear_R2": 0.99,
+    "x_linear_R2": 0.985,
+    "final_inv": 0.0031
+   },
+   {
+    "facing_linear_acc": 1.0,
+    "phase_linear_R2": 0.983,
+    "x_linear_R2": 0.952,
+    "final_inv": 0.0033
+   },
+   {
+    "facing_linear_acc": 1.0,
+    "phase_linear_R2": 0.968,
+    "x_linear_R2": 0.93,
+    "final_inv": 0.0028
+   }
+  ],
+  "mirror": [
+   {
+    "facing_linear_acc": 1.0,
+    "phase_linear_R2": 0.995,
+    "x_linear_R2": 0.975,
+    "final_inv": 0.0718
+   },
+   {
+    "facing_linear_acc": 1.0,
+    "phase_linear_R2": 0.993,
+    "x_linear_R2": 0.954,
+    "final_inv": 0.0764
+   },
+   {
+    "facing_linear_acc": 1.0,
+    "phase_linear_R2": 0.993,
+    "x_linear_R2": 0.846,
+    "final_inv": 0.0464
+   }
+  ],
+  "phase_jitter": [
+   {
+    "facing_linear_acc": 1.0,
+    "phase_linear_R2": 0.994,
+    "x_linear_R2": 0.99,
+    "final_inv": 0.0743
+   },
+   {
+    "facing_linear_acc": 1.0,
+    "phase_linear_R2": 0.984,
+    "x_linear_R2": 0.955,
+    "final_inv": 0.0657
+   },
+   {
+    "facing_linear_acc": 1.0,
+    "phase_linear_R2": 0.949,
+    "x_linear_R2": 0.973,
+    "final_inv": 0.0593
+   }
+  ]
+ },
+ "torch": "2.10.0+cu128"
+}

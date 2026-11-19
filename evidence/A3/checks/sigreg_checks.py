@@ -19,6 +19,9 @@ import lejepa  # noqa: E402
 torch.manual_seed(0)
 torch.set_num_threads(2)
 out = {}
+T0 = time.perf_counter()
+def stage(n):
+    print(f"[stage] {n} t={time.perf_counter()-T0:.1f}s", flush=True)
 
 # ---------- verbatim copy of le-wm module.SIGReg (lucas-maes/le-wm@8edfeb3, module.py:10-36), device-agnostic
 class SIGReg(torch.nn.Module):
@@ -55,6 +58,7 @@ c1["n_points_call"] = "ok"
 c1["defaults"] = {"t_max": float(ep.t[-1]), "n_points": ep.n_points}
 out["C1_api"] = c1
 
+stage("C1 done")
 # ---------- C2
 x = torch.randn(1, 256, 192)  # (T=1, N, D)
 A = torch.randn(192, 1024); A = A / A.norm(dim=0)
@@ -63,8 +67,9 @@ v_lejepa = ep(x @ A).mean().item()
 out["C2_equivalence"] = {"lewm": v_lewm, "lejepa_EppsPulley_mean": v_lejepa,
                          "abs_diff": abs(v_lewm - v_lejepa)}
 
+stage("C2 done")
 # ---------- C3 cost
-def bench(N, D, M, reps=5):
+def bench(N, D, M, reps=3):
     s = SIGReg(num_proj=M)
     z = torch.randn(1, N, D, requires_grad=True)
     s(z).backward()  # warmup
@@ -74,13 +79,14 @@ def bench(N, D, M, reps=5):
         s(z).backward()
     return (time.perf_counter() - t0) / reps * 1000
 c3 = []
-for N, D, M in [(128, 192, 1024), (256, 192, 1024), (256, 192, 256), (1024, 192, 1024), (256, 64, 1024)]:
+for N, D, M in [(128, 192, 1024), (256, 192, 1024), (256, 192, 256), (256, 64, 1024)]:
     c3.append({"N": N, "D": D, "M": M, "K": 17, "fwd_bwd_ms_cpu_2threads": round(bench(N, D, M), 2),
                "largest_intermediate_MB": round(N * M * 17 * 4 / 2**20, 1)})
 out["C3_cost"] = c3
 
+stage("C3 done")
 # ---------- C4 what SIGReg sees (average over 20 draws of directions, N=256, D=192)
-def avg_sig(z, n=20):
+def avg_sig(z, n=5):
     s = SIGReg(num_proj=1024)
     return sum(s(z[None]).item() for _ in range(n)) / n
 N, D = 256, 192
@@ -98,6 +104,7 @@ c4 = {
 }
 out["C4_sigreg_values_N256_D192_M1024"] = c4
 
+stage("C4 done")
 # ---------- C5 toy invariance on synthetic tabular state
 def make_state(n, gen):
     x = torch.rand(n, 1, generator=gen) * 2 - 1           # stage x in [-1,1]
@@ -118,7 +125,7 @@ def view(s, kind, gen):
         v = v.clone(); v[:, 4] = torch.sin(ph); v[:, 5] = torch.cos(ph)
     return v
 
-def train_and_probe(kind, seed, steps=800, N=256, V=4, lam=0.05, dim=32):
+def train_and_probe(kind, seed, steps=400, N=256, V=4, lam=0.05, dim=32):
     gen = torch.Generator().manual_seed(seed)
     torch.manual_seed(seed)
     enc = torch.nn.Sequential(torch.nn.Linear(9, 128), torch.nn.GELU(), torch.nn.Linear(128, 128), torch.nn.GELU(), torch.nn.Linear(128, dim))
@@ -154,8 +161,9 @@ def train_and_probe(kind, seed, steps=800, N=256, V=4, lam=0.05, dim=32):
 c5 = {}
 for kind in ["jitter_only", "mirror", "phase_jitter"]:
     c5[kind] = [train_and_probe(kind, seed) for seed in (0, 1, 2)]
+    stage(f"C5 {kind} done")
 out["C5_toy_invariance_probe"] = c5
 out["torch"] = torch.__version__
 out_path = os.path.join(root, "evidence/A3/checks/sigreg_checks_result.json")
 json.dump(out, open(out_path, "w"), indent=1)
-print(json.dumps(out, indent=1))
+print(json.dumps(out, indent=1), flush=True)

@@ -1,0 +1,57 @@
+{
+  "schema": "A3 ablations v1 (PROPUESTA; ninguna ejecutada salvo los local_check de evidence/A3/checks/)",
+  "agent_id": "A3",
+  "date": "2026-11-19",
+  "scope": "Línea de ESTADO ESTRUCTURADO de Melee (libmelee PlayerState/GameState), sin píxeles. Brazo B2 del protocolo (06_EXPERIMENT_PROTOCOL.md): encoder con preentrenamiento JEPA + BC/PPO, política directa, sin rollouts aprendidos ni dinámica en inferencia.",
+  "shared_invariants_for_all_arms": {
+    "offline_corpus": "Mismo conjunto de partidas (split por partida completa antes de ventanear, contrato A6). El preentrenamiento JEPA usa SOLO frames del split de entrenamiento BC; ningún brazo ve datos extra.",
+    "input_schema": "Mismo vector de entrada por frame para todos los brazos (A1/A6 fijan campos). Recomendación A3: incluir action_frame, hitlag_left, hitstun_frames_left, invulnerability_left, shield_strength, facing, on_ground, jumps_left, speeds de ambos jugadores; slippi-ai los omite por defecto (slippi_ai/tf/embed.py:428-452, líneas comentadas 443,446,447).",
+    "canonicalization": "Espejo izquierda/derecha resuelto por canonicalización determinista (x→-x, vx→-vx, facing→¬facing cuando proceda) aplicada idéntica en todos los brazos, nunca como aumento con pérdida de invariancia.",
+    "encoder_architecture": "Mismo módulo encoder E (p.ej. MLP por jugador + transformer causal de historia H frames, o GRU) y misma dimensión latente D en todos los brazos. Cambia solo la inicialización/objetivo.",
+    "policy_head_and_recipe": "Misma cabeza de política/valor, misma receta BC (pasos, LR, batch) y mismo presupuesto PPO en frames de interacción real; mismos rivales de entrenamiento/evaluación; mismas semillas de partida.",
+    "no_dynamics_at_inference": "El predictor JEPA y la cabeza de acción se descartan tras el preentrenamiento; inferencia = E + cabeza. Verificar por inspección del grafo exportado (conteo de parámetros usados en forward de inferencia).",
+    "compute_accounting": "Registrar FLOPs/GPU-h del preentrenamiento; el control recibe el mismo número de pasos de gradiente adicionales de BC (brazo E0b) para separar 'más cómputo' de 'objetivo JEPA'."
+  },
+  "pretraining_objectives": [
+    {"id": "J-T", "name": "JEPA temporal condicionado a acciones (estilo LeWM)", "definition": "z_t = E(x_{t-H+1..t}); predictor P(z_{t-h..t}, a_{t-h..t}) → ẑ_{t+k}; pérdida MSE(ẑ_{t+k}, z_{t+k}) + λ·SIGReg(z) por paso temporal sobre el batch; sin stop-grad (como lucas-maes/le-wm train.py:17-45).", "actions": "Mandos propios Y del rival observados en el log (solo entrenamiento; en inferencia no se usa P).", "default_hparams": {"lambda": 0.09, "num_proj": 1024, "knots": 17, "k_steps": [1, 4], "history": "a fijar por A4/A6"}},
+    {"id": "J-T-noact", "name": "JEPA temporal SIN acciones", "definition": "Igual que J-T pero P no recibe acciones. Aísla el valor del condicionamiento a acciones en la representación."},
+    {"id": "J-T-ema", "name": "JEPA temporal con EMA+stop-grad en lugar de SIGReg", "definition": "Objetivo de J-T con target encoder EMA (decay 0.996→1.0 como ijepa) y no_grad; sin SIGReg. Aísla el mecanismo anticolapso."},
+    {"id": "J-M", "name": "JEPA no temporal por enmascarado de campos (análogo I-JEPA tabular)", "definition": "Contexto = frame con un subconjunto de campos/jugador enmascarado; predecir el embedding del frame completo (o de los campos ocultos). Esperado: poco valor porque el estado ya es casi suficiente; se incluye como control negativo barato."},
+    {"id": "S-T", "name": "Predicción supervisada del siguiente estado estructurado (no JEPA)", "definition": "Misma E y P, pero la salida decodifica x_{t+k} (campos reales, CE para categóricos, MSE/huber para continuos). Es el rival natural de J-T cuando el estado ya es bajo-dimensional."}
+  ],
+  "arms": [
+    {"id": "E0", "init": "aleatoria", "encoder_update": "entrenado con BC/PPO", "pretrain": "ninguno", "purpose": "Control B1 con capacidad idéntica (misma E)."},
+    {"id": "E0b", "init": "aleatoria", "encoder_update": "entrenado con BC/PPO", "pretrain": "pasos extra de BC iguales al cómputo de preentrenamiento", "purpose": "Igualar cómputo total; separa objetivo de cómputo."},
+    {"id": "E-rand-frozen", "init": "aleatoria", "encoder_update": "congelado", "pretrain": "ninguno", "purpose": "Detecta si 'features aleatorias + cabeza' ya bastan (suelo de un encoder congelado)."},
+    {"id": "E1", "init": "J-T", "encoder_update": "congelado", "pretrain": "J-T", "purpose": "Valor de la representación sin adaptación."},
+    {"id": "E2", "init": "J-T", "encoder_update": "ajustado con BC/PPO (LR encoder = 0.1× cabeza)", "pretrain": "J-T", "purpose": "Valor de la inicialización."},
+    {"id": "E3", "init": "aleatoria", "encoder_update": "conjunto: BC + pérdida J-T auxiliar durante BC", "pretrain": "ninguno (aux simultánea)", "purpose": "Pérdida auxiliar temporal declarada (exigencia del MASTER_PROMPT); NO es B2 puro; reportar aparte."},
+    {"id": "E1-noact", "init": "J-T-noact", "encoder_update": "congelado y ajustado (dos sub-brazos)", "purpose": "Contribución del condicionamiento a acciones."},
+    {"id": "E1-ema", "init": "J-T-ema", "encoder_update": "congelado", "purpose": "SIGReg vs EMA/stop-grad."},
+    {"id": "E1-S", "init": "S-T", "encoder_update": "congelado y ajustado", "purpose": "JEPA latente vs predicción explícita de estado: si S-T ≥ J-T, la parte 'JEPA' no aporta en estado estructurado."},
+    {"id": "E1-M", "init": "J-M", "encoder_update": "congelado", "purpose": "Control negativo no temporal."}
+  ],
+  "minimal_subset_if_budget_tight": ["E0", "E0b", "E1", "E2", "E1-S"],
+  "lambda_sweep": {"arms": ["J-T"], "values": [0.01, 0.03, 0.09, 0.2, 0.5], "rationale": "LeWM documenta éxito Push-T >80% para λ∈[0.01,0.2], pico ~0.09 y caída en 0.5 (arXiv 2603.19312v3, Fig.16); en Melee se debe re-medir con probes, no con éxito de planificación.", "select_by": "probes en validación (no en test), fijado antes de PPO"},
+  "latent_dim_sweep": {"values": [64, 128, 192, 256], "rationale": "LeWM reporta caída por debajo de ~184 dims en Push-T (Fig.15) y falla en Two-Room atribuida a baja dimensión intrínseca; el estado Melee por frame tiene ~30-60 escalares + categóricos, posible desajuste con un prior gaussiano isotrópico de D alto."},
+  "probes": {
+    "protocol": "Encoder congelado; probes lineal (ridge/logística) y MLP 1 capa oculta 256; entrenados en split train, seleccionados en val, reportados en test por partida; IC bootstrap por partida. Siempre junto a la referencia 'probe sobre la entrada cruda' (techo) y 'encoder aleatorio' (suelo).",
+    "targets_same_frame": [
+      {"field": "facing (propio/rival)", "metric": "accuracy", "reject_if": "< techo - 0.5 pp"},
+      {"field": "action (≈400 clases)", "metric": "top-1 balanced accuracy", "reject_if": "< techo - 2 pp"},
+      {"field": "action_frame exacto", "metric": "exact-match y MAE por acción", "reject_if": "exact-match < techo - 5 pp"},
+      {"field": "hitlag_left, hitstun_frames_left", "metric": "exact-match y MAE en frames", "reject_if": "MAE > 1 frame"},
+      {"field": "invulnerability_left / invulnerable", "metric": "MAE / accuracy"},
+      {"field": "shield_strength", "metric": "R² y accuracy de umbral (p.ej. < 15)"},
+      {"field": "on_ground, jumps_left, contacto ECB-suelo/borde", "metric": "accuracy"},
+      {"field": "percent, stock", "metric": "R² / accuracy"},
+      {"field": "dx, dy relativos entre jugadores; x respecto a bordes", "metric": "R² y error absoluto en unidades de juego"},
+      {"field": "speeds (air_x_self, y_self, x_attack, y_attack, ground_x_self)", "metric": "R²"}
+    ],
+    "targets_future": "Mismos campos en t+1, t+4, t+12 a partir de z_t (y z_t + acciones propias): mide información dinámica, NO valida control.",
+    "minimal_pairs": "Pares de estados que difieren en un solo campo (facing, action_frame±1, hitstun 0 vs 1, shield 14 vs 16): ratio ||z-z'|| / dispersión media; un ratio ~0 indica invariancia aprendida a ese campo.",
+    "action_sensitivity": "Solo para P (diagnóstico, no B2): varianza de ẑ_{t+k} entre acciones propias candidatas frente a ruido entre semillas."
+  },
+  "success_criteria_for_B2_claim": "B2 (E1 o E2) supera a E0 y E0b en fuerza de juego con IC por partida que excluye 0, bajo igual corpus, capacidad, cómputo y frames PPO; y los probes críticos no caen por debajo de los umbrales. Si solo pasan los probes pero no la fuerza de juego, la conclusión es 'representación informativa sin beneficio de control'.",
+  "status": "PROPUESTA"
+}

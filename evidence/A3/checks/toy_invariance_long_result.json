@@ -1,0 +1,26 @@
+{
+ "jitter_only": {
+  "ratio_dist_mirror_over_random_pair": 0.842,
+  "ratio_dist_phase+1/8cycle_over_random_pair": 0.3119,
+  "facing_linear_acc": 1.0,
+  "phase_linear_R2": 0.98,
+  "final_inv": 0.00339,
+  "wall_s": 38.1
+ },
+ "mirror": {
+  "ratio_dist_mirror_over_random_pair": 0.0519,
+  "ratio_dist_phase+1/8cycle_over_random_pair": 0.3748,
+  "facing_linear_acc": 0.693,
+  "phase_linear_R2": 0.989,
+  "final_inv": 0.00446,
+  "wall_s": 44.8
+ },
+ "phase_jitter": {
+  "ratio_dist_mirror_over_random_pair": 0.9375,
+  "ratio_dist_phase+1/8cycle_over_random_pair": 0.0453,
+  "facing_linear_acc": 1.0,
+  "phase_linear_R2": 0.679,
+  "final_inv": 0.00697,
+  "wall_s": 38.6
+ }
+}

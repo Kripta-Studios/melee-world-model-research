@@ -1,0 +1,110 @@
+{
+  "schema_version": "A6-timing-0.1",
+  "agent_id": "A6",
+  "status": "PROPUESTA",
+  "accessed_at": "2026-11-19",
+  "note": "Contrato temporal propuesto por A6 para que A1 lo integre en evidence/A1/CONTRACT.md. Las etiquetas de cada entrada indican si el hecho está documentado por el autor, inspeccionado en código o es propuesta. No afirma que exista una API con estos nombres.",
+  "clock": {
+    "unit": "frame",
+    "rate_hz": 60,
+    "frame_duration_ms": 16.67,
+    "frame_index": {
+      "name": "frame_id",
+      "type": "int32",
+      "origin": "Slippi frame number; -123 es el primer frame registrado, 0 es cuando empieza a contar el temporizador",
+      "provenance": "SPEC.md Frame Start/Pre-Frame/Post-Frame 0x1 (slippi-wiki 3a85ce8b)",
+      "status": "DOCUMENTADO_POR_AUTOR",
+      "countdown_policy": "Los frames -123..-1 no son accionables. HAL MDS los conserva (GAME_START_FRAME=-123); melee-llm los descarta (uniq>=0). Normalizar: guardar frame_id explícito y marcar actionable=false para frame_id<0."
+    }
+  },
+  "intra_frame_order": {
+    "status": "DOCUMENTADO_POR_AUTOR",
+    "provenance": "SPEC.md tabla de eventos (0x3A, 0x37, 0x38, 0x3B, 0x3C)",
+    "sequence": [
+      {"event": "FrameStart(f)", "carries": "random_seed al inicio del frame f (u32), desde 2.2.0", "level": "simulator_snapshot"},
+      {"event": "PreFrame(f, port)", "carries": "mandos usados para calcular f (sticks procesados [-1,1], gatillo procesado [0,1], botones procesados u32, botones físicos u16, gatillos físicos L/R, sticks raw int8 UCF según versión) + posición/acción ANTES de actualizar + random_seed", "level": "training_metadata (mandos), observation solo para el puerto propio y solo como acción ya comprometida"},
+      {"event": "motor procesa f con los mandos de PreFrame(f) de todos los puertos", "carries": "-", "level": "-"},
+      {"event": "PostFrame(f, port)", "carries": "estado al final de la detección de colisiones de f: acción, posición, dirección, porcentaje, escudo, stocks, contador de acción, flags, hitstun, aire/suelo, saltos, hurtbox, velocidades (3.5.0+), hitlag (3.8.0+)", "level": "observation"},
+      {"event": "ItemUpdate(f)", "carries": "hasta 15 ítems/proyectiles", "level": "observation"},
+      {"event": "FrameBookend(f)", "carries": "latest_finalized_frame (3.7.0+): con rollback, índice que ya no se repetirá", "level": "training_metadata (en vivo: indicador de fiabilidad de la observación)"}
+    ]
+  },
+  "row_alignment_in_parsers": {
+    "status": "INSPECCIONADO_EN_CODIGO",
+    "rule": "Todas las canalizaciones revisadas guardan en la fila f el estado PostFrame(f) junto al mando PreFrame(f). El mando de la fila f YA influyó en el estado de la fila f. Por eso un objetivo de imitación sin fuga es el mando de f+1 (o posterior) dado el estado hasta f.",
+    "implementations": [
+      {"repo": "vladfi1/slippi-ai@5ada33e9", "where": "slippi_db/parse_peppi.py:107-119 (pre.joystick, pre.cstick, pre.triggers, pre.buttons procesados) + :64-75 (post.*)", "target": "data.py:267-327 delayed_frames + jax/policies.py:113-131: estado t, última acción comprometida t+D, predice t+D+1"},
+      {"repo": "ericyuegu/hal@37045d97", "where": "hal/data/extract.py:205-238 (pre.buttons_physical, pre.joystick, pre.triggers_physical) ; docs/inference.md:62-63 'one observed frame plus the controller action that produced it'", "target": "training/replay_windows.py: contexto [cs-L_ctx, cs), objetivo bloque de acciones [cs, cs+L_chunk)"},
+      {"repo": "erickfm/MIMIC@3691f534", "where": "tools/slp_to_shards.py:909-918 (shards v2: target[i]=inputs[i+1]); CLAUDE.md:124-145", "target": "reaction_delay=0 con shards v2 (train.py:62); con shards antiguos el modelo podía leer la respuesta desde self_action"},
+      {"repo": "mateo19182/melee-llm@7e179081 (=2bf8b0eb para estos archivos)", "where": "train/meleebot/schema.py:1-8 docstring; build_dataset.py:22-56", "target": "predecir mando de f+1 o posterior"}
+    ]
+  },
+  "delay_model": {
+    "status": "PROPUESTA",
+    "definition": "application_frame = observation_frame + 1 + D_total, con D_total = D_reaction + D_transport + D_compute_consumed. Con D_total=0 el mando decidido tras ver PostFrame(f) se aplica en PreFrame(f+1).",
+    "components": [
+      {"name": "natural_offset", "value_frames": 1, "where_it_enters": "entre PostFrame(f) y PreFrame(f+1); no es una demora, es causalidad", "status": "INSPECCIONADO_EN_CODIGO", "provenance": "HAL docs/inference.md:79 'observation at frame t can produce the action for t+1'"},
+      {"name": "D_reaction (artificial, de equidad)", "unit": "frame", "where_it_enters": "cola de acciones en la salida del agente", "examples": "slippi-ai D=18 en rl_example.sh; Firoiu: d pasos de agente × frame_skip f; considera 12 frames el mínimo humano plausible y ~15 frames ≈ 250 ms medio", "status": "DOCUMENTADO_POR_AUTOR"},
+      {"name": "D_transport (consola/netplay)", "unit": "frame", "where_it_enters": "buffer de entrada de Dolphin/Slippi entre el envío del mando y su lectura por el juego", "examples": "slippi-ai eval_lib.py:129-140: cola del agente = policy.delay - console_delay; HAL FrameTiming physical_delay 2 o 3 en netplay", "status": "INSPECCIONADO_EN_CODIGO"},
+      {"name": "D_compute_consumed", "unit": "frame", "where_it_enters": "si la inferencia es asíncrona y el juego no espera; HAL 'allowance'=1 frame en netplay", "status": "DOCUMENTADO_POR_AUTOR", "provenance": "HAL docs/inference.md:68-90"},
+      {"name": "frame_skip / action_chunk", "unit": "frame", "where_it_enters": "agrupación de decisiones; Firoiu añade (f-1)/2 frames medios de reacción; slippi-ai exige delay % frame_skip == 0", "status": "INSPECCIONADO_EN_CODIGO", "provenance": "slippi-ai jax/policies.py:70-72; Firoiu 2018 §4.2"},
+      {"name": "observation_staleness_rollback", "unit": "frame", "where_it_enters": "en netplay la PostFrame(f) vista por primera vez puede ser especulativa (mandos del rival predichos); latest_finalized_frame < f", "status": "DOCUMENTADO_POR_AUTOR", "provenance": "SPEC FrameBookend 0x5; HAL docs/inference.md:100-102; MIMIC research-notes-2026-10-23.md:45-46 (~2% de frames)"}
+    ],
+    "equivalence_note": "Demora de acción d y demora de observación d son equivalentes y aditivas (melee-llm docs/delay.md §1, citando Katsikopoulos & Engelbrecht 2003). Registrar ambas por separado igualmente, porque el wrapper puede implementar una u otra.",
+    "fallback": "Al inicio y cuando no hay acción a tiempo: mando neutral. slippi-ai rellena la cola con dummy_sample_outputs (eval_lib.py:138-139); HAL cuenta 'neutral fallback' aparte (docs/inference.md:96-98). Registrar cada fallback con su frame."
+  },
+  "per_frame_fields": {
+    "status": "PROPUESTA (unidades/versiones DOCUMENTADO_POR_AUTOR en SPEC)",
+    "note": "availability = cuándo es conocible por el agente que decide en el frame f. 'post(f)' = disponible tras FrameBookend(f) en local; en netplay, definitivo solo cuando latest_finalized_frame>=f.",
+    "fields": [
+      {"name": "position_x, position_y", "type": "float32", "unit": "unidades de mundo del motor", "level": "observation", "availability": "post(f)", "source": "PostFrame 0xA/0xE", "since": "0.1.0"},
+      {"name": "facing", "type": "float32 {-1,0,+1}", "unit": "signo", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x12", "since": "0.1.0"},
+      {"name": "percent", "type": "float32", "unit": "% de daño", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x16", "since": "0.1.0", "conversion_warning": "slippi-ai lo castea a uint16 (parse_peppi.py:65): pierde decimales; melee-llm usa float16"},
+      {"name": "shield", "type": "float32", "unit": "unidades de escudo [0,60]", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x1A", "since": "0.1.0"},
+      {"name": "stocks", "type": "uint8", "unit": "vidas", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x21", "since": "0.1.0"},
+      {"name": "action_state", "type": "uint16", "unit": "id enumerado (depende del personaje)", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x8", "since": "0.1.0"},
+      {"name": "action_state_frame", "type": "float32", "unit": "frames en el estado (puede ser fraccional)", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x22", "since": "0.2.0", "note": "ausente en HAL MDS"},
+      {"name": "hitstun_remaining", "type": "float32", "unit": "frames", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x2B (válido solo con flag de hitstun, byte 4 bit 0x02)", "since": "2.0.0", "note": "ausente en HAL MDS; melee-llm lo enmascara con el flag"},
+      {"name": "airborne, jumps_remaining, hurtbox_state, state_flags", "type": "uint8", "unit": "booleano / conteo / enum", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x2F, 0x32, 0x34, 0x26-0x2A", "since": "2.0.0-2.1.0"},
+      {"name": "velocities (self air x, self y, attack x/y, self ground x)", "type": "float32", "unit": "unidades de mundo por frame", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x35-0x45", "since": "3.5.0", "note": "ausentes en HAL MDS y en slippi-ai types; presentes en melee-llm (float16)"},
+      {"name": "hitlag_remaining", "type": "float32", "unit": "frames", "level": "observation", "availability": "post(f)", "source": "PostFrame 0x49", "since": "3.8.0"},
+      {"name": "items[k] (tipo, estado, pos, vel, dueño, timer)", "type": "mixto", "unit": "unidades de mundo / frames", "level": "observation", "availability": "post(f)", "source": "ItemUpdate", "since": "3.0.0 (owner 3.6.0)", "note": "HAL MDS guarda 4 ranuras por spawn id ascendente; slippi-ai MAX_ITEMS"},
+      {"name": "stage dynamics (Randall, plataformas FoD, Stadium, Whispy)", "type": "float/enum", "unit": "unidades de mundo", "level": "observation", "availability": "post(f)", "source": "eventos 0x3F-0x41 (3.18.0+); Randall calculado por slippi-ai desde frame_id"},
+      {"name": "own_controller (procesado y físico)", "type": "sticks float [-1,1] en rejilla 1/80; gatillo [0,1]; botones bitmask", "unit": "adimensional", "level": "observation SOLO como cola de acciones propias ya comprometidas (o_t incluye a_{t+1..t+D})", "availability": "decisión propia: conocida en el momento de enviarla", "source": "PreFrame 0x19-0x37"},
+      {"name": "opponent_controller", "type": "igual", "unit": "adimensional", "level": "training_metadata", "availability": "nunca en observation (inferible solo vía su efecto en post(f))", "source": "PreFrame del otro puerto", "rule": "excluir de observation; permitido como objetivo/condición en entrenamiento de dinámica conjunta"},
+      {"name": "raw stick (UCF) x / y / cstick x,y", "type": "int8", "unit": "unidades raw del mando", "level": "training_metadata", "availability": "offline", "source": "PreFrame 0x3B (1.2.0), 0x40 (3.15.0), 0x41-0x42 (3.17.0)", "note": "necesario para reproducir en melee-sim-light; no está en HAL MDS ni en slippi-ai"},
+      {"name": "random_seed", "type": "uint32", "unit": "estado del RNG", "level": "simulator_snapshot", "availability": "nunca a la política", "source": "FrameStart 0x5 (2.2.0), PreFrame 0x7, GameStart 0x13D", "note": "no lo conserva ningún formato derivado revisado (HAL MDS, slippi-ai parquet, melee-llm frames.bin, MIMIC shards); solo el .slp crudo"},
+      {"name": "latest_finalized_frame", "type": "int32", "unit": "frame_id", "level": "training_metadata / diagnóstico en vivo", "availability": "en vivo, por frame", "source": "FrameBookend 0x5", "since": "3.7.0"},
+      {"name": "game outcome (end_method, lras_initiator, placements)", "type": "enum", "unit": "-", "level": "training_metadata", "availability": "solo al final", "source": "GameEnd; HAL manifest outcome.end_method", "rule": "TIME! (1) = terminated por reglas; GAME! (2); No Contest (7) = inválido para puntuación"},
+      {"name": "player identity (connect code, display name, rank tier)", "type": "string/int", "unit": "-", "level": "training_metadata (privilegiado)", "availability": "anónimo en ranked; código en pro/", "source": "metadata.players.names; HAL player_codes.jsonl.gz", "rule": "si una política se condiciona en identidad (HAL), declararlo y no evaluar generalización entre jugadores con esa condición"}
+    ]
+  },
+  "controller_semantics": {
+    "status": "INSPECCIONADO_EN_CODIGO",
+    "held_vs_pressed": "Slippi registra el estado mantenido por frame (bitmask). 'Pressed' es un flanco derivado: pressed[f] = buttons[f] & ~buttons[f-1] (HAL conversions.py:557). El motor calcula flancos y temporizadores de stick a partir del historial de entradas (melee-sim-light VALIDATION.md: entradas restauradas 'before input edges/timers'). Consecuencia: el estado Markov del motor incluye el mando de f-1 y temporizadores de stick que post(f) no expone.",
+    "processed_vs_physical": "slippi-ai usa botones procesados (pre.buttons) y gatillo lógico único; HAL y melee-llm usan botones físicos y gatillos físicos L/R; MIMIC usa libmelee (procesados y físicos disponibles). Fijar uno y guardar el otro.",
+    "quantization": {"stick_processed": "rejilla exacta 1/80 en [-1,1] (HAL pack_grid falla si no es exacto, policy_schema.py:142-154)", "trigger_physical": "rejilla 1/140 en [0,1] (HAL TRIGGER_SCALE=140; deadzone 43/140 aplicada al guardar, wire.py:164)", "libmelee_float": "libmelee convierte sticks a [0,1] con x/2+0.5 (console.py:1166-1172)"},
+    "conversion_rule": "No reconstruir bytes raw del mando desde floats procesados (melee-sim-light VALIDATION.md, regla 2). Para inyectar en Dolphin/simulador se necesita el canal raw."
+  },
+  "rollback_policy": {
+    "status": "PROPUESTA basada en INSPECCIONADO_EN_CODIGO",
+    "observed_practice": {
+      "slippi-ai": "peppi RollbackMode.FIRST (parse_peppi.py:168-170), con comentario 'we might want to switch to LAST'",
+      "libmelee": "descarta un frame si frame_id <= último devuelto (console.py:1058-1071): conserva la primera copia (predicha)",
+      "HAL offline": "dedupe_keep_idx conserva la ÚLTIMA copia (wire.py:77-83)",
+      "HAL online": "ingiere la primera copia especulativa (docs/inference.md:100-102)",
+      "melee-llm": "conserva la última copia y rechaza si no son contiguos (build_dataset.py:72-77)"
+    },
+    "proposal": "Para dinámica: usar LAST (trayectoria comprometida, consistente). La secuencia de copias FIRST no es necesariamente una trayectoria causal: tras un rollback, la primera copia de f+1 puede derivarse de una versión corregida de f distinta de la primera copia de f. Para simular la percepción en netplay: generar la vista FIRST como transformación de evaluación separada, nunca mezclada con el objetivo de dinámica. Guardar n_copies por frame como metadato."
+  },
+  "transition_spec_joint": {
+    "status": "PROPUESTA",
+    "definition": "x_f = observación estructurada de ambos jugadores + ítems + escenario en post(f); u_f = (PreFrame(f, p1), PreFrame(f, p2)). Transición de dinámica conjunta: (x_{f-k..f-1}, u_f) -> x_f. El mando de f-1 debe entrar como contexto (flancos).",
+    "fields": ["source_game_id (sha1 del .slp)", "source_revision (dataset@sha / parser@sha / rollback_mode)", "frame_id", "frame_delta=1 nativo (o k con frame_skip; guardar los k mandos)", "x_prev, u_both, x_next", "terminated (GAME!/TIME! por reglas)", "truncated (fin de ventana/horizonte externo)", "invalid_reason (No Contest, LRAS, frames no contiguos)", "n_rollback_copies"],
+    "not_in_observation": ["u del rival en f y posteriores", "random_seed", "x_{f+1..}", "latest_finalized en datos offline (en vivo sí como fiabilidad)"]
+  },
+  "measurements_required": {
+    "status": "PROPUESTA",
+    "items": ["t_obs_available (frame y reloj de pared)", "t_action_accepted", "t_action_applied (frame en que PreFrame registra el mando; inferido o medido, con método)", "fallback_count y frames", "frames consumidos por cómputo", "rollback_copies vistos en vivo"]
+  }
+}

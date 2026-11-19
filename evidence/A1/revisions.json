@@ -1,0 +1,132 @@
+{
+ "schema_version": "1.0.0",
+ "agent_id": "A1",
+ "observed_at": "2026-11-19",
+ "note": "Revisiones leídas por A1. Ninguna sustituye a otra: cada experimento o componente usa la suya. Nada se ejecutó.",
+ "repos": [
+  {
+   "repo": "mateo19182/melee-llm",
+   "url": "https://github.com/mateo19182/melee-llm",
+   "clone_head": "7e179081c6cbab139d860c998b1452ad3dee047c",
+   "clone_head_date": "2026-11-19T12:21:38+01:00",
+   "catalog_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+   "catalog_revision_date": "2026-11-19T12:04:50+01:00",
+   "diff_catalog_to_head": [
+    "docs/experiments/E32-yoshi-rl.md",
+    "docs/experiments/README.md",
+    "docs/simulator.md (+2 líneas, párrafo RL farm)",
+    "melee_llm/web/static/pages/training.js",
+    "melee_llm/web/training.py",
+    "train/farm/{faynt,learner,rl,rl_eval,run}.py"
+   ],
+   "runtime_paths_identical": [
+    "melee_llm/runner.py",
+    "melee_llm/players.py",
+    "melee_llm/agents/*",
+    "melee_llm/bench/*",
+    "melee_llm/sim/*",
+    "melee_llm/bots/*",
+    "melee_llm/actions.py",
+    "melee_llm/state.py",
+    "pyproject.toml",
+    "uv.lock"
+   ],
+   "cited_by_A1": "7e179081c6cbab139d860c998b1452ad3dee047c"
+  },
+  {
+   "repo": "mateo19182/melee-brute",
+   "url": "https://github.com/mateo19182/melee-brute",
+   "revisions": [
+    {
+     "sha": "090e54b048b7d51e82f9f6b551046c2ca8b130c7",
+     "date": "2026-11-17T10:03:45+01:00",
+     "role": "pin de melee-llm (pyproject [tool.uv.sources] y uv.lock); lo que instala `uv sync` para --mode sim y solver",
+     "title": "Merge PR #8 zone-frames"
+    },
+    {
+     "sha": "d3832724ef67f67db4bb4672ff46ae6c134dbad7",
+     "date": "2026-11-18T00:17:20+01:00",
+     "role": "build citado por E31 (validador y librería Python de la farm)",
+     "title": "Merge PR #18 hal-abi2 (Expose exact hitlag in observation ABI 2)"
+    },
+    {
+     "sha": "9662ec973b9e077ff7b0ff89d6db950f53c11653",
+     "date": "2026-11-19T12:04:53+01:00",
+     "role": "HEAD del clon; catálogo A14/R11",
+     "title": "Merge PR #19 validate-manual-flags"
+    }
+   ],
+   "ancestry": "090e54b048b7d51e82f9f6b551046c2ca8b130c7 ⊂ d3832724ef67f67db4bb4672ff46ae6c134dbad7 ⊂ 9662ec973b9e077ff7b0ff89d6db950f53c11653 (git merge-base --is-ancestor)",
+   "differences": [
+    {
+     "from": "090e54b048b7d51e82f9f6b551046c2ca8b130c7",
+     "to": "d3832724ef67f67db4bb4672ff46ae6c134dbad7",
+     "changes": [
+      "ABI v2: msl_api_abi_version(), comprobación EXPECTED_ABI_VERSION=2 en melee_sim/_native.py",
+      "MslObservationPlayer + hitlag_left float; gamestate 1208→1240 bytes (melee_sim/dtypes.py, src/api.h, src/runtime/wire.h)",
+      "msl_brute_share() y msl_brute_search sin `spread` (melee_brute/engine.py)",
+      "corpus de 360 posiciones, tapes de validación, differential gate, perfil release LTO"
+     ]
+    },
+    {
+     "from": "d3832724ef67f67db4bb4672ff46ae6c134dbad7",
+     "to": "9662ec973b9e077ff7b0ff89d6db950f53c11653",
+     "changes": [
+      "tools/validation/validate_replay.py: --played-on y --no-ucf (0 apariciones antes, 4 después)"
+     ]
+    }
+   ],
+   "unchanged_across_all_three": [
+    "EnvBatch.checkpoint/rollback/changed_pages (melee_sim/env_batch.py L428-499)",
+    "melee_brute/match.py Match.checkpoint/rollback/hash/branch"
+   ],
+   "unknown": "Revisión del checkout MELEE_SIM=/mnt/data/melee/native/melee-brute que usa la farm (train/farm/common.py L24): no consta en el repo."
+  },
+  {
+   "repo": "kyhavlov/melee-sim-light",
+   "url": "https://github.com/kyhavlov/melee-sim-light",
+   "clone_head": "eea7b5fbcd0243baf4c1956d52f3e1d0f536edc4",
+   "clone_head_date": "2026-10-20T03:34:04-07:00",
+   "relation": "ancestro de las tres revisiones de melee-brute (rama upstream-main del fork). Sin checkpoint/rollback (solo save/restore/copy). melee-llm NO la instala; docs/simulator.md L7 dice lo contrario (desfasado)."
+  },
+  {
+   "repo": "vladfi1/libmelee",
+   "url": "https://github.com/vladfi1/libmelee",
+   "clone_head": "bce21f09984b286e6d36bfd2939e4cd4691f94c2",
+   "clone_head_branch": "master",
+   "clone_head_version": "0.47.3 (melee/version.py)",
+   "installed_by_melee_llm": {
+    "spec": "melee>=0.47.6 (pyproject)",
+    "lock": "melee==0.47.6 registry PyPI (uv.lock L569-571)",
+    "tag": "v0.47.6",
+    "sha": "2d63e7ee948d77ab4e73165ed4c73abbe3ba121b",
+    "branch": "dev"
+   },
+   "differences_head_to_installed": [
+    "melee/console.py: background_input, fullscreen/gfx_backend/save_replays Optional(None=conservar), interrupt(), sección GCPad reiniciada",
+    "melee/slippstream.py: interrupt()",
+    "melee/controller.py: sin cambios"
+   ],
+   "caveat": "Que el wheel de PyPI 0.47.6 se construyera exactamente desde el tag v0.47.6 es INFERENCIA (no se descargó el wheel)."
+  }
+ ],
+ "experiment_revisions": [
+  {
+   "experiment": "E31 (docs/experiments/E31-sim-faithful.md @ 7e179081c6cbab139d860c998b1452ad3dee047c)",
+   "cites": "melee-brute d3832724",
+   "resolved_sha": "d3832724ef67f67db4bb4672ff46ae6c134dbad7",
+   "inconsistency": "El comando usa --played-on/--no-ucf «de PR #19», ausentes en d3832724 y presentes solo en 9662ec973b9e077ff7b0ff89d6db950f53c11653"
+  },
+  {
+   "experiment": "docs/simulator.md L7",
+   "cites": "melee-sim-light eea7b5fb pinned in pyproject",
+   "resolved_sha": "eea7b5fbcd0243baf4c1956d52f3e1d0f536edc4",
+   "inconsistency": "pyproject.toml fija melee-brute 090e54b048b7d51e82f9f6b551046c2ca8b130c7, no melee-sim-light"
+  },
+  {
+   "experiment": "docs/delay.md, slippi-ai",
+   "cites": "slippi-ai 5ada33e",
+   "note": "coincide con el clon vladfi1/slippi-ai 5ada33e9 (ops/clone_inventory.txt); no auditado por A1"
+  }
+ ]
+}

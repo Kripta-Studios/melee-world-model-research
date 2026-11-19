@@ -1,0 +1,90 @@
+{
+  "schema_version": "A6-split-0.1",
+  "agent_id": "A6",
+  "status": "PROPUESTA",
+  "accessed_at": "2026-11-19",
+  "principle": "Dividir por partida completa (identidad de contenido) ANTES de crear ventanas, perspectivas, espejos o intercambio de puertos. Una partida se almacena una sola vez con ambos puertos; la perspectiva es una vista que se genera tras el split.",
+  "game_identity": {
+    "primary_key": "sha1 de los bytes del .slp (HAL manifest.jsonl campo 'sha1'; calcular para .slp crudos)",
+    "secondary_keys": [
+      "nombre de archivo ranked '{rank}-{rank}-{24hex}.slp' (común a erickfm/melee-ranked-replays y al campo path del manifest HAL: permite cruzar ambos corpus)",
+      "HAL replay_id = blake2b(path) (policy_schema.py:33-40); depende de la ruta, NO del contenido",
+      "slippi-ai slp_md5"
+    ],
+    "warnings": [
+      "HAL asigna split con un hash de 32 bits de la ruta (mds_materialization.py:133-145) y documenta tres colisiones de ese uuid (policy_schema.py:35). La misma partida en dos rutas puede caer en splits distintos.",
+      "HAL deduplica por SHA-1 solo dentro de la carpeta de cada jugador pro (professional_replays.py:95-113, 415-416). Una partida entre dos pros del corpus puede aparecer en ambas carpetas.",
+      "erickfm/melee-ranked-replays duplica cada partida no-ditto en las carpetas de ambos personajes (README 'Duplication'). Descargar dos carpetas y dividir por lista de archivos sin deduplicar mete la misma partida en train y val.",
+      "Ambos corpus HF derivan de los mismos seis volcados anónimos de ranked de Fizzi: no sirven como test mutuo."
+    ]
+  },
+  "dedup_steps": [
+    {"step": 1, "action": "Calcular sha1 del .slp (o leer HAL manifest.sha1). Colapsar duplicados exactos entre carpetas, fuentes y volcados.", "status": "PROPUESTA"},
+    {"step": 2, "action": "Detectar casi-duplicados: misma secuencia de (frame_id, stage, personajes, primeras N posiciones/mandos) con sha1 distinto (reescrituras de cabecera, upgrade_slp de slippi-ai, recompresión). Hash de las primeras 600 filas post-countdown de ambos puertos.", "status": "PROPUESTA"},
+    {"step": 3, "action": "Elegir copia de rollback = LAST para todo el corpus de dinámica (ver timing_contract.rollback_policy).", "status": "PROPUESTA"},
+    {"step": 4, "action": "Guardar ambas perspectivas en una sola fila (como HAL MDS). Nunca materializar las dos perspectivas como muestras independientes antes del split.", "status": "PROPUESTA"}
+  ],
+  "split_levels": [
+    {
+      "name": "S_game (base)",
+      "unit": "partida (sha1)",
+      "assignment": "bucket = int(sha256('A6-split-v1|' + sha1)[:8],16)/2^32; train <0.90, val <0.95, test resto",
+      "feasible_with": ["HAL MDS (todas las fuentes)", "melee-ranked-replays", "slippi-ai parquet"],
+      "reserves": "generalización a partidas no vistas, mismos jugadores/población. NO reserva jugadores, sets ni épocas.",
+      "status": "PROPUESTA"
+    },
+    {
+      "name": "S_set (deseable)",
+      "unit": "set/serie entre los mismos dos jugadores",
+      "feasible_with": ["slippi-ai parsed.sqlite tiene match_id/match_game (parse_local.py:43-87) si el .slp los trae"],
+      "not_feasible_with": ["ranked anónimo: HAL manifest muestra code=null, timestamp=null, played_on=null y nombres reemplazados por tier"],
+      "consequence": "En ranked, juegos consecutivos del mismo set (mismos jugadores, mismo matchup) pueden quedar en train y test. Reportarlo como fuga no eliminable.",
+      "status": "INFERENCIA"
+    },
+    {
+      "name": "S_player (held-out por jugador)",
+      "unit": "jugador",
+      "feasible_with": ["HAL pro/<player> (38 carpetas) + player_codes.jsonl.gz"],
+      "procedure": "Elegir k jugadores pro de test; excluir de train/val toda partida en la que cualquiera de ellos aparezca (por carpeta o por código en player_codes), tras deduplicar por sha1 entre carpetas.",
+      "limits": [
+        "Solo el jugador de la carpeta está identificado (rank 4); el rival tiene rank 0 y puede ser cualquiera, incluido un jugador de train.",
+        "Algunas partidas tienen rank 0 en ambos lados (no se identificó el puerto del jugador de la carpeta).",
+        "player_id 0 = código ausente o fuera del vocabulario de train de HAL.",
+        "En ranked anónimo es imposible: no hay identidad."
+      ],
+      "note_on_HAL_splits": "Los train/val/test de HAL en pro/ son por partida dentro de cada carpeta: no son held-out por jugador, y HAL condiciona la política en identidad del jugador.",
+      "status": "PROPUESTA"
+    },
+    {
+      "name": "S_version (proxy temporal)",
+      "unit": "versión de Slippi (slp_version en HAL manifest)",
+      "procedure": "Reservar las versiones más recientes como test OOD temporal; no hay fechas en ranked anónimo.",
+      "limits": ["La versión correlaciona con época pero también con campos disponibles (velocidades 3.5.0, hitlag 3.8.0, raw y 3.15.0): controlar por disponibilidad de campos."],
+      "status": "PROPUESTA"
+    },
+    {
+      "name": "S_matchup / S_stage (OOD estructural)",
+      "unit": "par de personajes o escenario",
+      "procedure": "Reservar un matchup o escenario entero para medir transferencia de la dinámica (no de la política).",
+      "status": "PROPUESTA"
+    }
+  ],
+  "augmentation_after_split": {
+    "port_swap": "Solo dentro de cada split. slippi-ai genera swap=False/True por partida (data.py:559-583) y DESPUÉS baraja y corta (train_test_split, data.py:595-633; shuffle en :609): con swap=True (por defecto) las dos perspectivas de una misma partida pueden quedar una en train y otra en test. No reutilizar ese split.",
+    "mirror": "slippi-ai lo añade solo a train (data.py:629-631): correcto.",
+    "windows": "Ventanas dentro de una partida; nunca cruzan partidas; el padding inicial se marca. HAL elige ventanas no solapadas por partida (replay_windows.py choose_chunk_starts).",
+    "status": "INSPECCIONADO_EN_CODIGO (comportamiento de slippi-ai) / PROPUESTA (regla)"
+  },
+  "contamination_with_existing_weights": {
+    "rule": "Si se usan pesos HAL (hal-base-250m-rc) o Phillip como encoder/baseline, evaluar en partidas que no entraron en su entrenamiento. Para HAL, su split test es el candidato, pero qué splits usó el checkpoint publicado no está verificado.",
+    "status": "DESCONOCIDO"
+  },
+  "pilot_proposal": {
+    "name": "P1k",
+    "source": "ericyuegu/hal-mds-dataset@46ca723e ranked-anonymized-1/val (1,189 partidas; 12,703,030 frames; 161,113,342 bytes zstd en 7 shards) — tamaños leídos del index.json y del árbol HF; datos NO descargados",
+    "use": "Usar solo para desarrollo del pipeline y del split, no para resultados finales; aplicar S_game encima (re-dividir) y documentar que es el val de HAL.",
+    "limits": ["Sin velocidades, sin action_state_frame, sin hitstun, sin RNG, sin raw stick: insuficiente para dinámica completa ni para reproducir en simulador.", "Requiere decodificar el campo state empaquetado (acción 17 bits, stock 3, jumps_used 4, hurtbox 2, airborne 2, dirección 2; policy_schema.py:50-58)."],
+    "alternative": "Una o varias tarballs pequeñas de melee-ranked-replays (p. ej. BOWSER_master-master_a2.tar.gz = 2,000,229 bytes) para tener .slp crudo con RNG y raw; número de partidas por tarball no publicado (la carpeta metadata/ ya no existe en esta revisión).",
+    "status": "PROPUESTA"
+  }
+}

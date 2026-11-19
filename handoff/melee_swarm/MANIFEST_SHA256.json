@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0.0",
+  "created_at": "2026-11-19",
+  "algorithm": "SHA-256",
+  "note": "Hashes of all payload files; excludes this manifest itself.",
+  "files": [
+    {
+      "path": "00_START_HERE.md",
+      "bytes": 4708,
+      "sha256": "780933adb79ac518fc96d9440150a69319de912b5306a23b05e24379dfe8803f"
+    },
+    {
+      "path": "01_MASTER_PROMPT.txt",
+      "bytes": 10443,
+      "sha256": "6f7acf2487edd89878e4683149852c075e2d39b91b19e1ecb9f8db6b4842f92d"
+    },
+    {
+      "path": "02_RESEARCH_DOSSIER.md",
+      "bytes": 17613,
+      "sha256": "5abe6d9670ed227081b5b3411d320e1e47ed00f17481f042082f325dab7fe107"
+    },
+    {
+      "path": "03_SOURCE_CATALOG.md",
+      "bytes": 48002,
+      "sha256": "582d997a5c5aef36be1d87bf222c69673869d5fd509e97ea7acd2730a91673e0"
+    },
+    {
+      "path": "04_SOURCES.json",
+      "bytes": 66647,
+      "sha256": "e85bc3e05a2664770f63a54f023a9be56782280b5aa3d37ec70ef316cc1d42cc"
+    },
+    {
+      "path": "05_AGENT_TASKS.json",
+      "bytes": 11128,
+      "sha256": "4da8028ec6c2e1d5c28f1d1d689bc2c23109c5a5fbb4b32e42566e388e6cc004"
+    },
+    {
+      "path": "06_EXPERIMENT_PROTOCOL.md",
+      "bytes": 26804,
+      "sha256": "bac7eeedb502b23853da96a10347482ca7fc36bcc34609e472c746eceb210530"
+    },
+    {
+      "path": "07_EXPERIMENT_MATRIX.json",
+      "bytes": 16267,
+      "sha256": "f14623aec5ed157d3f0ed952b9e5e9cc4375cb9f230bc07ee07ceeb357f10001"
+    },
+    {
+      "path": "08_EVIDENCE_SCHEMA.json",
+      "bytes": 5239,
+      "sha256": "7d9baaad1e0892b41dd60e1572e4137bb6997275c70cc81768a322cf6ebd1096"
+    },
+    {
+      "path": "09_INTEGRATION_CONTRACT.md",
+      "bytes": 5339,
+      "sha256": "0fdbb4683b84f00d3400a107ba3033509d8dbe7b4086389964f9a7cfb8c4a7b7"
+    },
+    {
+      "path": "10_COMPLETION_CHECKLIST.md",
+      "bytes": 2405,
+      "sha256": "9c34b762a3cbd53f1df30afc78ea03abcd0c0defca5bf1d969684f60e9140481"
+    },
+    {
+      "path": "11_PLATFORM_MAP.md",
+      "bytes": 8840,
+      "sha256": "97ae26791151f25468310de099350c0994c43ac84c9cc2b404b82ca34d83f7bb"
+    },
+    {
+      "path": "12_SCIENCE_READING_GUIDE.md",
+      "bytes": 2328,
+      "sha256": "2375629ed30b673a379d0aa2e5fc0e7d6a1c75aec762c25a0ffd2b20137de23b"
+    },
+    {
+      "path": "13_REFERENCE_REVISIONS.json",
+      "bytes": 25574,
+      "sha256": "eacb4637e281600e22358c50884926239ef0108dc54e02e0b0404e495265633b"
+    },
+    {
+      "path": "14_URLS.txt",
+      "bytes": 12153,
+      "sha256": "d07f34d980c59dbc44d7fc5b2a57a95c354fe1992aedc6a1cb2cbafb0dd6c497"
+    },
+    {
+      "path": "EVIDENCE_EXAMPLE.jsonl",
+      "bytes": 505,
+      "sha256": "63a648145ddfb3f43a4110a207f95579360696aff43f2ec382096c3c8cef6900"
+    }
+  ]
+}

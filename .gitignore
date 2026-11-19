@@ -1,0 +1,7 @@
+sources/
+handoff_zip/
+__pycache__/
+*.pyc
+.venv/
+pilot/**/data/
+pilot/**/*.pt

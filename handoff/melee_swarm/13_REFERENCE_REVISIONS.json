@@ -1,0 +1,535 @@
+{
+  "schema_version": "1.0.0",
+  "observed_at": "2026-11-19",
+  "purpose": "Bibliographic reference revisions; not a runnable environment lockfile.",
+  "references": [
+    {
+      "source_id": "A02",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/README.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/README.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A03",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/bench.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/bench.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A04",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/bench/entrants.py",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/bench/entrants.py",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A05",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/web-ui.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/web-ui.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A06",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/architecture.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/architecture.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A07",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/simulator.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/simulator.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A08",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/actions.py",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/actions.py",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A09",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/state.py",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/state.py",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A10",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/sim/slippi.py",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/sim/slippi.py",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A11",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/farm/common.py",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/farm/common.py",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A12",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/experiments/README.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/experiments/README.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A13",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/pyproject.toml",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/pyproject.toml",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A14",
+      "url": "https://github.com/mateo19182/melee-brute/blob/main/BRUTE.md",
+      "permalink": "https://github.com/mateo19182/melee-brute/blob/9662ec973b9e077ff7b0ff89d6db950f53c11653/BRUTE.md",
+      "observed_revision": "9662ec973b9e077ff7b0ff89d6db950f53c11653",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A15",
+      "url": "https://github.com/kyhavlov/melee-sim-light",
+      "permalink": "https://github.com/kyhavlov/melee-sim-light/tree/eea7b5fbcd0243baf4c1956d52f3e1d0f536edc4",
+      "observed_revision": "eea7b5fbcd0243baf4c1956d52f3e1d0f536edc4",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A16",
+      "url": "https://github.com/vladfi1/libmelee",
+      "permalink": "https://github.com/vladfi1/libmelee/tree/bce21f09984b286e6d36bfd2939e4cd4691f94c2",
+      "observed_revision": "bce21f09984b286e6d36bfd2939e4cd4691f94c2",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A17",
+      "url": "https://github.com/project-slippi/dolphin",
+      "permalink": "https://github.com/project-slippi/dolphin/tree/accd20faa0017338654783e5e3421969e8ddf056",
+      "observed_revision": "accd20faa0017338654783e5e3421969e8ddf056",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "metadata"
+    },
+    {
+      "source_id": "A18",
+      "url": "https://github.com/project-slippi/slippi-wiki/blob/master/SPEC.md",
+      "permalink": "https://github.com/project-slippi/slippi-wiki/blob/3a85ce8b1f2dae1b487b2529a43c80f5de5885a3/SPEC.md",
+      "observed_revision": "3a85ce8b1f2dae1b487b2529a43c80f5de5885a3",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A19",
+      "url": "https://github.com/doldecomp/melee",
+      "permalink": "https://github.com/doldecomp/melee/tree/2f8eab8ebd7a2d25541e125abfa246defe1bacec",
+      "observed_revision": "2f8eab8ebd7a2d25541e125abfa246defe1bacec",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "metadata"
+    },
+    {
+      "source_id": "A20",
+      "url": "https://github.com/ericyuegu/hal",
+      "permalink": "https://github.com/ericyuegu/hal/tree/37045d974116405dd690efea6109a1d83a2da868",
+      "observed_revision": "37045d974116405dd690efea6109a1d83a2da868",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A21",
+      "url": "https://huggingface.co/ericyuegu/hal-base-250m-rc",
+      "permalink": "https://huggingface.co/ericyuegu/hal-base-250m-rc/tree/e7fb8378ae15011cb0a414c16a8e5ac8b951fa63",
+      "observed_revision": "e7fb8378ae15011cb0a414c16a8e5ac8b951fa63",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A23",
+      "url": "https://github.com/vladfi1/slippi-ai",
+      "permalink": "https://github.com/vladfi1/slippi-ai/tree/5ada33e90c6c87fe83a1fb2d1a8105a96fd7b05b",
+      "observed_revision": "5ada33e90c6c87fe83a1fb2d1a8105a96fd7b05b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A24",
+      "url": "https://huggingface.co/vladfi/phillip-models",
+      "permalink": "https://huggingface.co/vladfi/phillip-models/tree/a5045c5347ec6788a0d6f0801cb8483b3e8d47ce",
+      "observed_revision": "a5045c5347ec6788a0d6f0801cb8483b3e8d47ce",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A25",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/delay.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/delay.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A26",
+      "url": "https://github.com/erickfm/MIMIC",
+      "permalink": "https://github.com/erickfm/MIMIC/tree/3691f534194f9c2ec52f131c8ab96e3d8674c3fa",
+      "observed_revision": "3691f534194f9c2ec52f131c8ab96e3d8674c3fa",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A27",
+      "url": "https://huggingface.co/erickfm/MIMIC",
+      "permalink": "https://huggingface.co/erickfm/MIMIC/tree/f49879b67abb64cd7fa76ea033f846fee45571e5",
+      "observed_revision": "f49879b67abb64cd7fa76ea033f846fee45571e5",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A28",
+      "url": "https://huggingface.co/datasets/erickfm/melee-ranked-replays",
+      "permalink": "https://huggingface.co/datasets/erickfm/melee-ranked-replays/tree/ef54ddc230e01373ff2a179b49a7e559af788081",
+      "observed_revision": "ef54ddc230e01373ff2a179b49a7e559af788081",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A29",
+      "url": "https://github.com/Na00s/Faynt-Tournament",
+      "permalink": "https://github.com/Na00s/Faynt-Tournament/tree/d20961761814caf01f5db19c945d00ab757730ea",
+      "observed_revision": "d20961761814caf01f5db19c945d00ab757730ea",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "metadata"
+    },
+    {
+      "source_id": "A30",
+      "url": "https://huggingface.co/frisson-labs/Faynt-10M-Arena",
+      "permalink": "https://huggingface.co/frisson-labs/Faynt-10M-Arena/tree/96929127f522c3fe3fc4721bb6fd6f0236e06888",
+      "observed_revision": "96929127f522c3fe3fc4721bb6fd6f0236e06888",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A31",
+      "url": "https://github.com/frisson-labs/Reyn",
+      "permalink": "https://github.com/frisson-labs/Reyn/tree/93fa52742e43a3115a990211b3aebb31671d8fdc",
+      "observed_revision": "93fa52742e43a3115a990211b3aebb31671d8fdc",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "metadata"
+    },
+    {
+      "source_id": "A32",
+      "url": "https://huggingface.co/frisson-labs/Reyn-26C",
+      "permalink": "https://huggingface.co/frisson-labs/Reyn-26C/tree/6a46ac79f33f80e00c262e8e91abd6cb9c38f4cf",
+      "observed_revision": "6a46ac79f33f80e00c262e8e91abd6cb9c38f4cf",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A33",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/jev.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/jev.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A34",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/coach.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/coach.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A35",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/writeup/melee-bench.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/writeup/melee-bench.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A36",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/optimal-play.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/optimal-play.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A37",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/pyproject.toml",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/pyproject.toml",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A38",
+      "url": "https://github.com/Na00s/Faynt-Benchmarks",
+      "permalink": "https://github.com/Na00s/Faynt-Benchmarks/tree/39bc007537501c16d6e2dac6f2bcaafe3b84a8c9",
+      "observed_revision": "39bc007537501c16d6e2dac6f2bcaafe3b84a8c9",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "metadata"
+    },
+    {
+      "source_id": "A40",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/bots/bot_phillip.py",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/bots/bot_phillip.py",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A41",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/experiments/E21-hal-ppo.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/experiments/E21-hal-ppo.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A42",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/experiments/E31-sim-faithful.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/experiments/E31-sim-faithful.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A43",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/meleebot/rl/env.py",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/meleebot/rl/env.py",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A44",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/meleebot/rl/ppo.py",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/meleebot/rl/ppo.py",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A45",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/meleebot/build_dataset.py",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/meleebot/build_dataset.py",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "A46",
+      "url": "https://huggingface.co/datasets/ericyuegu/hal-mds-dataset",
+      "permalink": "https://huggingface.co/datasets/ericyuegu/hal-mds-dataset/tree/46ca723efd1de791c06300ed62c9278ecdb2f34a",
+      "observed_revision": "46ca723efd1de791c06300ed62c9278ecdb2f34a",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "metadata"
+    },
+    {
+      "source_id": "A47",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/scripts/setup.sh",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/scripts/setup.sh",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "B01",
+      "url": "https://github.com/facebookresearch/ijepa",
+      "default_branch": "main",
+      "head_sha": "52c1ae95d05f743e000e8f10a1f3a79b10cff048",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B02",
+      "url": "https://github.com/galilai-group/lejepa",
+      "default_branch": "main",
+      "head_sha": "c293d291ca87cd4fddee9d3fffe4e914c7272052",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B03",
+      "url": "https://github.com/lucas-maes/le-wm",
+      "default_branch": "main",
+      "head_sha": "8edfeb336732b5f3ce7b8b210d0ba370a09e2cac",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B04",
+      "url": "https://github.com/facebookresearch/vjepa2",
+      "default_branch": "main",
+      "head_sha": "204698b45b3712590f06245fbfba32d3be539812",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B05",
+      "url": "https://github.com/facebookresearch/vjepa2",
+      "default_branch": "main",
+      "head_sha": "204698b45b3712590f06245fbfba32d3be539812",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B06",
+      "url": "https://github.com/facebookresearch/vjepa2",
+      "default_branch": "main",
+      "head_sha": "204698b45b3712590f06245fbfba32d3be539812",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B08",
+      "url": "https://github.com/danijar/dreamerv3",
+      "default_branch": "main",
+      "head_sha": "e01491fad6434b2245a3b8ca201dd7faedcc458c",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B11",
+      "url": "https://github.com/gaoyuezhou/dino_wm",
+      "default_branch": "main",
+      "head_sha": "0a9492fa12044b852ae9e001cc74604b79c8bb0c",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B12",
+      "url": "https://github.com/nicklashansen/tdmpc2",
+      "default_branch": "main",
+      "head_sha": "332f19e4aba4bffe2dc736f45ea7f7bdc585903a",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B13",
+      "url": "https://github.com/facebookresearch/jepa-wms",
+      "default_branch": "main",
+      "head_sha": "13cf1d9c7e476f53c17714d2e0f1dc239a883ce0",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B15",
+      "url": "https://github.com/openai/baselines",
+      "default_branch": "master",
+      "head_sha": "ea25b9e8b234e6ee1bca43083f8f3cf974143998",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "B19",
+      "url": "https://github.com/ericyuegu/hal",
+      "default_branch": "main",
+      "head_sha": "37045d974116405dd690efea6109a1d83a2da868",
+      "verified_via": "git ls-remote --symref … HEAD",
+      "revision_role": "remote_default_branch_head_not_installed_version"
+    },
+    {
+      "source_id": "R07",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/bots.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/bots.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "R08",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/llm-player.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/llm-player.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "R09",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/bot-writer.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/bot-writer.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "R10",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/research.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/research.md",
+      "observed_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    },
+    {
+      "source_id": "R11",
+      "url": "https://github.com/mateo19182/melee-brute/blob/main/API.md",
+      "permalink": "https://github.com/mateo19182/melee-brute/blob/9662ec973b9e077ff7b0ff89d6db950f53c11653/API.md",
+      "observed_revision": "9662ec973b9e077ff7b0ff89d6db950f53c11653",
+      "revision_role": "bibliographic_reference_not_installed_version",
+      "access_status": "source_read"
+    }
+  ],
+  "documented_dependency_revisions": [
+    {
+      "repository": "https://github.com/mateo19182/melee-brute",
+      "revision": "090e54b048b7d51e82f9f6b551046c2ca8b130c7",
+      "evidence_source": "A13",
+      "role": "dependency_declared_by_benchmark"
+    },
+    {
+      "repository": "https://github.com/erickfm/MIMIC",
+      "revision": "bdfb6293c6709462b77647714b65952d190c116f",
+      "evidence_source": "R07",
+      "role": "installation_revision_documented_by_benchmark"
+    }
+  ],
+  "reported_experiment_revisions": [
+    {
+      "repository": "https://github.com/mateo19182/melee-brute",
+      "revision": "d3832724",
+      "revision_is_abbreviated": true,
+      "evidence_source": "A42",
+      "role": "author_report_E31; resolve full revision before reproduction"
+    }
+  ],
+  "documented_binary_releases": [
+    {
+      "source_id": "A48",
+      "role": "rendered_Dolphin"
+    },
+    {
+      "source_id": "A49",
+      "role": "headless_Dolphin"
+    }
+  ],
+  "unmeasured": [
+    "installed_environment",
+    "binary_hashes",
+    "model_binary_hashes",
+    "runtime_latency",
+    "training_performance"
+  ]
+}

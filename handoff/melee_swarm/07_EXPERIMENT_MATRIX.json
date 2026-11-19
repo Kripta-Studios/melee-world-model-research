@@ -1,0 +1,550 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "COORD",
+  "language": "es",
+  "protocol_path": "06_EXPERIMENT_PROTOCOL.md",
+  "study_status": "proposal",
+  "execution_status": "not_executed",
+  "scope": {
+    "question": "¿Aportan valor la representación predictiva, los rollouts aprendidos y la planificación a través de un modelo para jugar Melee?",
+    "benchmark_url": "https://melee.m19182.dev/",
+    "benchmark_repository_url": "https://github.com/mateo19182/melee-llm",
+    "exact_simulator_repository_url": "https://github.com/mateo19182/melee-brute",
+    "format_proposal": {
+      "player_character": "Fox",
+      "opponent_character": "Fox",
+      "stages": [
+        "Battlefield",
+        "Final Destination"
+      ],
+      "stocks": 4,
+      "time_limit_in_game_seconds": 480,
+      "nominal_frame_rate_hz": 60,
+      "tiebreak_rules": null
+    },
+    "clock_track_proposals": [
+      "realtime",
+      "paused",
+      "accelerated_training"
+    ],
+    "primary_clock_track": null,
+    "primary_modality": "causal_structured_state",
+    "research_environment": "local_offline",
+    "clock_semantics": "Un real-time lento no se convierte en untimed. El modo pausado debe esperar explícitamente decisiones; accelerated_training es modo de recolección, no equivalente a evaluación.",
+    "engine_limitations": [
+      "El runtime sim no expone CPU ni exporta .slp.",
+      "Usar Dolphin para CPU9 y validación por replay generado.",
+      "Snapshots completos y RNG pueden aportar información privilegiada."
+    ],
+    "terminal_semantics": "Adjudicación por cronómetro interno puede ser terminal válido; corte externo es truncamiento; crash o cancelación no inventa resultado de partida."
+  },
+  "dependencies_from_other_agents": [
+    "benchmark_commit_and_runner_entrypoints",
+    "observation_action_and_clock_contract",
+    "entrant_checkpoint_access_and_evaluation_rules",
+    "methods_claims_with_revision_and_sections",
+    "replay_and_environment_permissions"
+  ],
+  "evidence_statuses": [
+    "proposal",
+    "documented",
+    "measured",
+    "unverified"
+  ],
+  "gate_statuses": [
+    "pass",
+    "fail",
+    "blocked",
+    "pending"
+  ],
+  "arms": [
+    {
+      "id": "B0",
+      "method": "behavior_cloning",
+      "learned_dynamics_usage": "none",
+      "deployment": "direct_policy",
+      "stage_proposed": "E2"
+    },
+    {
+      "id": "B1",
+      "method": "BC_plus_PPO",
+      "learned_dynamics_usage": "none",
+      "deployment": "direct_policy",
+      "stage_proposed": "E2",
+      "depends_on": [
+        "B0"
+      ]
+    },
+    {
+      "id": "B2",
+      "method": "JEPA_encoder_plus_BC_and_PPO",
+      "learned_dynamics_usage": "representation_pretraining_only",
+      "deployment": "direct_policy",
+      "stage_proposed": "E2",
+      "depends_on": [
+        "B1"
+      ]
+    },
+    {
+      "id": "W0",
+      "method": "structured_action_conditioned_predictor_plus_MPC",
+      "learned_dynamics_usage": "deployment_rollouts",
+      "deployment": "receding_horizon_control",
+      "stage_proposed": "E2",
+      "depends_on": [
+        "B1",
+        "P0"
+      ]
+    },
+    {
+      "id": "W1",
+      "method": "latent_action_conditioned_predictor_plus_MPC",
+      "learned_dynamics_usage": "deployment_rollouts",
+      "deployment": "receding_horizon_control",
+      "stage_proposed": "E3",
+      "depends_on": [
+        "W0",
+        "P0"
+      ]
+    },
+    {
+      "id": "W2",
+      "method": "latent_dynamics_plus_actor_critic_imagination",
+      "learned_dynamics_usage": "policy_training_rollouts",
+      "deployment": "direct_policy",
+      "stage_proposed": "E4",
+      "depends_on": [
+        "B2",
+        "W1"
+      ]
+    },
+    {
+      "id": "S0",
+      "method": "verified_engine_snapshot_planning",
+      "learned_dynamics_usage": "none",
+      "deployment": "receding_horizon_control",
+      "stage_proposed": "E3",
+      "depends_on": [
+        "P0"
+      ],
+      "optional": true,
+      "conditional_track": "privileged_if_extra_snapshot_state_required"
+    },
+    {
+      "id": "P0",
+      "method": "same_candidate_proposals_scored_by_policy_likelihood_or_action_value_without_rollouts",
+      "learned_dynamics_usage": "none",
+      "deployment": "horizon_zero_action_selection",
+      "stage_proposed": "E2",
+      "depends_on": [
+        "B1"
+      ]
+    },
+    {
+      "id": "H0",
+      "method": "direct_policy_plus_situational_MPC",
+      "learned_dynamics_usage": "conditional_deployment_rollouts",
+      "deployment": "hybrid",
+      "stage_proposed": "E4",
+      "depends_on": [
+        "B1",
+        "W1"
+      ],
+      "optional": true
+    }
+  ],
+  "contrasts": [
+    {
+      "arm": "B1",
+      "reference": "B0",
+      "effect": "RL después de BC"
+    },
+    {
+      "arm": "B2",
+      "reference": "B1",
+      "effect": "Preentrenamiento predictivo de la representación"
+    },
+    {
+      "arm": "W0",
+      "reference": "P0",
+      "effect": "Efecto incremental del sistema de planificación; efecto específico del rollout solo bajo el control de puntuación declarado."
+    },
+    {
+      "arm": "W1",
+      "reference": "P0",
+      "effect": "Efecto incremental del sistema de planificación; efecto específico del rollout solo bajo el control de puntuación declarado."
+    },
+    {
+      "arm": "W1",
+      "reference": "W0",
+      "effect": "Dinámica latente frente a estructurada con planificador fijado"
+    },
+    {
+      "arm": "W1",
+      "reference": "B1",
+      "effect": "Utilidad operacional del sistema de planificación"
+    },
+    {
+      "arm": "W2",
+      "reference": "B2",
+      "effect": "Imaginación con encoder, corpus offline y presupuesto/protocolo de interacción equiparados; declarar si cambia también el algoritmo."
+    },
+    {
+      "arm": "S0",
+      "reference": "W1",
+      "effect": "Planificación mediante motor frente a dinámica latente si el acceso es comparable"
+    },
+    {
+      "arm": "H0",
+      "reference": "B1",
+      "effect": "Utilidad operacional de activar MPC en situaciones elegidas en validación"
+    }
+  ],
+  "controls": {
+    "match_across_applicable_arms": [
+      "observations_and_history",
+      "initialization_and_parameter_budget",
+      "forms_and_timing_of_action",
+      "data_and_interaction_budget",
+      "training_and_hpo_budget",
+      "reward_and_terminal_value",
+      "planner_candidate_support_and_opponent_model",
+      "evaluation_schedule_and_clock"
+    ],
+    "ablations": [
+      "capacity_matched_nonpredictive_encoder",
+      "masked_or_shuffled_action_conditioning",
+      "persistence_dynamics",
+      "horizon_zero_candidate_selection",
+      "learned_vs_exact_dynamics_with_same_candidates",
+      "matched_privileged_state_comparison_if_feasible",
+      "matched_opponent_model_or_sample_count"
+    ],
+    "opponent_future_in_deployment": "prohibited_by_study_design",
+    "labeled_oracle_diagnostic_only": true,
+    "opponent_future_model_options": [
+      "causal_policy_samples",
+      "marginalized_stochastic_dynamics"
+    ],
+    "state_access_tracks": [
+      "shared_causal_observation",
+      "declared_privileged_state"
+    ],
+    "data_splits": [
+      "train",
+      "validation",
+      "sealed_test"
+    ],
+    "split_group_keys": [
+      "full_game_id",
+      "duplicate_content_group",
+      "collection_id",
+      "player_group_where_objective_requires"
+    ],
+    "opponent_groups": [
+      "training_pool",
+      "validation_pool",
+      "held_out_test_pool",
+      "CPU9_local_anchor"
+    ],
+    "match_failure_policy": null,
+    "rollout_attribution": "Para aislar rollouts: mismos candidatos, muestras del rival y puntuación base; activar/desactivar solo el término que usa dinámica. Si cambia el evaluador, declarar efecto del sistema y añadir ablación de dinámica con evaluador fijo.",
+    "imagination_attribution": "Mismo corpus offline y presupuesto/protocolo de interacción real; fijar objetivo, cabezas actor/crítico y receta de updates cuando sea viable. Si cambia el algoritmo, reportar efecto conjunto.",
+    "planning_budget_comparisons": [
+      "fixed_candidate_and_opponent_sample_counts",
+      "fixed_wall_clock_decision_budget"
+    ]
+  },
+  "stages": [
+    {
+      "id": "E0",
+      "name": "descubrimiento",
+      "dependencies": [],
+      "status": "pending",
+      "required_artifact_ids": [
+        "sources",
+        "discovery"
+      ],
+      "decision": "Hay vías reproducibles, datos disponibles y presupuesto para cada brazo habilitado."
+    },
+    {
+      "id": "E1",
+      "name": "verificación del adaptador",
+      "dependencies": [
+        "E0"
+      ],
+      "status": "pending",
+      "required_artifact_ids": [
+        "adapter_contract",
+        "adapter_checks",
+        "splits"
+      ],
+      "decision": "Entrada, alineamiento, terminales, juego completo y fuga pasan sus chequeos."
+    },
+    {
+      "id": "E2",
+      "name": "piloto emparejado",
+      "dependencies": [
+        "E1"
+      ],
+      "status": "pending",
+      "required_artifact_ids": [
+        "diagnostics",
+        "schedule",
+        "run_config",
+        "run_games",
+        "run_timing"
+      ],
+      "decision": "Cobertura, sensibilidad a acciones, evaluación a horizonte y viabilidad temporal medidas; se estima la varianza para E3."
+    },
+    {
+      "id": "E3",
+      "name": "comparación reproducible",
+      "dependencies": [
+        "E2"
+      ],
+      "status": "pending",
+      "required_artifact_ids": [
+        "preregistration",
+        "schedule",
+        "run_config",
+        "run_games",
+        "run_timing",
+        "summary_markdown",
+        "summary_json"
+      ],
+      "decision": "Se estima el efecto de contrastes congelados, incluido el reloj y acceso que corresponden a cada decisión."
+    },
+    {
+      "id": "E4",
+      "name": "extensión",
+      "dependencies": [
+        "E3"
+      ],
+      "status": "pending",
+      "required_artifact_ids": [
+        "preregistration",
+        "summary_markdown",
+        "summary_json"
+      ],
+      "decision": "Pregunta adicional identificada, recursos y preregistro por extensión."
+    }
+  ],
+  "preregistration_proposals": {
+    "numeric_constants_status": "proposal",
+    "pilot_training_seed_count_range": [
+      1,
+      2
+    ],
+    "evaluation_training_seed_target_min": 5,
+    "pilot_schedule": {
+      "stage_count": 2,
+      "opponent_count": 2,
+      "port_assignments": 2,
+      "repetitions": 5,
+      "games_per_arm_training_seed_and_clock": 40
+    },
+    "dynamics_horizons_frames": [
+      4,
+      8,
+      16
+    ],
+    "dynamics_useful_effect_threshold": null,
+    "primary_endpoint": "macro_mean_win_rate_difference_vs_B1_percentage_points",
+    "primary_effect_proposal_pp": 5,
+    "primary_confidence_interval_level": 0.95,
+    "primary_effect_ci_lower_bound_proposal_pp": 0,
+    "safety_stock_and_timeout_limits": null,
+    "deadline_miss_rate_max_proposal": 0.01,
+    "integrated_latency_percentile_for_deadline_proposal": 99,
+    "expected_mandatory_adapter_pass_rate": 1,
+    "allowed_cross_split_leaks": 0,
+    "allowed_future_observation_leaks": 0,
+    "budget_caps": {
+      "usable_local_hardware": null,
+      "unique_replay_frames_per_arm": null,
+      "real_interaction_frames_per_arm": null,
+      "imagined_rollout_frames_per_arm": null,
+      "search_transition_calls_per_decision": null,
+      "trainable_parameters_per_arm": null,
+      "hyperparameter_trials_per_arm": null,
+      "accelerator_hours_per_arm": null,
+      "wall_clock_hours_per_arm": null,
+      "peak_vram_gb_per_arm": null
+    },
+    "pareto_reports": [
+      "at_fixed_real_frames",
+      "at_fixed_compute_and_wall_time"
+    ]
+  },
+  "measurement_contract": {
+    "opponents_and_ports": "Parear calendario por etapa, oponente, semilla inicial, reloj y puerto. Conservar las dos asignaciones en un bloque.",
+    "primary_inference_units": [
+      "training_seed",
+      "paired_match_block_within_training_seed"
+    ],
+    "reporting": [
+      "individual_training_seeds",
+      "95_percent_interval",
+      "per_opponent_and_stage_denominators",
+      "infrastructure_failures_and_policy_fallbacks"
+    ],
+    "timing_percentiles": [
+      50,
+      95,
+      99
+    ],
+    "timing_fields": [
+      "obs_frame",
+      "decision_frame",
+      "target_frame",
+      "applied_frame",
+      "capture_ts_ns",
+      "ready_ts_ns",
+      "policy_start_ts_ns",
+      "policy_end_ts_ns",
+      "send_ts_ns",
+      "applied_ts_ns",
+      "applied_frame_evidence",
+      "component_spans_ns_if_applicable"
+    ],
+    "timing_metrics": [
+      "capture",
+      "queue",
+      "inference",
+      "planning",
+      "send",
+      "end_to_end",
+      "observation_delay_frames",
+      "action_delay_frames",
+      "decision_frequency_hz",
+      "effective_input_frequency_hz",
+      "deadline_miss_rate"
+    ],
+    "additional_online_metrics": [
+      "stock_margin",
+      "self_destruct_rate",
+      "timeout_rate",
+      "frames_to_fixed_win_rate",
+      "training_and_deployment_cost"
+    ],
+    "prediction_metrics": [
+      "position_MAE",
+      "damage_MAE",
+      "event_PR_AUC",
+      "event_Brier_or_NLL",
+      "probability_calibration",
+      "latent_effective_rank",
+      "counterfactual_ranking",
+      "realized_value_lift"
+    ],
+    "pair_id_fields": [
+      "stage",
+      "opponent",
+      "initial_seed",
+      "repetition",
+      "clock"
+    ],
+    "schedule_id_fields": [
+      "pair_id",
+      "port_assignment",
+      "arm",
+      "training_seed"
+    ]
+  },
+  "artifact_paths": {
+    "sources": "evidence/C/source_claims.jsonl",
+    "discovery": "evidence/C/discovery.json",
+    "adapter_contract": "evidence/C/adapter_contract.json",
+    "adapter_checks": "evidence/C/adapter_checks.jsonl",
+    "splits": "evidence/C/splits.jsonl",
+    "preregistration": "evidence/C/preregistration.json",
+    "schedule": "evidence/C/eval_schedule.csv",
+    "run_config": "evidence/C/runs/<run_id>/config.json",
+    "run_games": "evidence/C/runs/<run_id>/games.jsonl",
+    "run_timing": "evidence/C/runs/<run_id>/timing.jsonl",
+    "diagnostics": "evidence/C/model_diagnostics.csv",
+    "summary_markdown": "evidence/C/summary.md",
+    "summary_json": "evidence/C/summary.json"
+  },
+  "status_row_required_fields": [
+    "phase",
+    "arm",
+    "clock",
+    "gate_status",
+    "evidence_ids",
+    "artifact_paths",
+    "outstanding_result"
+  ],
+  "source_claim_required_fields": [
+    "claim_id",
+    "agent_id",
+    "claim",
+    "status",
+    "source_refs",
+    "scope",
+    "limitations",
+    "next_step"
+  ],
+  "source_urls": [
+    "https://melee.m19182.dev/",
+    "https://github.com/mateo19182/melee-llm",
+    "https://github.com/mateo19182/melee-brute",
+    "https://libmelee.readthedocs.io/en/latest/gamestate.html",
+    "https://github.com/project-slippi/slippi-wiki/blob/master/SPEC.md",
+    "https://arxiv.org/html/2603.19312v3#S3",
+    "https://arxiv.org/abs/2506.09985",
+    "https://arxiv.org/abs/2108.13264"
+  ],
+  "reuse_requires_match": [
+    "data_hash",
+    "split_hash",
+    "adapter_revision",
+    "emulator_hash",
+    "config_hash",
+    "seed",
+    "objective"
+  ],
+  "stop_reasons": [
+    "required_environment_or_data_unavailable",
+    "adapter_or_leakage_gate_failed",
+    "approved_budget_exhausted",
+    "comparison_invalid_for_clock_or_access"
+  ],
+  "review_risks": [
+    "causal_or_dataset_leakage",
+    "clock_and_privilege_mismatch",
+    "model_exploitation_and_opponent_shift",
+    "representation_dynamics_planning_attribution",
+    "pseudoreplication_and_unsupported_generalization"
+  ],
+  "evidence_schema_path": "08_EVIDENCE_SCHEMA.json",
+  "claim_status_mapping": {
+    "documented": [
+      "DOCUMENTADO_POR_AUTOR",
+      "INSPECCIONADO_EN_CODIGO"
+    ],
+    "measured": [
+      "REPRODUCIDO"
+    ],
+    "proposal": [
+      "PROPUESTA"
+    ],
+    "unverified": [
+      "DESCONOCIDO"
+    ]
+  },
+  "minimal_pilot_arms": [
+    "B0",
+    "B1",
+    "P0",
+    "W0"
+  ],
+  "predictor_gate_policy": "La infraestructura verificada permite investigar W1 aunque W0 falle predictivamente. Cada predictor debe pasar su propia evaluación antes de su MPC.",
+  "evidence_consolidation_checks": [
+    "unique_claim_ids",
+    "resolvable_inference_basis_claim_ids",
+    "measured_artifact_exists",
+    "measured_artifact_sha256_matches"
+  ]
+}

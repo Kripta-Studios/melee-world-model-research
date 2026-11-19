@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidencia de investigación Melee",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Una fila de EVIDENCE.jsonl. REPRODUCIDO exige ejecución propia documentada; measurement_kind distingue prueba local y replicación de un resultado publicado.",
+  "required": [
+    "claim_id",
+    "agent_id",
+    "claim",
+    "status",
+    "source_refs",
+    "scope",
+    "limitations",
+    "next_step"
+  ],
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "agent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "DOCUMENTADO_POR_AUTOR",
+        "INSPECCIONADO_EN_CODIGO",
+        "REPRODUCIDO",
+        "INFERENCIA",
+        "PROPUESTA",
+        "DESCONOCIDO"
+      ]
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "locator",
+          "accessed_at"
+        ],
+        "properties": {
+          "catalog_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "minLength": 1
+          },
+          "revision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "accessed_at": {
+            "type": "string",
+            "format": "date",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_step": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inference_basis_claim_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "measurement_kind",
+        "run_id",
+        "command",
+        "exit_code",
+        "config_artifact",
+        "result_artifacts",
+        "environment_revision"
+      ],
+      "properties": {
+        "measurement_kind": {
+          "enum": [
+            "local_check",
+            "local_experiment",
+            "independent_replication"
+          ]
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exit_code": {
+          "type": "integer"
+        },
+        "config_artifact": {
+          "type": "string",
+          "minLength": 1
+        },
+        "result_artifacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "environment_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metric": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "seed": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "REPRODUCIDO"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "measurement"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "DOCUMENTADO_POR_AUTOR",
+              "INSPECCIONADO_EN_CODIGO"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source_refs": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "INFERENCIA"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "inference_basis_claim_ids"
+        ],
+        "properties": {
+          "inference_basis_claim_ids": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "$comment": "Además de este esquema, el consolidador verifica claim_id únicos, referencias existentes, archivos de medición accesibles y hashes coincidentes. No son propiedades verificables por JSON Schema de una fila aislada."
+}

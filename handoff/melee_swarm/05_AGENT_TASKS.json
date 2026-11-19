@@ -1,0 +1,326 @@
+{
+  "schema_version": "1.0.0",
+  "language": "es",
+  "scope": "Investigación y diseño de aplicación a Melee; no ejecución de entrenamientos largos.",
+  "coordinator": {
+    "id": "COORD",
+    "responsibilities": [
+      "Leer 00_START_HERE.md y ejecutar 01_MASTER_PROMPT.txt como encargo.",
+      "Asignar roles lógicos según concurrencia disponible; evitar trabajo duplicado.",
+      "Mantener decisiones, dudas, revisiones y acuerdos en una fuente común.",
+      "Consolidar informes y resolver contradicciones usando evidencia primaria."
+    ],
+    "required_outputs": [
+      "SOURCE_AUDIT.md",
+      "sources.lock.json",
+      "SYSTEM_MAP.md",
+      "BASELINES.md",
+      "DESIGN.md",
+      "EXPERIMENT_PLAN.md",
+      "CRITICAL_REVIEW.md",
+      "FINAL_RECOMMENDATION.md",
+      "EVIDENCE.jsonl"
+    ]
+  },
+  "dispatch_waves": [
+    [
+      "A1",
+      "A2",
+      "A3",
+      "A6"
+    ],
+    [
+      "A4"
+    ],
+    [
+      "A5"
+    ],
+    [
+      "A7"
+    ],
+    [
+      "A8"
+    ]
+  ],
+  "concurrency_note": "Ocho roles no requieren ocho agentes simultáneos. Con tres trabajadores, agrupar o ejecutar por oleadas. A7 y A8 pueden hacer revisión preliminar mientras reciben entregas; sus conclusiones requieren las dependencias.",
+  "handoff_rule": "Cada conclusión incluye fuente, revisión o fecha, localizador, estado de evidencia, límite y siguiente paso verificable.",
+  "tasks": [
+    {
+      "id": "A1",
+      "role": "Plataforma e integración",
+      "hard_dependencies_for_finalization": [],
+      "can_begin_source_reading_immediately": true,
+      "priority_source_ids": [
+        "A02",
+        "A03",
+        "A04",
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A10",
+        "A13",
+        "A14",
+        "A15",
+        "A18",
+        "R07",
+        "R11"
+      ],
+      "questions_and_work": [
+        "Localizar runner, observación, acciones, registro de participantes, ciclo de partida y APIs de snapshot.",
+        "Contrastar HEAD, dependencias instaladas y revisiones citadas por experimentos; documentar diferencias.",
+        "Entregar interfaces reales y límites de sim frente a Dolphin, personajes y plataformas."
+      ],
+      "owned_output_paths": [
+        "evidence/A1/SYSTEM_MAP.md",
+        "evidence/A1/CONTRACT.md",
+        "evidence/A1/revisions.json"
+      ],
+      "shared_evidence_output": "evidence/A1/claims.jsonl",
+      "done_when": "Cada ruta y símbolo existe en un permalink; no se presenta una API propuesta como implementada.",
+      "status": "pending",
+      "write_scope": "evidence/A1/ only; coordinator owns consolidated reports"
+    },
+    {
+      "id": "A2",
+      "role": "Políticas existentes y RL",
+      "hard_dependencies_for_finalization": [],
+      "can_begin_source_reading_immediately": true,
+      "priority_source_ids": [
+        "A20",
+        "A21",
+        "A23",
+        "A24",
+        "A26",
+        "A27",
+        "A29",
+        "A30",
+        "A31",
+        "A32",
+        "A40",
+        "A43",
+        "A44",
+        "B14",
+        "B15",
+        "B18",
+        "B19",
+        "B20"
+      ],
+      "questions_and_work": [
+        "Clasificar checkpoint concreto por observación, acciones, entrenamiento, memoria y retraso.",
+        "Elegir baselines reutilizables y verificar pesos, licencias y pasos de inferencia sin afirmar que se ejecutaron.",
+        "Diseñar BC y BC+PPO con presupuestos comparables; distinguir datos humanos, reward conditioning y self-play."
+      ],
+      "owned_output_paths": [
+        "evidence/A2/BASELINES.md",
+        "evidence/A2/checkpoints.json"
+      ],
+      "shared_evidence_output": "evidence/A2/claims.jsonl",
+      "done_when": "Separar método del proyecto, método del peso concreto y resultado publicado.",
+      "status": "pending",
+      "write_scope": "evidence/A2/ only; coordinator owns consolidated reports"
+    },
+    {
+      "id": "A3",
+      "role": "Representaciones JEPA",
+      "hard_dependencies_for_finalization": [],
+      "can_begin_source_reading_immediately": true,
+      "priority_source_ids": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05",
+        "B06",
+        "B07",
+        "B11",
+        "B13"
+      ],
+      "questions_and_work": [
+        "Separar objetivo de representación, predicción temporal y predicción condicionada a acciones.",
+        "Explicar SIGReg, riesgo de colapso e invariancias que borrarían información útil para Melee.",
+        "Proponer controles con igual corpus offline y presupuesto, sin imaginación en las actualizaciones PPO del brazo de representación."
+      ],
+      "owned_output_paths": [
+        "evidence/A3/REPRESENTATIONS.md",
+        "evidence/A3/ablations.json"
+      ],
+      "shared_evidence_output": "evidence/A3/claims.jsonl",
+      "done_when": "La recomendación distingue pesos del encoder, predictor, tarea original y componentes pendientes.",
+      "status": "pending",
+      "write_scope": "evidence/A3/ only; coordinator owns consolidated reports"
+    },
+    {
+      "id": "A4",
+      "role": "Dinámica y modelo del rival",
+      "hard_dependencies_for_finalization": [
+        "A1",
+        "A3",
+        "A6"
+      ],
+      "can_begin_source_reading_immediately": true,
+      "priority_source_ids": [
+        "B03",
+        "B05",
+        "B08",
+        "B12",
+        "B16",
+        "B17",
+        "B22",
+        "A18",
+        "A25"
+      ],
+      "questions_and_work": [
+        "Definir transición, historia, duración y acciones efectivas de ambos puertos.",
+        "Separar dinámica conjunta de política rival y proponer predicción marginal o muestras adversarias coherentes.",
+        "Diseñar predictor estructurado, predictor latente y pruebas contrafactuales sin acciones futuras reales en el actor."
+      ],
+      "owned_output_paths": [
+        "evidence/A4/DYNAMICS.md",
+        "evidence/A4/model_contract.json"
+      ],
+      "shared_evidence_output": "evidence/A4/claims.jsonl",
+      "done_when": "La incertidumbre del rival, cobertura fuera de datos y error acumulado tienen evaluación explícita.",
+      "status": "pending",
+      "write_scope": "evidence/A4/ only; coordinator owns consolidated reports"
+    },
+    {
+      "id": "A5",
+      "role": "Planificación y control",
+      "hard_dependencies_for_finalization": [
+        "A1",
+        "A2",
+        "A4"
+      ],
+      "can_begin_source_reading_immediately": true,
+      "priority_source_ids": [
+        "A14",
+        "A36",
+        "R11",
+        "B03",
+        "B08",
+        "B09",
+        "B10",
+        "B12",
+        "B22"
+      ],
+      "questions_and_work": [
+        "Comparar política directa, MPC, planificación con motor conocido e imaginación durante entrenamiento.",
+        "Fijar candidatos, objetivo, valor terminal, presupuesto y manejo del rival para aislar efectos.",
+        "Incluir el control P0 sin rollouts y una categoría separada si snapshots aportan información privilegiada."
+      ],
+      "owned_output_paths": [
+        "evidence/A5/PLANNING.md",
+        "evidence/A5/search_budget.json"
+      ],
+      "shared_evidence_output": "evidence/A5/claims.jsonl",
+      "done_when": "Las propuestas respetan mandos simultáneos y no atribuyen garantías fuera del horizonte y menú probados.",
+      "status": "pending",
+      "write_scope": "evidence/A5/ only; coordinator owns consolidated reports"
+    },
+    {
+      "id": "A6",
+      "role": "Datos y tiempo",
+      "hard_dependencies_for_finalization": [],
+      "can_begin_source_reading_immediately": true,
+      "priority_source_ids": [
+        "A18",
+        "A25",
+        "A28",
+        "A45",
+        "A46",
+        "B17",
+        "B19",
+        "R03",
+        "R04",
+        "R06"
+      ],
+      "questions_and_work": [
+        "Mapear replay a observación y mando aplicado con semántica pre/post-frame y origen de las demoras.",
+        "Proponer splits por partidas completas y deduplicación de ambas perspectivas; declarar límites de separar jugadores.",
+        "Entregar contratos de tiempo, campos causales, metadatos privilegiados y licencias por componente."
+      ],
+      "owned_output_paths": [
+        "evidence/A6/DATA_AND_TIME.md",
+        "evidence/A6/split_plan.json",
+        "evidence/A6/timing_contract.json"
+      ],
+      "shared_evidence_output": "evidence/A6/claims.jsonl",
+      "done_when": "Cada campo tiene unidad, disponibilidad temporal y procedencia; no se inventa acceso a corpus completos.",
+      "status": "pending",
+      "write_scope": "evidence/A6/ only; coordinator owns consolidated reports"
+    },
+    {
+      "id": "A7",
+      "role": "Sistemas, coste y viabilidad",
+      "hard_dependencies_for_finalization": [
+        "A1",
+        "A2",
+        "A4",
+        "A5"
+      ],
+      "can_begin_source_reading_immediately": true,
+      "priority_source_ids": [
+        "A13",
+        "A15",
+        "A37",
+        "A47",
+        "A48",
+        "A49",
+        "R05",
+        "R11"
+      ],
+      "questions_and_work": [
+        "Separar inferencia, transferencia, batching, búsqueda, cola y aplicación del mando.",
+        "Describir medición de p50/p95/p99 y recursos en el hardware realmente disponible, sin asumir que la sesión sea el equipo del usuario.",
+        "Proponer presupuestos configurables y un piloto; distinguir real-time lento de una ejecución untimed explícita."
+      ],
+      "owned_output_paths": [
+        "evidence/A7/FEASIBILITY.md",
+        "evidence/A7/budget.json"
+      ],
+      "shared_evidence_output": "evidence/A7/claims.jsonl",
+      "done_when": "Cifras estimadas están etiquetadas; las cifras medidas enlazan a comando, configuración y traza.",
+      "status": "pending",
+      "write_scope": "evidence/A7/ only; coordinator owns consolidated reports"
+    },
+    {
+      "id": "A8",
+      "role": "Evaluación y revisión crítica",
+      "hard_dependencies_for_finalization": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7"
+      ],
+      "can_begin_source_reading_immediately": true,
+      "priority_source_ids": [
+        "R01",
+        "R02",
+        "A03",
+        "A04",
+        "A42",
+        "B13",
+        "B17",
+        "B20"
+      ],
+      "questions_and_work": [
+        "Auditar trazabilidad, fugas, comparabilidad de observaciones, reloj, datos y cómputo.",
+        "Congelar hipótesis, métricas, semillas, calendario emparejado y criterios de avance antes del test.",
+        "Revisar la recomendación más fuerte buscando un contraejemplo y clasificar conclusiones como soportadas, inferidas o pendientes."
+      ],
+      "owned_output_paths": [
+        "evidence/A8/EXPERIMENT_PLAN.md",
+        "evidence/A8/CRITICAL_REVIEW.md",
+        "evidence/A8/evidence_gaps.json"
+      ],
+      "shared_evidence_output": "evidence/A8/claims.jsonl",
+      "done_when": "Los resultados por partida no se cuentan como réplicas de entrenamiento; ninguna propuesta aparece como benchmark ejecutado.",
+      "status": "pending",
+      "write_scope": "evidence/A8/ only; coordinator owns consolidated reports"
+    }
+  ]
+}

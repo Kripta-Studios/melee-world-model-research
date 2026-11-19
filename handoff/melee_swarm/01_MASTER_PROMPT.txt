@@ -1,0 +1,116 @@
+Actúa como coordinador de un swarm de investigación e ingeniería de aprendizaje automático.
+
+MISIÓN
+
+Investiga la aplicación de RL, modelos del mundo y JEPA/LeJEPA/LeWorldModel a Super Smash Bros. Melee. Usa este paquete como contexto y mapa inicial de fuentes, no como autoridad infalible. Debes concluir qué arquitectura merece un MVP, qué se puede reutilizar y qué experimento permitiría comprobar su valor. La primera entrega es investigación, diseño y un protocolo ejecutable; no hace falta lanzar un entrenamiento largo para cumplir esta fase.
+
+El punto de partida es https://melee.m19182.dev y su código https://github.com/mateo19182/melee-llm. Existen además https://github.com/mateo19182/melee-brute y https://github.com/kyhavlov/melee-sim-light.
+
+PREGUNTA CENTRAL
+
+¿Puede una representación aprendida y/o un modelo de dinámica condicionado a acciones mejorar fuerza de juego, eficiencia de datos, robustez ante rivales y retrasos o coste de decisión, frente a políticas sin dinámica explícita y búsqueda con el simulador disponible?
+
+No presupongas que JEPA ganará. Una recomendación negativa, respaldada por evidencia y experimentos bien diseñados, es válida.
+
+LEE PRIMERO
+
+00_START_HERE.md
+02_RESEARCH_DOSSIER.md
+03_SOURCE_CATALOG.md
+04_SOURCES.json
+05_AGENT_TASKS.json
+06_EXPERIMENT_PROTOCOL.md
+07_EXPERIMENT_MATRIX.json
+08_EVIDENCE_SCHEMA.json
+09_INTEGRATION_CONTRACT.md
+10_COMPLETION_CHECKLIST.md
+
+ORGANIZA EL SWARM
+
+Crea ocho roles lógicos y ajústalos a la concurrencia real. Trabaja por tandas si hace falta. Cada especialista debe leer las fuentes de su ámbito y entregar hallazgos, evidencias, dudas y decisiones; no ocho resúmenes generales duplicados.
+
+A1 Plataforma e integración: reconstruye la ruta observación → agente → mando → motor → resultado; identifica puntos de extensión, APIs, versiones, equivalencia simulador/Dolphin, snapshots y límites.
+A2 Políticas y RL: audita BC, HAL, MIMIC, Phillip, Faynt y Reyn; decide baselines y qué entrenamiento/checkpoint se reutiliza; distingue RL offline, imitación condicionada y RL online.
+A3 Representaciones y JEPA: analiza I-JEPA, LeJEPA/SIGReg y la utilidad de encoder congelado, ajustado o conjunto; identifica ablaciones y riesgo de borrar detalles importantes para control.
+A4 Dinámica aprendida: diseña predicción multihorizonte, condicionamiento a acciones propias y del rival, incertidumbre, memoria, recompensas y comparación entre espacio estructurado y latente.
+A5 Planificación: compara búsqueda con motor conocido, MPC aprendido, propuestas de una política, valor terminal y planificación jerárquica; trata simultaneidad y movimiento desconocido del rival.
+A6 Datos y retrasos: audita repeticiones, campos, alineación temporal, botones mantenidos, RNG, splits por partida y jugador, cobertura de acciones, latencias de observación/acción y cambio de dominio.
+A7 Sistemas y recursos: estima memoria, rendimiento de CPU/GPU, coste de datos y latencia p50/p95/p99; presenta un camino local compacto y una ampliación opcional, usando hardware realmente verificado.
+A8 Evaluación y crítica: define protocolo, controles, incertidumbre, leakage, presupuesto comparable y falsación; revisa al resto e intenta refutar la ventaja atribuida al world model.
+
+Los roles A3, A4 y A5 deben acordar el contrato de representación/dinámica/planificador; A1 y A6, el contrato temporal y de datos. A8 revisa las decisiones antes de convertirlas en conclusiones.
+
+REGLAS DE EVIDENCIA
+
+- Usa fuentes primarias: código, documentación oficial, artículos originales, fichas de modelos y datasets.
+- Cada afirmación técnica importante lleva URL y, cuando proceda, SHA, ruta, símbolo y rango de líneas.
+- Distingue DOCUMENTADO_POR_AUTOR, INSPECCIONADO_EN_CODIGO, REPRODUCIDO, INFERENCIA, PROPUESTA y DESCONOCIDO.
+- Un README no demuestra que se ejecutara un experimento ni que un checkpoint tenga determinada configuración.
+- No presentes cifras de un paper como rendimiento esperado en Melee.
+- No confundas HEAD actual, dependencia bloqueada, versión instalada descrita y revisión usada en una medición.
+- Fija revisiones completas y hashes de pesos/datos. Conserva redirecciones de URLs y resultados de acceso.
+- Si un enlace falla, sigue enlaces oficiales o consulta código público; registra el fallo. No inventes rutas, capacidades ni experimentos.
+- La similitud de los nombres Jev y JEPA no implica relación técnica.
+- Atribuye las capacidades implícitas desconocidas de un modelo externo como desconocidas.
+
+DISTINCIONES QUE DEBES PRESERVAR
+
+1. RL optimiza comportamiento por retorno; un world model representa consecuencias. Pueden combinarse.
+2. Entrenar una política en un simulador no implica model-based RL si el agente no utiliza un modelo de transiciones para aprender o planificar.
+3. Un motor programado es un modelo conocido; un predictor neuronal aprendido es aproximado.
+4. Un encoder LeJEPA seguido de PPO no es por sí solo un modelo de dinámica condicionado a acciones.
+5. JEPA no implica siempre predicción temporal. I-JEPA predice representaciones latentes de regiones objetivo de una imagen.
+6. Predecir acciones futuras, valor o comandos del jugador no equivale a predecir el siguiente estado del entorno.
+7. Un LLM entrenador es una jerarquía de control; no demuestra un world model.
+8. Tiempo real, untimed, frame skip, action chunking, delay y modo de simulación son variables diferentes.
+9. Un modelo latente no es necesariamente JEPA. Contrasta MuZero y Dreamer.
+10. Una pérdida predictiva baja no demuestra ventaja al jugar.
+
+ENFOQUES QUE DEBES COMPARAR
+
+- Política por imitación y una política por RL sin dinámica explícita.
+- Encoder JEPA + PPO para aislar representación: mismo corpus offline, receta de BC/PPO y presupuesto de interacción que el control; sin rollouts aprendidos para actualizar la política ni dinámica en inferencia. Cualquier pérdida auxiliar temporal se declara y se contrasta aparte. Las trayectorias online pueden diferir porque actúan políticas distintas.
+- Predictor de estado estructurado + MPC, como baseline de dinámica.
+- Dinámica latente inspirada en LeWorldModel + MPC.
+- Entrenamiento de política en trayectorias imaginadas.
+- Búsqueda con el simulador existente y el mismo tratamiento del rival.
+- Un control con las mismas propuestas/valoración pero sin rollouts, para atribuir el efecto de planificar.
+- Híbridos solo si las comparaciones previas justifican su coste.
+
+Empieza por estado estructurado cuando la pregunta sea si la dinámica ayuda. Estudia píxeles como una línea separada que añade percepción. No compares métodos que reciben información privilegiada distinta como si solo cambiara el algoritmo.
+
+RESTRICCIONES DE LA COMPARACIÓN
+
+El movimiento futuro del rival no está disponible al decidir. Puedes usar mandos registrados para entrenar y como diagnóstico con etiqueta oracle, pero nunca convertirlos en una ventaja oculta de evaluación. Si dispones del estado completo/RNG para búsqueda, declara esa ventaja y añade un experimento de información equiparada.
+
+Mantén fijos o documentados personajes, escenarios, puertos, horizonte, presupuesto de acciones candidatas, información visible, retrasos, rivales de entrenamiento/evaluación y presupuesto de cómputo. Separa semillas de entrenamiento de semillas de partidas. Las partidas de un mismo modelo no son entrenamientos independientes.
+
+Divide datos por partidas completas antes de crear ventanas. Verifica duplicados, fragmentos solapados, identidades, fechas y uso del test. No prometas separación por jugador si el corpus no la permite: documenta la cobertura y redefine el split.
+
+La meta es jugar bajo un reloj declarado. Mide latencia de toda la ruta hasta el mando aplicado, además del forward neuronal; incluye transferencias, batching, búsquedas, pausas, colas y retrasos. Una partida programada en tiempo real que se ralentiza conserva ese régimen y se marca lenta o inválida según el protocolo. No se convierte en untimed. Para medir sin reloj, repite explícitamente con el juego esperando las decisiones y reporta esa ejecución aparte.
+
+No des por supuesto que un modelo grande de vídeo es la mejor base. Revisa primero datos, unidades temporales, acciones, tareas originales, coste y errores de predicción. No sustituyas la lectura de la implementación por el nombre del paper.
+
+ENTREGAS OBLIGATORIAS
+
+1. SOURCE_AUDIT.md y sources.lock.json: mapa de fuentes, revisiones y evidencias.
+2. SYSTEM_MAP.md: flujo real del proyecto, APIs, extensiones y qué componentes ya existen.
+3. BASELINES.md: agentes, objetivos de entrenamiento, checkpoints y comparación justa.
+4. DESIGN.md: dos o tres arquitecturas viables, elección recomendada, contrato y límites.
+5. EXPERIMENT_PLAN.md: hipótesis, matriz mínima, controles, métricas, splits, retrasos, recursos y criterios para continuar.
+6. CRITICAL_REVIEW.md: intentos de refutación, confusores, discrepancias y evidencia que cambiaría la recomendación.
+7. FINAL_RECOMMENDATION.md: qué reutilizar, qué construir, qué descartar y una lista ordenada de próximos pasos concretos.
+8. EVIDENCE.jsonl: afirmaciones conforme a 08_EVIDENCE_SCHEMA.json.
+
+Si algo no se ha medido, no llenes su columna con una estimación presentada como dato. Las estimaciones de recursos llevan supuestos y un método corto para verificarlas.
+
+FORMA DE TRABAJO
+
+Comienza con un inventario de acceso y revisiones; luego reparte las fuentes. Cada agente trabaja en su área y en su propio informe. Reutiliza hallazgos verificados, comparte incertidumbres que bloqueen a otros y evita duplicar clones, descargas y búsquedas generales. El coordinador integra y resuelve contradicciones consultando la fuente correspondiente, no por votación.
+
+No preguntes por lo que ya consta en el contexto o puede inspeccionarse. Si falta una decisión de producto o presupuesto, avanza con alternativas explícitas y deja visible qué cambia. La investigación debe terminar con una recomendación aplicable, aunque la respuesta sea que un world model todavía no se justifica.
+
+CRITERIO DE FINALIZACIÓN
+
+El trabajo está listo cuando un ingeniero puede entender el sistema existente, localizar el punto exacto de integración, escoger un MVP, reproducir el protocolo y comprobar una afirmación de mejora sin depender de suposiciones ocultas o de volver a reconstruir la bibliografía.
+

@@ -1,0 +1,1376 @@
+{
+  "schema_version": "1.0.0",
+  "retrieved_at": "2026-11-19",
+  "language": "es",
+  "purpose": "Catálogo bibliográfico para investigación, con revisiones observadas y límites de verificación.",
+  "scope_note": "Los resultados de papers y repositorios pertenecen a sus autores. No se descargaron todos los pesos, no se reprodujeron experimentos y no se verificó la web activa.",
+  "access_status_definitions": {
+    "source_read": "Se leyó contenido primario relevante, documentación, código o abstract. No implica auditoría integral ni ejecución.",
+    "metadata": "Se verificó la publicación o identidad del recurso, pero no su contenido completo o binario.",
+    "unverified": "El contenido activo o la versión exacta no pudo comprobarse; queda señalado para el swarm."
+  },
+  "counting_note": "Cada ficha representa un recurso o una perspectiva metodológica. Algunas fichas comparten URL; las URLs únicas se entregan por separado.",
+  "sources": [
+    {
+      "id": "A01",
+      "title": "Melee × LLM, sitio público",
+      "url": "https://melee.m19182.dev/",
+      "retrieved_at": "2026-11-19",
+      "category": "platform",
+      "access_status": "unverified",
+      "annotation": "Punto de entrada. Asociación repositorio y dominio probada por A02/A05; la web activa no pudo verificarse directamente."
+    },
+    {
+      "id": "A02",
+      "title": "Melee × LLM, README",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/README.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/README.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Objetivo, modos de ejecución, dependencias generales y vínculo con el sitio."
+    },
+    {
+      "id": "A03",
+      "title": "Melee Bench, protocolo y reloj",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/bench.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/bench.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Una tabla, dos relojes, reglas Fox contra Fox, ancla CPU9, admisión de partidas, estimación Elo e intervalos."
+    },
+    {
+      "id": "A04",
+      "title": "Melee Bench, registro de participantes",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/bench/entrants.py",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/bench/entrants.py",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Tipos, relojes, configuración, controles y scripts retirados. Registro público, no volcado del marcador desplegado."
+    },
+    {
+      "id": "A05",
+      "title": "Documentación de la interfaz web",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/web-ui.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/web-ui.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Asocia el dominio con la implementación y distingue la tabla, las partidas, los replays y /brute."
+    },
+    {
+      "id": "A06",
+      "title": "Arquitectura y ciclo de partida",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/architecture.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/architecture.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Mapa hacia runner, bots, replays, componentes de observación, evaluación y procesos."
+    },
+    {
+      "id": "A07",
+      "title": "Simulador y pruebas de paridad",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/simulator.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/simulator.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Modo sim y adaptadores. Los resultados de paridad son del autor, con condiciones sobre entradas y RNG."
+    },
+    {
+      "id": "A08",
+      "title": "Contrato de acciones de alto nivel",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/actions.py",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/actions.py",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Macros, pad y ejecutor determinista por fotograma."
+    },
+    {
+      "id": "A09",
+      "title": "Contrato de observaciones",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/state.py",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/state.py",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Transforma GameState en observación y texto; separa campos del juego y contexto calculado."
+    },
+    {
+      "id": "A10",
+      "title": "Adaptador simulado de eventos Slippi",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/sim/slippi.py",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/sim/slippi.py",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Genera eventos para reutilizar los parsers que esperan los bots; incluirlo en pruebas de paridad."
+    },
+    {
+      "id": "A11",
+      "title": "Vectorización en el entrenamiento",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/farm/common.py",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/farm/common.py",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Lotes de partidas, observaciones y adaptación a GameState o a eventos Slippi."
+    },
+    {
+      "id": "A12",
+      "title": "Experimentos de entrenamiento del proyecto",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/experiments/README.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/experiments/README.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Punto de entrada a clonación, sensibilidad al retraso, afinado RL y comprobaciones del simulador."
+    },
+    {
+      "id": "A13",
+      "title": "Dependencias del proyecto",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/pyproject.toml",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/pyproject.toml",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Manifiesto del runtime y revisión configurada del simulador; no reemplaza a un lockfile."
+    },
+    {
+      "id": "A14",
+      "title": "Melee Brute, contratos de búsqueda",
+      "url": "https://github.com/mateo19182/melee-brute/blob/main/BRUTE.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "9662ec973b9e077ff7b0ff89d6db950f53c11653",
+      "permalink": "https://github.com/mateo19182/melee-brute/blob/9662ec973b9e077ff7b0ff89d6db950f53c11653/BRUTE.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Take-back, menús de acciones, horizontes acotados, prueba de primer golpe y defensa, límites del simulador."
+    },
+    {
+      "id": "A15",
+      "title": "Melee Sim Light, upstream",
+      "url": "https://github.com/kyhavlov/melee-sim-light",
+      "retrieved_at": "2026-11-19",
+      "sha": "eea7b5fbcd0243baf4c1956d52f3e1d0f536edc4",
+      "permalink": "https://github.com/kyhavlov/melee-sim-light/tree/eea7b5fbcd0243baf4c1956d52f3e1d0f536edc4",
+      "license_metadata": "GitHub no declara licencia; verificar derechos",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Motor C derivado de la descompilación. API Python/NumPy y datos de una ISO aportada por el usuario."
+    },
+    {
+      "id": "A16",
+      "title": "libmelee, fork usado por el proyecto",
+      "url": "https://github.com/vladfi1/libmelee",
+      "retrieved_at": "2026-11-19",
+      "sha": "bce21f09984b286e6d36bfd2939e4cd4691f94c2",
+      "permalink": "https://github.com/vladfi1/libmelee/tree/bce21f09984b286e6d36bfd2939e4cd4691f94c2",
+      "license_metadata": "LGPL-3.0 (API)",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Frontera entre el runner, Slippi y el mando. Este SHA es HEAD de master, no la identidad de todos los parsers o de la versión instalada."
+    },
+    {
+      "id": "A17",
+      "title": "Slippi Dolphin",
+      "url": "https://github.com/project-slippi/dolphin",
+      "retrieved_at": "2026-11-19",
+      "sha": "accd20faa0017338654783e5e3421969e8ddf056",
+      "permalink": "https://github.com/project-slippi/dolphin/tree/accd20faa0017338654783e5e3421969e8ddf056",
+      "license_metadata": "NOASSERTION (GitHub API; consultar COPYING)",
+      "category": "platform",
+      "access_status": "metadata",
+      "annotation": "Repositorio actual del emulador. La rama slippi y su HEAD difieren de la AppImage fijada declarada en A47."
+    },
+    {
+      "id": "A18",
+      "title": "Formato de Slippi",
+      "url": "https://github.com/project-slippi/slippi-wiki/blob/master/SPEC.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "3a85ce8b1f2dae1b487b2529a43c80f5de5885a3",
+      "permalink": "https://github.com/project-slippi/slippi-wiki/blob/3a85ce8b1f2dae1b487b2529a43c80f5de5885a3/SPEC.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Esquema binario para contrastar los eventos de .slp con el adaptador simulado y el parser."
+    },
+    {
+      "id": "A19",
+      "title": "Descompilación de Melee",
+      "url": "https://github.com/doldecomp/melee",
+      "retrieved_at": "2026-11-19",
+      "sha": "2f8eab8ebd7a2d25541e125abfa246defe1bacec",
+      "permalink": "https://github.com/doldecomp/melee/tree/2f8eab8ebd7a2d25541e125abfa246defe1bacec",
+      "category": "platform",
+      "access_status": "metadata",
+      "annotation": "Origen del motor de juego. La disponibilidad pública no concede derechos sobre ISO, datos o activos."
+    },
+    {
+      "id": "A20",
+      "title": "HAL",
+      "url": "https://github.com/ericyuegu/hal",
+      "retrieved_at": "2026-11-19",
+      "sha": "37045d974116405dd690efea6109a1d83a2da868",
+      "permalink": "https://github.com/ericyuegu/hal/tree/37045d974116405dd690efea6109a1d83a2da868",
+      "license_metadata": "Sin licencia detectada por GitHub",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Código de HAL, imitación de partidas humanas y predicción de mandos. El proyecto usa este prefijo."
+    },
+    {
+      "id": "A21",
+      "title": "HAL, checkpoint público",
+      "url": "https://huggingface.co/ericyuegu/hal-base-250m-rc",
+      "retrieved_at": "2026-11-19",
+      "sha": "e7fb8378ae15011cb0a414c16a8e5ac8b951fa63",
+      "permalink": "https://huggingface.co/ericyuegu/hal-base-250m-rc/tree/e7fb8378ae15011cb0a414c16a8e5ac8b951fa63",
+      "license_metadata": "MIT (ficha)",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Pesos HAL publicados. El identificador del Hub fija revisión, no licencia del código o datos de origen."
+    },
+    {
+      "id": "A22",
+      "title": "HAL, informe de entrenamiento",
+      "url": "https://ericyuegu.com/hillclimbing-melee/",
+      "retrieved_at": "2026-11-19",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Describe enfoque y tamaño del corpus, arquitectura, agrupación de acciones y sensibilidad al retraso. Ver A46 para datos procesados; revisar condiciones del material de origen."
+    },
+    {
+      "id": "A23",
+      "title": "Phillip II / Slippi-AI",
+      "url": "https://github.com/vladfi1/slippi-ai",
+      "retrieved_at": "2026-11-19",
+      "sha": "5ada33e90c6c87fe83a1fb2d1a8105a96fd7b05b",
+      "permalink": "https://github.com/vladfi1/slippi-ai/tree/5ada33e90c6c87fe83a1fb2d1a8105a96fd7b05b",
+      "license_metadata": "MIT (API)",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Proyecto moderno de imitación y revisión con RL. El retraso se modela con cola de acciones."
+    },
+    {
+      "id": "A24",
+      "title": "Phillip II, checkpoints ONNX",
+      "url": "https://huggingface.co/vladfi/phillip-models",
+      "retrieved_at": "2026-11-19",
+      "sha": "a5045c5347ec6788a0d6f0801cb8483b3e8d47ce",
+      "permalink": "https://huggingface.co/vladfi/phillip-models/tree/a5045c5347ec6788a0d6f0801cb8483b3e8d47ce",
+      "license_metadata": "MIT (ficha)",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Modelo por nivel y personaje. index-v1.json indica hashes, tamaño y retraso de cada peso."
+    },
+    {
+      "id": "A25",
+      "title": "Tratamiento del retraso, ramas históricas y actuales",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/delay.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/delay.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Distingue la predicción de estado de Firoiu 2018 del método recurrente sin predictor separado en Phillip II."
+    },
+    {
+      "id": "A26",
+      "title": "MIMIC, repositorio",
+      "url": "https://github.com/erickfm/MIMIC",
+      "retrieved_at": "2026-11-19",
+      "sha": "3691f534194f9c2ec52f131c8ab96e3d8674c3fa",
+      "permalink": "https://github.com/erickfm/MIMIC/tree/3691f534194f9c2ec52f131c8ab96e3d8674c3fa",
+      "license_metadata": "MIT (API)",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "HEAD encontrado. Integración declara bdfb6293c6709462b77647714b65952d190c116f. El proyecto explora RL; el checkpoint fox de la tabla se cataloga como clonación."
+    },
+    {
+      "id": "A27",
+      "title": "MIMIC, checkpoints",
+      "url": "https://huggingface.co/erickfm/MIMIC",
+      "retrieved_at": "2026-11-19",
+      "sha": "f49879b67abb64cd7fa76ea033f846fee45571e5",
+      "permalink": "https://huggingface.co/erickfm/MIMIC/tree/f49879b67abb64cd7fa76ea033f846fee45571e5",
+      "license_metadata": "MIT (ficha)",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Ficha y checkpoints por personaje; la variante fox está catalogada como fox-20260420-baseline."
+    },
+    {
+      "id": "A28",
+      "title": "Melee Ranked Replays",
+      "url": "https://huggingface.co/datasets/erickfm/melee-ranked-replays",
+      "retrieved_at": "2026-11-19",
+      "sha": "ef54ddc230e01373ff2a179b49a7e559af788081",
+      "permalink": "https://huggingface.co/datasets/erickfm/melee-ranked-replays/tree/ef54ddc230e01373ff2a179b49a7e559af788081",
+      "license_metadata": "MIT (ficha)",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Corpus Slippi enlazado por MIMIC y Faynt. Verificar splits, duplicados entre perspectivas, opt-outs y derechos antes de ingesta."
+    },
+    {
+      "id": "A29",
+      "title": "Faynt Tournament",
+      "url": "https://github.com/Na00s/Faynt-Tournament",
+      "retrieved_at": "2026-11-19",
+      "sha": "d20961761814caf01f5db19c945d00ab757730ea",
+      "permalink": "https://github.com/Na00s/Faynt-Tournament/tree/d20961761814caf01f5db19c945d00ab757730ea",
+      "license_metadata": "MIT (API)",
+      "category": "platform",
+      "access_status": "metadata",
+      "annotation": "Runtime de la política y evaluación con cruces de espejo. Coincide con el prefijo documentado."
+    },
+    {
+      "id": "A30",
+      "title": "Faynt 10M-Arena",
+      "url": "https://huggingface.co/frisson-labs/Faynt-10M-Arena",
+      "retrieved_at": "2026-11-19",
+      "sha": "96929127f522c3fe3fc4721bb6fd6f0236e06888",
+      "permalink": "https://huggingface.co/frisson-labs/Faynt-10M-Arena/tree/96929127f522c3fe3fc4721bb6fd6f0236e06888",
+      "license_metadata": "MIT (ficha)",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Checkpoint del benchmark. Preentrenamiento humano, currículo y PPO en encuentros Fox espejo; comparar con sus controles sin PPO."
+    },
+    {
+      "id": "A31",
+      "title": "Reyn",
+      "url": "https://github.com/frisson-labs/Reyn",
+      "retrieved_at": "2026-11-19",
+      "sha": "93fa52742e43a3115a990211b3aebb31671d8fdc",
+      "permalink": "https://github.com/frisson-labs/Reyn/tree/93fa52742e43a3115a990211b3aebb31671d8fdc",
+      "license_metadata": "MIT (API)",
+      "category": "platform",
+      "access_status": "metadata",
+      "annotation": "Inferencia de política y traducción de frases a órdenes de un catálogo, separado del entrenador LLM."
+    },
+    {
+      "id": "A32",
+      "title": "Reyn-26C, pesos",
+      "url": "https://huggingface.co/frisson-labs/Reyn-26C",
+      "retrieved_at": "2026-11-19",
+      "sha": "6a46ac79f33f80e00c262e8e91abd6cb9c38f4cf",
+      "permalink": "https://huggingface.co/frisson-labs/Reyn-26C/tree/6a46ac79f33f80e00c262e8e91abd6cb9c38f4cf",
+      "license_metadata": "MIT (ficha)",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Política condicionada por instrucciones y ficha de órdenes. No equivale a un predictor de transiciones."
+    },
+    {
+      "id": "A33",
+      "title": "Jev en el proyecto",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/jev.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/jev.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Modelo TypeSafe que elige macros o comandos tácticos. Jev y JEPA designan tecnologías distintas."
+    },
+    {
+      "id": "A34",
+      "title": "Integración de entrenador y política",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/coach.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/coach.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "El entrenador cambia la estrategia; Reyn ejecuta cada fotograma. Control aleatorio y órdenes fijas."
+    },
+    {
+      "id": "A35",
+      "title": "Hallazgos del proyecto y nombres de modos",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/writeup/melee-bench.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/writeup/melee-bench.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Explica reproducción de acciones, familias de bots y experimentos de uso de LLM."
+    },
+    {
+      "id": "A36",
+      "title": "Análisis de juego óptimo",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/optimal-play.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/optimal-play.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Define sondas y búsqueda adversarial sobre el simulador, con menús y horizontes explícitos."
+    },
+    {
+      "id": "A37",
+      "title": "Modo y dependencias de entrenamiento",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/pyproject.toml",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/pyproject.toml",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Paquetes del entorno de entrenamiento de la política de referencia."
+    },
+    {
+      "id": "A38",
+      "title": "Faynt Benchmarks",
+      "url": "https://github.com/Na00s/Faynt-Benchmarks",
+      "retrieved_at": "2026-11-19",
+      "sha": "39bc007537501c16d6e2dac6f2bcaafe3b84a8c9",
+      "permalink": "https://github.com/Na00s/Faynt-Benchmarks/tree/39bc007537501c16d6e2dac6f2bcaafe3b84a8c9",
+      "license_metadata": "MIT (API)",
+      "category": "platform",
+      "access_status": "metadata",
+      "annotation": "Suite externa para contrastar protocolo y resultados de los autores de Faynt."
+    },
+    {
+      "id": "A39",
+      "title": "Anuncios y protocolo Slippi",
+      "url": "https://slippi.gg/",
+      "retrieved_at": "2026-11-19",
+      "category": "platform",
+      "access_status": "metadata",
+      "annotation": "Sitio oficial de herramientas de la comunidad. Contrastar versiones con el código y las AppImage del repositorio."
+    },
+    {
+      "id": "A40",
+      "title": "Compatibilidad de políticas propias",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/melee_llm/bots/bot_phillip.py",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/melee_llm/bots/bot_phillip.py",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Carga el ONNX y adapta el controlador. Distingue retardo de política y retardo de consola."
+    },
+    {
+      "id": "A41",
+      "title": "Ajuste PPO de HAL, ensayo E21",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/experiments/E21-hal-ppo.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/experiments/E21-hal-ppo.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Ensayo explícitamente planificado en este pin. No reporta un resultado ni una nueva política pública."
+    },
+    {
+      "id": "A42",
+      "title": "Validación de paridad, ensayo E31",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/experiments/E31-sim-faithful.md",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/experiments/E31-sim-faithful.md",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Ensayo del autor que separa paridad con replays y control de RNG; registrar exclusiones del dominio."
+    },
+    {
+      "id": "A43",
+      "title": "Entorno de self-play y recompensa del bot propio",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/meleebot/rl/env.py",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/meleebot/rl/env.py",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Calcula ventaja de stocks más diferencia de daño ponderada por fotograma y dispone de semillas y control de matchup."
+    },
+    {
+      "id": "A44",
+      "title": "Implementación PPO del bot propio",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/meleebot/rl/ppo.py",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/meleebot/rl/ppo.py",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "PPO con ventaja GAE, refuerzo de condición de stock/daño, KL hacia la política docente y bonificación de entropía condicionada."
+    },
+    {
+      "id": "A45",
+      "title": "Ingesta de replays y transporte de datos",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/train/meleebot/build_dataset.py",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/train/meleebot/build_dataset.py",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Selecciona y parsea replays con peppi, separa validación por nombre de partida y empaqueta muestras. Asegurar agrupación y deduplicación externa si cambia la procedencia."
+    },
+    {
+      "id": "A46",
+      "title": "Corpus público HAL en MosaicML Streaming",
+      "url": "https://huggingface.co/datasets/ericyuegu/hal-mds-dataset",
+      "retrieved_at": "2026-11-19",
+      "sha": "46ca723efd1de791c06300ed62c9278ecdb2f34a",
+      "permalink": "https://huggingface.co/datasets/ericyuegu/hal-mds-dataset/tree/46ca723efd1de791c06300ed62c9278ecdb2f34a",
+      "license_metadata": "other (ficha API)",
+      "category": "platform",
+      "access_status": "metadata",
+      "annotation": "README de HAL lo enlaza como el corpus que entrenó HAL 250M. Revisar licencia individual de datos, filtros y splits."
+    },
+    {
+      "id": "A47",
+      "title": "Setup reproducible de versiones Dolphin",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/scripts/setup.sh",
+      "retrieved_at": "2026-11-19",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/scripts/setup.sh",
+      "category": "platform",
+      "access_status": "source_read",
+      "annotation": "Fija AppImage oficial v4.0.0-mainline-beta.19 para render y 4.0.0-mainline-beta.14.1-ExiAI para headless."
+    },
+    {
+      "id": "A48",
+      "title": "Dolphin, release renderizado",
+      "url": "https://github.com/project-slippi/dolphin/releases/tag/v4.0.0-mainline-beta.19",
+      "retrieved_at": "2026-11-19",
+      "category": "platform",
+      "access_status": "metadata",
+      "annotation": "Release fijada por scripts/setup.sh; guardar huella del binario al reproducir."
+    },
+    {
+      "id": "A49",
+      "title": "Dolphin ExiAI, release headless",
+      "url": "https://github.com/vladfi1/dolphin/releases/tag/4.0.0-mainline-beta.14.1-ExiAI",
+      "retrieved_at": "2026-11-19",
+      "category": "platform",
+      "access_status": "metadata",
+      "annotation": "Release fijada por scripts/setup.sh para headless. Esta versión y sus parches de entrada importan para medir fidelidad."
+    },
+    {
+      "id": "B01",
+      "title": "I-JEPA · Assran et al. (2023)",
+      "url": "https://arxiv.org/abs/2301.08243",
+      "annotation": "Aprende a predecir embeddings de regiones ocultas de una imagen a partir del contexto visible. Evalúa clasificación, conteo y profundidad. Es una referencia para percepción desde píxeles. Para planificar en Melee hacen falta transiciones temporales y acciones.",
+      "related": [
+        {
+          "label": "Proyecto",
+          "url": "https://ai.meta.com/blog/yann-lecun-ai-model-i-jepa/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código y pesos",
+          "url": "https://github.com/facebookresearch/ijepa",
+          "status": "source_read"
+        },
+        {
+          "label": "Peso ViT-H/14",
+          "url": "https://dl.fbaipublicfiles.com/ijepa/IN1K-vit.h.14-300e.pth.tar",
+          "status": "metadata"
+        },
+        {
+          "label": "Datos de referencia",
+          "url": "https://www.image-net.org/",
+          "status": "unverified"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/facebookresearch/ijepa",
+        "default_branch": "main",
+        "head_sha": "52c1ae95d05f743e000e8f10a1f3a79b10cff048",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "verification_note": "El sitio directo de ImageNet no respondió en esta revisión. El paper y la documentación del proyecto identifican el conjunto y las variantes usadas.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2301.08243v3",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B02",
+      "title": "LeJEPA y SIGReg · Balestriero y LeCun (2025)",
+      "url": "https://arxiv.org/abs/2511.08544",
+      "annotation": "Combina pérdida predictiva y regularización gaussiana isotrópica para limitar el colapso. Evalúa representaciones en ImageNet y otros conjuntos. Permite una ablación en un latente de juego. Hace falta aprender e inspeccionar dinámica condicionada a acciones para controlar la partida.",
+      "related": [
+        {
+          "label": "Texto completo",
+          "url": "https://arxiv.org/html/2511.08544v3",
+          "status": "source_read"
+        },
+        {
+          "label": "Código canónico, documentación y recetas",
+          "url": "https://github.com/galilai-group/lejepa",
+          "status": "source_read"
+        },
+        {
+          "label": "Datos de evaluación de referencia",
+          "url": "https://www.image-net.org/",
+          "status": "unverified"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/galilai-group/lejepa",
+        "default_branch": "main",
+        "head_sha": "c293d291ca87cd4fddee9d3fffe4e914c7272052",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "verification_note": "El repositorio antiguo rbalestr-lab/lejepa redirige a galilai-group/lejepa. No se identificó un catálogo independiente de pesos oficiales para este trabajo.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2511.08544v3",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B03",
+      "title": "LeWorldModel · Maes et al. (2026)",
+      "url": "https://arxiv.org/abs/2603.19312",
+      "annotation": "Aprende dinámica latente desde píxeles y acciones continuas con MSE de próximo embedding y SIGReg. CEM busca una meta visual. Evalúa Push-T, Cube, Two-Room y Reacher. Para Melee falta adaptar acciones, objetivo y rival y demostrar latencia de extremo a extremo.",
+      "related": [
+        {
+          "label": "Método, control y límites, versión 3",
+          "url": "https://arxiv.org/html/2603.19312v3",
+          "status": "source_read"
+        },
+        {
+          "label": "Proyecto",
+          "url": "https://le-wm.github.io/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código",
+          "url": "https://github.com/lucas-maes/le-wm",
+          "status": "source_read"
+        },
+        {
+          "label": "Pesos y datos de los cuatro entornos",
+          "url": "https://huggingface.co/collections/quentinll/lewm",
+          "status": "source_read"
+        },
+        {
+          "label": "Pesos Push-T",
+          "url": "https://huggingface.co/quentinll/lewm-pusht",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/lucas-maes/le-wm",
+        "default_branch": "main",
+        "head_sha": "8edfeb336732b5f3ce7b8b210d0ba370a09e2cac",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2603.19312v3",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B04",
+      "title": "V-JEPA 2 · Assran et al. (2025)",
+      "url": "https://arxiv.org/abs/2506.09985",
+      "annotation": "Preentrena un predictor de representaciones espacio-temporales enmascaradas con VideoMix22M, sin mandos. Evalúa reconocimiento y anticipación en conjuntos como Something-Something V2 y EPIC-KITCHENS. Comparar encoders congelados tiene sentido cuando el punto de partida del agente son píxeles.",
+      "related": [
+        {
+          "label": "Método y composición del preentrenamiento",
+          "url": "https://arxiv.org/html/2506.09985v1",
+          "status": "source_read"
+        },
+        {
+          "label": "Proyecto",
+          "url": "https://ai.meta.com/research/vjepa/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código y recetas",
+          "url": "https://github.com/facebookresearch/vjepa2",
+          "status": "source_read"
+        },
+        {
+          "label": "Pesos y sondas",
+          "url": "https://huggingface.co/collections/facebook/v-jepa-2",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/facebookresearch/vjepa2",
+        "default_branch": "main",
+        "head_sha": "204698b45b3712590f06245fbfba32d3be539812",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "verification_note": "El paper describe la mezcla VideoMix22M y el README facilita recetas y pesos. No se verificó una descarga unificada de la mezcla de preentrenamiento.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2506.09985v1",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B05",
+      "title": "V-JEPA 2-AC · Assran et al. (2025)",
+      "url": "https://arxiv.org/abs/2506.09985",
+      "annotation": "Congela V-JEPA 2 y entrena predicción autorregresiva latente con historia visual, acciones y estado del efector. DROID aporta trayectorias. MPC por meta visual ejecuta alcance, agarre y recogida/colocación con Franka. Transferible como diseño, con acciones y métrica propias del juego.",
+      "related": [
+        {
+          "label": "Método, secciones 3–4",
+          "url": "https://arxiv.org/html/2506.09985v1",
+          "status": "source_read"
+        },
+        {
+          "label": "Proyecto",
+          "url": "https://ai.meta.com/research/vjepa/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código, checkpoint y configuración AC",
+          "url": "https://github.com/facebookresearch/vjepa2",
+          "status": "source_read"
+        },
+        {
+          "label": "URL del peso AC publicada en el README",
+          "url": "https://dl.fbaipublicfiles.com/vjepa2/vjepa2-ac-vitg.pt",
+          "status": "metadata"
+        },
+        {
+          "label": "Datos DROID",
+          "url": "https://droid-dataset.github.io/",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/facebookresearch/vjepa2",
+        "default_branch": "main",
+        "head_sha": "204698b45b3712590f06245fbfba32d3be539812",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "verification_note": "El URL del checkpoint está publicado por Meta. No se descargó ni validó el archivo binario.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2506.09985v1",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B06",
+      "title": "V-JEPA 2.1 · Mur-Labadia et al. (2026)",
+      "url": "https://arxiv.org/abs/2603.14482",
+      "annotation": "Combina pérdidas densas y supervisión intermedia para representaciones de imagen y vídeo. Para planificar requiere dinámica condicionada; una política directa puede usar su encoder. Los experimentos robóticos postentrenados y los pesos base son recursos distintos.",
+      "related": [
+        {
+          "label": "Código y tabla de pesos 2.1",
+          "url": "https://github.com/facebookresearch/vjepa2/blob/main/README.md",
+          "status": "source_read"
+        },
+        {
+          "label": "Proyecto de la familia",
+          "url": "https://ai.meta.com/research/vjepa/",
+          "status": "source_read"
+        },
+        {
+          "label": "Método y composición, versión 3",
+          "url": "https://arxiv.org/html/2603.14482v3",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/facebookresearch/vjepa2",
+        "default_branch": "main",
+        "head_sha": "204698b45b3712590f06245fbfba32d3be539812",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "verification_note": "El README común distingue la tabla 2.1 de los pesos 2 y 2-AC. No se verificó una descarga unificada de VisionMix163M.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2603.14482v3",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B07",
+      "title": "LeVJEPA · video pretraining (2026)",
+      "url": "https://arxiv.org/abs/2608.27395",
+      "annotation": "Estudia una receta de predicción autosupervisada en vídeo con SIGReg y evalúa representaciones en benchmarks visuales. Compara coste de preentrenamiento con V-JEPA 2. Orienta un encoder de vídeo si hiciera falta, con una cabeza de dinámica jugable por entrenar.",
+      "related": [
+        {
+          "label": "Proyecto y evaluación",
+          "url": "https://levjepa.github.io/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código canónico",
+          "url": "https://github.com/MLO-lab/LeVJEPA",
+          "status": "source_read"
+        },
+        {
+          "label": "Pesos y preentrenamiento VideoMix",
+          "url": "https://huggingface.co/galilai-group/LeVJEPA-VideoMix-Large",
+          "status": "source_read"
+        }
+      ],
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2608.27395v1",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B08",
+      "title": "DreamerV3 · Hafner et al. (2025)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12003158/",
+      "annotation": "Aprende dinámica recurrente latente, observación, recompensa y continuación, y entrena actor-crítico con trayectorias imaginadas. Al interactuar selecciona con el actor sin búsqueda. Evalúa Atari, control, Crafter y Minecraft. En Melee habría que adaptar acciones, recompensas y generalización a rivales.",
+      "related": [
+        {
+          "label": "Publicación Nature",
+          "url": "https://doi.org/10.1038/s41586-025-08744-2",
+          "status": "source_read"
+        },
+        {
+          "label": "Proyecto",
+          "url": "https://danijar.com/project/dreamerv3/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código enlazado por el artículo, descrito como reimplementación en su README",
+          "url": "https://github.com/danijar/dreamerv3",
+          "status": "source_read"
+        },
+        {
+          "label": "Preprint",
+          "url": "https://arxiv.org/abs/2301.04104",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/danijar/dreamerv3",
+        "default_branch": "main",
+        "head_sha": "e01491fad6434b2245a3b8ca201dd7faedcc458c",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "verification_note": "El trabajo genera experiencia en entornos simulados y no usa un conjunto de entrenamiento externo. No se identificaron pesos oficiales del paper en el proyecto o README.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2301.04104v2",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B09",
+      "title": "MuZero · Schrittwieser et al. (2020)",
+      "url": "https://www.nature.com/articles/s41586-020-03051-4",
+      "annotation": "Aprende una dinámica sobre latentes condicionada a acciones para predecir recompensa, política y valor. Usa búsqueda en árbol al jugar. Evalúa Atari, Go, ajedrez y shogi. La búsqueda para mandos simultáneos requiere explicitar las respuestas rivales y limitar la ramificación.",
+      "related": [
+        {
+          "label": "Preprint",
+          "url": "https://arxiv.org/abs/1911.08265",
+          "status": "source_read"
+        },
+        {
+          "label": "Proyecto",
+          "url": "https://deepmind.google/research/alphazero-and-muzero/",
+          "status": "source_read"
+        },
+        {
+          "label": "Entorno de evaluación Atari",
+          "url": "https://ale.farama.org/",
+          "status": "source_read"
+        },
+        {
+          "label": "Entornos de tablero",
+          "url": "https://github.com/google-deepmind/open_spiel",
+          "status": "source_read"
+        }
+      ],
+      "verification_note": "Nature remite al pseudocódigo y a los datos de figuras en Supplementary Information. No se localizó una implementación completa ni pesos originales de los experimentos en los enlaces de los autores.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/1911.08265v2",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B10",
+      "title": "AlphaZero · Silver et al. (2018)",
+      "url": "https://doi.org/10.1126/science.aar6404",
+      "annotation": "Usa reglas conocidas para la búsqueda y autojuego para entrenar política y valor con el resultado final. Evalúa ajedrez, shogi y Go. Inspira una comparación con el motor de Melee. Los turnos de tablero y los mandos simultáneos requieren búsquedas distintas.",
+      "related": [
+        {
+          "label": "Copia institucional",
+          "url": "https://discovery.ucl.ac.uk/id/eprint/10069050/",
+          "status": "source_read"
+        },
+        {
+          "label": "Preprint preliminar",
+          "url": "https://arxiv.org/abs/1712.01815",
+          "status": "source_read"
+        },
+        {
+          "label": "Proyecto",
+          "url": "https://deepmind.google/blog/alphazero-shedding-new-light-on-chess-shogi-and-go/",
+          "status": "source_read"
+        }
+      ],
+      "verification_note": "La copia institucional permite leer la publicación definitiva. No se localizaron pesos ni una implementación integral original en los enlaces de los autores.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19"
+    },
+    {
+      "id": "B11",
+      "title": "DINO-WM · Zhou et al. (2025)",
+      "url": "https://proceedings.mlr.press/v267/zhou25t.html",
+      "annotation": "Predice futuros parches de un encoder DINOv2 congelado con trayectorias y acciones. Optimiza secuencias hacia una meta visual sin modelar una recompensa. Evalúa laberintos, empuje y materiales deformables. Sirve como comparación visual si se necesita estimar dinámica desde vídeo.",
+      "related": [
+        {
+          "label": "Preprint",
+          "url": "https://arxiv.org/abs/2411.04983",
+          "status": "source_read"
+        },
+        {
+          "label": "Proyecto",
+          "url": "https://dino-wm.github.io/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código",
+          "url": "https://github.com/gaoyuezhou/dino_wm",
+          "status": "source_read"
+        },
+        {
+          "label": "Datos y pesos en el espejo del autor",
+          "url": "https://huggingface.co/datasets/gaoyuezhou/dino_wm",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/gaoyuezhou/dino_wm",
+        "default_branch": "main",
+        "head_sha": "0a9492fa12044b852ae9e001cc74604b79c8bb0c",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2411.04983v2",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B12",
+      "title": "TD-MPC2 · Hansen et al. (2024)",
+      "url": "https://arxiv.org/abs/2310.16828",
+      "annotation": "Optimiza trayectorias continuas en un latente sin decodificador. Aprende consistencia latente, recompensa y valor y usa una política como propuesta. Evalúa DMControl, Meta-World, ManiSkill2 y MyoSuite. Transferir MPC a Melee exige decidir cómo representar y proponer entradas híbridas.",
+      "related": [
+        {
+          "label": "Método",
+          "url": "https://arxiv.org/html/2310.16828v2",
+          "status": "source_read"
+        },
+        {
+          "label": "Proyecto",
+          "url": "https://www.tdmpc2.com/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código",
+          "url": "https://github.com/nicklashansen/tdmpc2",
+          "status": "source_read"
+        },
+        {
+          "label": "Pesos",
+          "url": "https://www.tdmpc2.com/models",
+          "status": "source_read"
+        },
+        {
+          "label": "Datos",
+          "url": "https://www.tdmpc2.com/dataset",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/nicklashansen/tdmpc2",
+        "default_branch": "main",
+        "head_sha": "332f19e4aba4bffe2dc736f45ea7f7bdc585903a",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2310.16828v2",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B13",
+      "title": "JEPA-WMs · Terver et al. (2025/2026)",
+      "url": "https://arxiv.org/abs/2512.24497",
+      "annotation": "Compara encoders, predictores, objetivos y planificación latente en navegación y manipulación simuladas y robóticas. Incluye comparaciones con DINO-WM y V-JEPA 2-AC. Ayuda a diseñar ablaciones separadas y prevenir que un buen error predictivo se confunda con buen control.",
+      "related": [
+        {
+          "label": "Código y datos",
+          "url": "https://github.com/facebookresearch/jepa-wms",
+          "status": "source_read"
+        },
+        {
+          "label": "Pesos comparables y referencia de tareas",
+          "url": "https://huggingface.co/facebook/jepa-wms",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/facebookresearch/jepa-wms",
+        "default_branch": "main",
+        "head_sha": "13cf1d9c7e476f53c17714d2e0f1dc239a883ce0",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2512.24497v4",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B14",
+      "title": "Reinforcement Learning: An Introduction · Sutton y Barto (2018)",
+      "url": "https://www.andrew.cmu.edu/course/10-703/textbook/BartoSutton.pdf",
+      "annotation": "El capítulo 8 distingue experiencia del entorno, experiencia generada por un modelo y planificación. Sirve para clasificar entrenamiento directo con el motor, búsqueda sobre el motor y aprendizaje con trayectorias imaginadas. No es un benchmark de Melee.",
+      "related": [
+        {
+          "label": "Página del libro de los autores, disponibilidad no confirmada",
+          "url": "https://incompleteideas.net/book/the-book-2nd.html",
+          "status": "unverified"
+        }
+      ],
+      "verification_note": "El espejo universitario abrió. El sitio del libro de los autores no respondió en esta revisión.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19"
+    },
+    {
+      "id": "B15",
+      "title": "PPO · Schulman et al. (2017)",
+      "url": "https://arxiv.org/abs/1707.06347",
+      "annotation": "Optimiza una política a partir de trayectorias mediante un objetivo sustituto con recorte de la razón de probabilidades. Evalúa Atari y locomoción simulada. Referencia model-free si el agente extrae experiencia del motor y aprende sin consultar predicciones de transición.",
+      "related": [
+        {
+          "label": "Proyecto",
+          "url": "https://openai.com/index/openai-baselines-ppo/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código OpenAI Baselines",
+          "url": "https://github.com/openai/baselines",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/openai/baselines",
+        "default_branch": "master",
+        "head_sha": "ea25b9e8b234e6ee1bca43083f8f3cf974143998",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/1707.06347v2",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B16",
+      "title": "Markov Games · Littman (1994)",
+      "url": "https://aima.eecs.berkeley.edu/~russell/classes/cs294/f21/papers/Littman_ICML94_Markov_Games.pdf",
+      "annotation": "Modela la transición con una acción de cada jugador. Presenta minimax-Q en un fútbol simplificado de suma cero. El marco ayuda a distinguir dinámica conjunta y política rival. La observación contemporánea del mando rival debe respetar la información disponible al decidir.",
+      "related": [
+        {
+          "label": "Ficha ICML",
+          "url": "https://mlanthology.org/icml/1994/littman1994icml-markov/",
+          "status": "source_read"
+        }
+      ],
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19"
+    },
+    {
+      "id": "B17",
+      "title": "At Human Speed · Firoiu, Ju y Tenenbaum (2018)",
+      "url": "https://arxiv.org/abs/1810.07286",
+      "annotation": "Combina RL y predicción neuronal de estado para compensar acciones ya en cola. Evalúa directamente Melee con retardos y contra un profesional. Deja la planificación contrafactual y ambas acciones como trabajo futuro. Antecedente de predicción en Melee, sin evidencia de una JEPA.",
+      "related": [
+        {
+          "label": "Paper, secciones 4–5",
+          "url": "https://arxiv.org/pdf/1810.07286",
+          "status": "source_read"
+        },
+        {
+          "label": "Código histórico del autor, correspondencia de versión sin verificar",
+          "url": "https://github.com/vladfi1/phillip",
+          "status": "source_read"
+        }
+      ],
+      "verification_note": "Phillip es un repositorio histórico del autor. La revisión exacta de los experimentos de 2018 y sus pesos quedan sin verificar.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/1810.07286v1",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B18",
+      "title": "Beating the World's Best at Super Smash Bros. with DRL · Firoiu et al. (2017)",
+      "url": "https://arxiv.org/abs/1702.06230",
+      "annotation": "Entrena agentes de RL con estado de Melee y prueba contra profesionales. Referencia histórica de políticas directas, autojuego y velocidad de reacción. Al comparar resultados hay que controlar retardo, alcance de observación y conjunto de rivales.",
+      "related": [
+        {
+          "label": "Tesis MIT",
+          "url": "https://dspace.mit.edu/entities/publication/bb6fbc26-f70d-4004-862a-3aac3fc7e9ed",
+          "status": "source_read"
+        },
+        {
+          "label": "Código Phillip",
+          "url": "https://github.com/vladfi1/phillip",
+          "status": "source_read"
+        }
+      ],
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/1702.06230v3",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B19",
+      "title": "HAL MDS y HAL · Gu (2026)",
+      "url": "https://huggingface.co/datasets/ericyuegu/hal-mds-dataset",
+      "annotation": "Trae partidas humanas 1v1 derivadas de Slippi con estado, mandos e información de objetos. HAL ofrece una política entrenada con datos humanos. Útil para preentrenamiento y validación por partida. Separar juegos completos y comprobar cobertura antes de evaluar contrafactuales.",
+      "related": [
+        {
+          "label": "Proyecto y resultados",
+          "url": "https://ericyuegu.com/hillclimbing-melee/",
+          "status": "source_read"
+        },
+        {
+          "label": "Código y esquemas",
+          "url": "https://github.com/ericyuegu/hal",
+          "status": "source_read"
+        },
+        {
+          "label": "Pesos",
+          "url": "https://huggingface.co/ericyuegu/hal-base-250m-rc",
+          "status": "metadata"
+        },
+        {
+          "label": "Formato primario Slippi",
+          "url": "https://github.com/project-slippi/slippi-wiki/blob/master/SPEC.md",
+          "status": "source_read"
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/ericyuegu/hal",
+        "default_branch": "main",
+        "head_sha": "37045d974116405dd690efea6109a1d83a2da868",
+        "verified_via": "git ls-remote --symref … HEAD"
+      },
+      "verification_note": "El README publica el identificador de pesos. La tarjeta directa de Hugging Face no abrió en esta revisión. La tarjeta del conjunto estuvo disponible, aunque su visor informa un error de generación.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19"
+    },
+    {
+      "id": "B20",
+      "title": "Faynt · Janati et al. (2026)",
+      "url": "https://arxiv.org/abs/2610.02144",
+      "annotation": "Transformers con estado estructurado, imitación y RL ajustado en duelos Fox. Publica pesos y comparativas de bots. Los rivales de la tabla principal conservan retardos y la comparación sin retardo usa un único checkpoint rival. Buena referencia de control y medición.",
+      "related": [
+        {
+          "label": "Proyecto, evaluación y publicación",
+          "url": "https://www.frisson-labs.com/faynt",
+          "status": "source_read"
+        },
+        {
+          "label": "Pesos",
+          "url": "https://huggingface.co/collections/frisson-labs/faynt",
+          "status": "source_read"
+        },
+        {
+          "label": "Benchmarks y ejecución",
+          "url": "https://github.com/Na00s/Faynt-Benchmarks",
+          "status": "source_read"
+        },
+        {
+          "label": "Torneos",
+          "url": "https://github.com/Na00s/Faynt-Tournament",
+          "status": "source_read"
+        }
+      ],
+      "verification_note": "El proyecto publica pesos, benchmark y runtime de torneos. No se confirmó acceso al conjunto íntegro de ~840 mil replays usado para entrenar.",
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2610.02144v1",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B21",
+      "title": "DROID · Khazatsky et al. (2024)",
+      "url": "https://arxiv.org/abs/2403.12945",
+      "annotation": "Conjunto de demostraciones robóticas con cámaras, acciones y estado del efector. Referencia de cómo empaquetar trayectorias sincronizadas de observación y mando para entrenar dinámica. Sus transiciones corresponden a manipulación, mientras que Melee necesita su propio conjunto con dos mandos.",
+      "related": [
+        {
+          "label": "Proyecto y descarga",
+          "url": "https://droid-dataset.github.io/",
+          "status": "source_read"
+        },
+        {
+          "label": "Captura de datos",
+          "url": "https://github.com/droid-dataset/droid",
+          "status": "source_read"
+        }
+      ],
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/2403.12945v2",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "B22",
+      "title": "OpenSpiel · Lanctot et al. (2019)",
+      "url": "https://arxiv.org/abs/1908.09453",
+      "annotation": "Marco y entornos para RL y planificación en juegos, incluidos juegos simultáneos y de información imperfecta. Sirve para verificar semántica de acciones conjuntas y diseñar pruebas pequeñas de búsqueda adversarial. El ejemplo MCTS estándar excluye nodos simultáneos.",
+      "related": [
+        {
+          "label": "Código y documentación",
+          "url": "https://github.com/google-deepmind/open_spiel",
+          "status": "source_read"
+        },
+        {
+          "label": "Ejemplo MCTS y su comprobación de simultaneidad",
+          "url": "https://github.com/google-deepmind/open_spiel/blob/master/open_spiel/examples/mcts_example.cc",
+          "status": "source_read"
+        }
+      ],
+      "category": "science",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "paper_version_url": "https://arxiv.org/abs/1908.09453v6",
+      "paper_version_note": "Versión bibliográfica fijada en la revisión de fuentes; preferir la publicación definitiva cuando esté enlazada."
+    },
+    {
+      "id": "R01",
+      "title": "Deep RL at the Edge of the Statistical Precipice",
+      "url": "https://arxiv.org/abs/2108.13264",
+      "category": "evaluation_and_interfaces",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "Evaluación de RL con pocas réplicas, incertidumbre y agregación robusta. Fundamenta el análisis; sus cifras no son resultados de Melee."
+    },
+    {
+      "id": "R02",
+      "title": "rliable",
+      "url": "https://github.com/google-research/rliable",
+      "category": "evaluation_and_interfaces",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "Implementación de métricas e intervalos del trabajo de evaluación. Repositorio archivado el 15 de octubre de 2025: comprobar compatibilidad antes de usarlo."
+    },
+    {
+      "id": "R03",
+      "title": "Gymnasium Env API",
+      "url": "https://gymnasium.farama.org/api/env/",
+      "category": "evaluation_and_interfaces",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "Contrato general de reset, step, terminated y truncated. Referencia de diseño; no prueba que el adaptador de Melee implemente Gymnasium."
+    },
+    {
+      "id": "R04",
+      "title": "PettingZoo Parallel API",
+      "url": "https://pettingzoo.farama.org/api/parallel/",
+      "category": "evaluation_and_interfaces",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "Interfaz para observaciones y acciones simultáneas de varios agentes. Útil para definir un wrapper sin introducir turnos artificiales."
+    },
+    {
+      "id": "R05",
+      "title": "PyTorch CUDA semantics, documentación 2.15",
+      "url": "https://docs.pytorch.org/docs/2.15/notes/cuda.html",
+      "category": "evaluation_and_interfaces",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "Ejecución asíncrona, streams y sincronización. Consultar para medir tiempos correctamente; esta referencia no fija la versión que deba instalarse."
+    },
+    {
+      "id": "R06",
+      "title": "libmelee GameState",
+      "url": "https://libmelee.readthedocs.io/en/latest/gamestate.html",
+      "category": "evaluation_and_interfaces",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "Esquema público de estado y convenciones. Contrastar con el fork y revisión realmente cargados: documentación latest no identifica un parser instalado."
+    },
+    {
+      "id": "R07",
+      "title": "Integraciones de bots aprendidos",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/bots.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/bots.md",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "category": "platform",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "Instalación, adaptadores y restricciones por política; distinguir checkpoint, versión de Python y parser."
+    },
+    {
+      "id": "R08",
+      "title": "LLM player",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/llm-player.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/llm-player.md",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "category": "platform",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "Observación textual, macros, ejecución y registro del agente LLM directo."
+    },
+    {
+      "id": "R09",
+      "title": "Bot-writer",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/bot-writer.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/bot-writer.md",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "category": "platform",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "API del bot escrito y herramientas de práctica; distinguir generación del programa e inferencia durante la partida."
+    },
+    {
+      "id": "R10",
+      "title": "Notas de investigación del autor",
+      "url": "https://github.com/mateo19182/melee-llm/blob/main/docs/research.md",
+      "permalink": "https://github.com/mateo19182/melee-llm/blob/2bf8b0ebbb7c4a188c06782cd6f250f111c3418b/docs/research.md",
+      "sha": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+      "category": "platform",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "Índice contextual e histórico de Melee AI. Verificar sus afirmaciones externas en la fuente original antes de convertirlas en conclusiones."
+    },
+    {
+      "id": "R11",
+      "title": "Melee Brute Runtime API",
+      "url": "https://github.com/mateo19182/melee-brute/blob/main/API.md",
+      "permalink": "https://github.com/mateo19182/melee-brute/blob/9662ec973b9e077ff7b0ff89d6db950f53c11653/API.md",
+      "sha": "9662ec973b9e077ff7b0ff89d6db950f53c11653",
+      "category": "platform",
+      "access_status": "source_read",
+      "retrieved_at": "2026-11-19",
+      "annotation": "API nativa y Python, configuración, inputs, estados, terminales, checkpoint y rollback; comprobar límites de concurrencia por batch."
+    }
+  ]
+}

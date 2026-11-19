@@ -1,0 +1,5 @@
+{
+ "note": "RT-strict wrapper in a fake 60 Hz blocking loop; per-config stats are per-rep values aggregated as median [min,max] across reps. Raw traces: /srv/mail/melee-research-data/e0_timing_raw",
+ "wrapper": {},
+ "e2e_present_in_wrapper": {}
+}

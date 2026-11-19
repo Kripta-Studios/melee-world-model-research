@@ -1,0 +1,30 @@
+2026-11-19T15:37:48Z START export_cache | /srv/mail/melee-research-data/venv-e0/bin/python -I pilot/e0/models/export_cache.py | avail=1338MB | load=5.24
+2026-11-19T15:37:57Z END export_cache rc=0 wall=0:09.18 user_s=2.83 maxrss_kb=359380
+2026-11-19T15:40:38Z START floors | python3 pilot/e0/models/floors.py | avail=88MB | load=12.56
+2026-11-19T15:43:01Z END floors rc=0 wall=2:23.46 user_s=18.34 maxrss_kb=428728
+2026-11-19T15:46:04Z START bench_w0s | python3 pilot/e0/models/smoke.py --model w0s --games 40 --max-steps-bench 200 | avail=345MB | load=70.58
+2026-11-19T15:47:48Z END bench_w0s rc=0 wall=1:43.90 user_s=20.10 maxrss_kb=612692
+2026-11-19T15:48:08Z START dbg_w0s | python3 pilot/e0/models/smoke.py --model w0s --games 2 --epochs 1 --val-games 1 --tag _dbg | avail=2290MB | load=47.48
+2026-11-19T15:48:16Z END dbg_w0s rc=0 wall=0:08.29 user_s=10.57 maxrss_kb=839248
+2026-11-19T15:48:16Z START dbg_q | python3 pilot/e0/models/smoke.py --model q --games 2 --epochs 1 --val-games 1 --tag _dbg | avail=2711MB | load=43.84
+2026-11-19T15:48:21Z END dbg_q rc=0 wall=0:04.84 user_s=5.05 maxrss_kb=908140
+2026-11-19T15:48:57Z START dbg_q | python3 pilot/e0/models/smoke.py --model q --games 2 --epochs 1 --val-games 1 --tag _dbg | avail=677MB | load=24.33
+2026-11-19T15:49:03Z END dbg_q rc=0 wall=0:06.02 user_s=4.60 maxrss_kb=526024
+2026-11-19T15:49:22Z START smoke_w0s_s0 | python3 pilot/e0/models/smoke.py --model w0s --seed 0 --games 40 --epochs 2 | avail=650MB | load=16.92
+2026-11-19T15:54:41Z END smoke_w0s_s0 rc=0 wall=5:19.62 user_s=181.17 maxrss_kb=651400
+2026-11-19T15:54:41Z WAIT smoke_q_s0 avail=456MB
+2026-11-19T15:54:51Z START smoke_q_s0 | python3 pilot/e0/models/smoke.py --model q --seed 0 --games 40 --epochs 2 | avail=1576MB | load=41.68
+2026-11-19T15:57:39Z END smoke_q_s0 rc=0 wall=2:47.61 user_s=117.88 maxrss_kb=626836
+2026-11-19T15:57:39Z START smoke_w0s_s1 | python3 pilot/e0/models/smoke.py --model w0s --seed 1 --games 40 --epochs 2 | avail=1373MB | load=30.91
+2026-11-19T16:08:01Z END smoke_w0s_s1 rc=0 wall=10:22.13 user_s=234.51 maxrss_kb=570724
+2026-11-19T16:08:01Z START smoke_q_s1 | python3 pilot/e0/models/smoke.py --model q --seed 1 --games 40 --epochs 2 | avail=1224MB | load=72.10
+2026-11-19T16:08:07Z END smoke_q_s1 rc=3 wall=0:05.19 user_s=3.56 maxrss_kb=906412
+2026-11-19T16:08:07Z START smoke_w0s_s2 | python3 pilot/e0/models/smoke.py --model w0s --seed 2 --games 40 --epochs 2 | avail=1482MB | load=66.56
+2026-11-19T16:08:10Z END smoke_w0s_s2 rc=3 wall=0:03.53 user_s=3.29 maxrss_kb=936052
+2026-11-19T16:08:10Z START smoke_q_s2 | python3 pilot/e0/models/smoke.py --model q --seed 2 --games 40 --epochs 2 | avail=1443MB | load=61.39
+2026-11-19T16:08:38Z NOTE smoke_q_s1 y smoke_w0s_s2 abortadas por el watchdog (VmRSS>880MB, incluye ~250MB de libs de torch mapeadas); Block reescrito sin copia doble ni vistas memmap; se relanzan con run_smoke_rest.sh
+2026-11-19T16:08:38Z START smoke_q_s1 | python3 pilot/e0/models/smoke.py --model q --seed 1 --games 40 --epochs 2 | avail=632MB | load=41.28
+2026-11-19T16:08:51Z NOTE smoke_q_s2 del run_smoke.sh original (código anterior) matado a mano para no correr dos procesos a la vez; se repite en run_smoke_rest.sh
+2026-11-19T16:10:07Z NOTE run_smoke_rest.sh detenido por el entorno (Claude Code) por memoria del sistema críticamente baja; no se relanza sin permiso
+2026-11-19T16:10:16Z START summarize | python3 pilot/e0/models/summarize.py | avail=1765MB | load=82.30
+2026-11-19T16:10:22Z END summarize rc=0 wall=0:05.07 user_s=4.26 maxrss_kb=48532

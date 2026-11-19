@@ -293,9 +293,9 @@ NEG = torch.tensor([[-1e9]])
 
 def padded_gumbel_argmax(lg, idx, g):
     """One gather + one argmax for all categorical fields (fields padded with -1e9)."""
-    lp = torch.cat([lg, NEG.expand(lg.shape[0], 1)], 1)[:, idx]  # (K, nf, width)
-    u = torch.rand(lp.shape, generator=g).clamp_(1e-9, 1 - 1e-9)
-    return (lp - torch.log(-torch.log(u))).argmax(-1)
+    u = torch.rand(lg.shape, generator=g).clamp_(1e-9, 1 - 1e-9)  # noise only on real logits
+    pert = lg - torch.log(-torch.log(u))
+    return torch.cat([pert, NEG.expand(lg.shape[0], 1)], 1)[:, idx].argmax(-1)  # (K, nf)
 
 
 def w0s_sample_next_fast(fr, lg, u_self, u_opp, g):

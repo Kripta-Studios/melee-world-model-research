@@ -34,6 +34,11 @@ if [[ $phase == train || $phase == all ]]; then
     run train.jsonl "bench_train.py --arch $arch --tier $tier --threads 3 --H 8 --B 64 --budget_s 35 --max_steps 15 --no_sigreg"
   done; done
 fi
+# Phase added in E0 (2026-11-19): extended latency bench of architecture A lives in pilot/e0_timing (reuses
+# a7common). Delegates; does not touch evidence/A7. Usage: bash run_all.sh e0 [present|wrapper|e2e|jit|tests]
+if [[ $phase == e0 ]]; then
+  bash "$HERE/../e0_timing/run_e0_timing.sh" "${2:-present}" 3
+fi
 # Phase added after the first train pass: configs that crossed 950 MB RSS at B=64 (aborted after 1 step) are
 # re-measured with a smaller batch so that >=10 steps fit under the 1 GB cap.
 if [[ $phase == train_small ]]; then

@@ -1,0 +1,880 @@
+model_diagnostics.csv: 6492 filas (2406 suelos, 2010 humo, 2076 agregados)
+
+## Suelos de dinámica (val, 12 partidas, ambos puertos)
+
+**action — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=7 | h=8 | h=13 | h=16 | h=32 |
+|---|---|---|---|---|---|---|---|---|
+| all | persist | 0.895 | 0.6877 | 0.5496 | 0.5126 | 0.3751 | 0.3144 | 0.1345 |
+| all | majority | 0.9223 | 0.7474 | 0.6345 | 0.6038 | 0.4725 | 0.4152 | 0.2387 |
+| all | marginal | 0.08845 | 0.08838 | 0.08831 | 0.08829 | 0.08817 | 0.0881 | 0.08777 |
+| event | persist | 0.0007752 | 0.05507 | 0.05912 | 0.05728 | 0.05206 | 0.04942 | 0.04824 |
+| event | majority | 0.2827 | 0.289 | 0.2879 | 0.2817 | 0.2344 | 0.2231 | 0.1783 |
+| event | marginal | 0.1265 | 0.1418 | 0.14 | 0.1382 | 0.1277 | 0.1197 | 0.09651 |
+| non_event | persist | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| non_event | majority | 0.9974 | 0.9737 | 0.9527 | 0.9486 | 0.9332 | 0.912 | 0.8453 |
+| non_event | marginal | 0.08398 | 0.06203 | 0.04085 | 0.03481 | 0.0117 | 0.00636 | 4.083e-05 |
+| ev_action_change | persist | 0 | 0.05414 | 0.05799 | 0.05609 | 0.05053 | 0.0477 | 0.0455 |
+| ev_action_change | majority | 0.2821 | 0.2883 | 0.2871 | 0.2808 | 0.2331 | 0.2217 | 0.1759 |
+| ev_action_change | marginal | 0.1266 | 0.1419 | 0.1402 | 0.1384 | 0.1279 | 0.1199 | 0.09679 |
+| ev_hitstun_start | persist | 0.003158 | 0.003684 | 0.004516 | 0.005403 | 0.009748 | 0.0115 | 0.02555 |
+| ev_hitstun_start | majority | 0.1137 | 0.1163 | 0.1019 | 0.1032 | 0.09829 | 0.09456 | 0.09944 |
+| ev_hitstun_start | marginal | 0 | 0 | 0 | 0 | 0 | 0 | 0.00404 |
+| ev_stock_loss | persist | 0.2794 | 0.2794 | 0.2794 | 0.2794 | 0.2794 | 0.2794 | 0.2788 |
+| ev_stock_loss | majority | 0.2794 | 0.2794 | 0.2794 | 0.2794 | 0.4661 | 0.5239 | 0.5183 |
+| ev_stock_loss | marginal | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+(n por subconjunto a h=1: all=270182, event=28380, non_event=241802, ev_action_change=28358, ev_hitstun_start=950, ev_stock_loss=68)
+
+**action — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=7 | h=8 | h=13 | h=16 | h=32 |
+|---|---|---|---|---|---|---|---|---|
+| all | persist | 0.7642 | 1.91 | 2.552 | 2.707 | 3.241 | 3.455 | 3.981 |
+| all | majority | 0.3263 | 0.8992 | 1.329 | 1.458 | 2.014 | 2.28 | 3.175 |
+| all | marginal | 4.128 | 4.128 | 4.129 | 4.129 | 4.129 | 4.129 | 4.13 |
+| event | persist | 6.372 | 5.055 | 4.707 | 4.639 | 4.431 | 4.363 | 4.189 |
+| event | majority | 2.498 | 2.283 | 2.428 | 2.495 | 2.808 | 2.953 | 3.414 |
+| event | marginal | 4.107 | 4.069 | 4.072 | 4.071 | 4.08 | 4.094 | 4.127 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**pos_x — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=7 | h=8 | h=13 | h=16 | h=32 |
+|---|---|---|---|---|---|---|---|---|
+| all | persist | 0.7402 | 2.889 | 4.909 | 5.553 | 8.626 | 10.38 | 18.6 |
+| all | constvel | 0.1824 | 1.16 | 2.64 | 3.219 | 6.573 | 8.886 | 23.33 |
+| all | constvel_fd | 0.2039 | 1.354 | 3.056 | 3.704 | 7.346 | 9.795 | 24.61 |
+| all | condmean | 0.4602 | 1.938 | 3.55 | 4.09 | 6.675 | 8.156 | 15.69 |
+| event | persist | 0.9603 | 3.271 | 5.269 | 5.907 | 8.913 | 10.56 | 18.42 |
+| event | constvel | 0.6171 | 2.168 | 4.008 | 4.669 | 8.251 | 10.55 | 24.45 |
+| event | constvel_fd | 0.6395 | 2.299 | 4.249 | 4.92 | 8.573 | 10.87 | 24.54 |
+| event | condmean | 0.7996 | 2.359 | 4.05 | 4.629 | 7.226 | 8.607 | 15.6 |
+| ev_hitstun_start | persist | 1.02 | 2.496 | 3.997 | 4.574 | 7.694 | 9.632 | 19.34 |
+| ev_hitstun_start | constvel | 0.4585 | 2.278 | 4.179 | 4.926 | 9.356 | 12.24 | 27.26 |
+| ev_hitstun_start | constvel_fd | 0.2668 | 2.155 | 4.375 | 5.237 | 9.887 | 12.77 | 27.82 |
+| ev_hitstun_start | condmean | 0.4321 | 1.748 | 3.088 | 3.606 | 6.837 | 8.905 | 18.63 |
+
+(n por subconjunto a h=1: all=270182, event=28380, ev_hitstun_start=950)
+
+**pos_x — rmse (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=7 | h=8 | h=13 | h=16 | h=32 |
+|---|---|---|---|---|---|---|---|---|
+| event | persist | 6.855 | 8.945 | 11.04 | 11.75 | 15.27 | 17.22 | 26.61 |
+| event | constvel | 6.857 | 8.859 | 11.22 | 12.07 | 16.64 | 19.53 | 37.04 |
+| event | constvel_fd | 6.865 | 8.903 | 11.4 | 12.27 | 16.96 | 19.89 | 37.37 |
+| event | condmean | 6.725 | 7.918 | 9.387 | 9.927 | 12.63 | 14.18 | 22.38 |
+
+(n por subconjunto a h=1: event=28380)
+
+**pos_x — within5 (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=7 | h=8 | h=13 | h=16 | h=32 |
+|---|---|---|---|---|---|---|---|---|
+| event | persist | 0.9944 | 0.7703 | 0.5998 | 0.5605 | 0.4354 | 0.3836 | 0.2365 |
+| event | constvel | 0.9929 | 0.8872 | 0.783 | 0.7504 | 0.5155 | 0.41 | 0.1792 |
+| event | constvel_fd | 0.9905 | 0.8714 | 0.7669 | 0.7362 | 0.5084 | 0.4068 | 0.181 |
+| event | condmean | 0.9946 | 0.9156 | 0.7076 | 0.6523 | 0.4944 | 0.4406 | 0.2597 |
+
+(n por subconjunto a h=1: event=28380)
+
+**pos_y — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=7 | h=8 | h=13 | h=16 | h=32 |
+|---|---|---|---|---|---|---|---|---|
+| all | persist | 0.7714 | 2.845 | 4.786 | 5.405 | 8.235 | 9.679 | 14.49 |
+| all | constvel | 0.3337 | 1.984 | 4.363 | 5.285 | 10.51 | 13.89 | 30.58 |
+| all | constvel_fd | 0.3273 | 2.067 | 4.58 | 5.536 | 10.81 | 14.16 | 30.62 |
+| all | condmean | 0.495 | 1.95 | 3.535 | 4.085 | 6.827 | 8.346 | 13.38 |
+| event | persist | 1.248 | 2.586 | 4.259 | 4.846 | 7.801 | 9.374 | 14.08 |
+| event | constvel | 1.471 | 3.29 | 5.598 | 6.428 | 11.35 | 14.42 | 30.39 |
+| event | constvel_fd | 1.444 | 3.241 | 5.575 | 6.394 | 11.24 | 14.25 | 29.81 |
+| event | condmean | 1.183 | 2.235 | 3.693 | 4.217 | 6.891 | 8.37 | 12.82 |
+| ev_hitstun_start | persist | 1.354 | 3.334 | 4.649 | 5.133 | 7.552 | 8.796 | 13.18 |
+| ev_hitstun_start | constvel | 0.9918 | 3.501 | 5.612 | 6.403 | 10.59 | 13.11 | 26.41 |
+| ev_hitstun_start | constvel_fd | 0.4102 | 3.464 | 5.854 | 6.703 | 11.08 | 13.66 | 27.15 |
+| ev_hitstun_start | condmean | 0.3696 | 1.258 | 2.632 | 3.146 | 5.853 | 7.29 | 12.23 |
+
+(n por subconjunto a h=1: all=270182, event=28380, ev_hitstun_start=950)
+
+**pos_y — rmse (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=7 | h=8 | h=13 | h=16 | h=32 |
+|---|---|---|---|---|---|---|---|---|
+| event | persist | 7.79 | 9.526 | 11.64 | 12.38 | 16.06 | 18.03 | 24.43 |
+| event | constvel | 7.954 | 10.19 | 13.13 | 14.21 | 20.49 | 24.53 | 47.84 |
+| event | constvel_fd | 7.942 | 10.18 | 13.28 | 14.38 | 20.77 | 24.86 | 48.3 |
+| event | condmean | 7.656 | 8.734 | 10.05 | 10.53 | 13.03 | 14.45 | 19.07 |
+
+(n por subconjunto a h=1: event=28380)
+
+**pos_y — within5 (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=7 | h=8 | h=13 | h=16 | h=32 |
+|---|---|---|---|---|---|---|---|---|
+| event | persist | 0.9748 | 0.8237 | 0.7245 | 0.699 | 0.583 | 0.5378 | 0.4407 |
+| event | constvel | 0.8975 | 0.7688 | 0.651 | 0.6288 | 0.5151 | 0.4623 | 0.3645 |
+| event | constvel_fd | 0.9012 | 0.7752 | 0.6555 | 0.6329 | 0.5215 | 0.4695 | 0.373 |
+| event | condmean | 0.9437 | 0.8675 | 0.747 | 0.7214 | 0.6025 | 0.5466 | 0.395 |
+
+(n por subconjunto a h=1: event=28380)
+
+**percent — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.06448 | 0.2579 | 0.5158 | 1.031 | 2.061 |
+| all | constvel_fd | 0.1288 | 0.5131 | 1.025 | 2.051 | 4.1 |
+| all | condmean | 0.1216 | 0.4679 | 0.8978 | 1.659 | 2.842 |
+| event | persist | 0.5734 | 0.7305 | 0.9381 | 1.365 | 2.196 |
+| event | constvel_fd | 0.5738 | 0.7419 | 1.027 | 1.554 | 2.818 |
+| event | condmean | 0.5755 | 0.7976 | 1.079 | 1.609 | 2.49 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**shield — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.01882 | 0.07333 | 0.1428 | 0.2708 | 0.4905 |
+| all | constvel_fd | 0.009335 | 0.04385 | 0.1001 | 0.2336 | 0.5352 |
+| all | condmean | 0.02103 | 0.0829 | 0.1692 | 0.3367 | 0.6101 |
+| event | persist | 0.04885 | 0.1093 | 0.19 | 0.3163 | 0.5202 |
+| event | constvel_fd | 0.0348 | 0.06918 | 0.1317 | 0.3003 | 0.5817 |
+| event | condmean | 0.05252 | 0.1252 | 0.2162 | 0.3836 | 0.6396 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**vel_air_x_self — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.09191 | 0.3178 | 0.5053 | 0.7016 | 0.8773 |
+| all | constvel_fd | 0.1315 | 0.5002 | 0.9645 | 1.749 | 3.195 |
+| all | condmean | 0.05775 | 0.2485 | 0.4093 | 0.5595 | 0.6957 |
+| event | persist | 0.3025 | 0.6869 | 0.7952 | 0.8741 | 0.945 |
+| event | constvel_fd | 0.4157 | 0.9514 | 1.373 | 2.078 | 3.376 |
+| event | condmean | 0.24 | 0.5 | 0.6397 | 0.7147 | 0.7514 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**vel_y_self — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.1617 | 0.5485 | 0.9055 | 1.254 | 1.332 |
+| all | constvel_fd | 0.2283 | 0.8504 | 1.612 | 3.085 | 5.872 |
+| all | condmean | 0.1118 | 0.4403 | 0.7066 | 0.9253 | 1.063 |
+| event | persist | 0.5995 | 0.9348 | 1.096 | 1.28 | 1.367 |
+| event | constvel_fd | 0.6829 | 1.361 | 2.058 | 3.414 | 6.03 |
+| event | condmean | 0.4675 | 0.7916 | 0.9237 | 0.9975 | 1.078 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**vel_x_attack — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.01336 | 0.05252 | 0.1011 | 0.1806 | 0.2888 |
+| all | constvel_fd | 0.01613 | 0.06622 | 0.1331 | 0.2616 | 0.4988 |
+| all | condmean | 0.01437 | 0.05363 | 0.09843 | 0.1667 | 0.251 |
+| event | persist | 0.06517 | 0.09131 | 0.1257 | 0.1886 | 0.28 |
+| event | constvel_fd | 0.06342 | 0.08535 | 0.1401 | 0.2154 | 0.3956 |
+| event | condmean | 0.06597 | 0.09493 | 0.1291 | 0.1833 | 0.2522 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**vel_y_attack — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.01631 | 0.06412 | 0.1226 | 0.2213 | 0.352 |
+| all | constvel_fd | 0.02285 | 0.09122 | 0.1784 | 0.3427 | 0.6361 |
+| all | condmean | 0.01802 | 0.06913 | 0.1302 | 0.2319 | 0.3638 |
+| event | persist | 0.09145 | 0.1274 | 0.1631 | 0.2297 | 0.3259 |
+| event | constvel_fd | 0.09117 | 0.1307 | 0.1713 | 0.2386 | 0.4367 |
+| event | condmean | 0.08468 | 0.1288 | 0.1783 | 0.2631 | 0.3672 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**vel_ground_x_self — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.07843 | 0.2766 | 0.4251 | 0.5308 | 0.5972 |
+| all | constvel_fd | 0.101 | 0.4506 | 0.8563 | 1.49 | 2.724 |
+| all | condmean | 0.06641 | 0.2604 | 0.3673 | 0.4351 | 0.4627 |
+| event | persist | 0.5256 | 0.6891 | 0.7276 | 0.6852 | 0.6437 |
+| event | constvel_fd | 0.4586 | 0.8615 | 1.23 | 1.841 | 2.909 |
+| event | condmean | 0.3718 | 0.5691 | 0.6025 | 0.5749 | 0.5019 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**action_frame — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 1.916 | 5.82 | 8.615 | 11.32 | 11.23 |
+| all | constvel | 1.29 | 4.749 | 8.642 | 16.21 | 31.99 |
+| all | condmean | 1.034 | 2.902 | 4.103 | 5.495 | 7.139 |
+| event | persist | 8.802 | 8.993 | 9.465 | 10.19 | 10.05 |
+| event | constvel | 9.647 | 12 | 15.03 | 21.2 | 34.03 |
+| event | condmean | 4.695 | 4.345 | 4.435 | 5.145 | 6.67 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**hitlag_left — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.1038 | 0.2943 | 0.3525 | 0.3513 | 0.3537 |
+| all | constvel | 0.05192 | 0.1505 | 0.18 | 0.1802 | 0.1802 |
+| all | condmean | 0.1052 | 0.3201 | 0.4167 | 0.4366 | 0.4381 |
+| event | persist | 0.2793 | 0.309 | 0.3467 | 0.3328 | 0.323 |
+| event | constvel | 0.271 | 0.2692 | 0.2638 | 0.2311 | 0.1929 |
+| event | condmean | 0.3008 | 0.3864 | 0.4601 | 0.461 | 0.4322 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**hitstun_left — mae (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.3085 | 1.213 | 2.271 | 3.873 | 5.617 |
+| all | constvel | 0.224 | 0.8484 | 1.503 | 2.419 | 3.384 |
+| all | condmean | 0.3529 | 1.307 | 2.35 | 3.869 | 5.617 |
+| event | persist | 1.9 | 2.428 | 2.941 | 3.785 | 4.906 |
+| event | constvel | 1.874 | 2.32 | 2.682 | 3.115 | 3.443 |
+| event | condmean | 1.82 | 2.531 | 3.303 | 4.433 | 5.641 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**airborne — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.9753 | 0.9056 | 0.8275 | 0.6994 | 0.6276 |
+| all | majority | 0.9833 | 0.9305 | 0.8646 | 0.7684 | 0.6745 |
+| event | persist | 0.781 | 0.7328 | 0.6786 | 0.5917 | 0.5913 |
+| event | majority | 0.8428 | 0.8034 | 0.7648 | 0.7056 | 0.646 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**facing — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.987 | 0.9485 | 0.9139 | 0.8689 | 0.7853 |
+| all | majority | 0.9968 | 0.9615 | 0.9236 | 0.8788 | 0.7946 |
+| event | persist | 0.8833 | 0.8518 | 0.8391 | 0.8225 | 0.7658 |
+| event | majority | 0.9759 | 0.8871 | 0.8549 | 0.8336 | 0.7761 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**jumps_left — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.9716 | 0.8911 | 0.7994 | 0.6486 | 0.5432 |
+| all | majority | 0.9797 | 0.917 | 0.8403 | 0.7295 | 0.6252 |
+| event | persist | 0.7462 | 0.6887 | 0.6242 | 0.5213 | 0.4985 |
+| event | majority | 0.8115 | 0.7672 | 0.7184 | 0.6552 | 0.5976 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**stocks — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.9997 | 0.999 | 0.998 | 0.996 | 0.9919 |
+| all | majority | 0.9997 | 0.999 | 0.998 | 0.9965 | 0.9932 |
+| event | persist | 0.9976 | 0.997 | 0.9961 | 0.9944 | 0.9911 |
+| event | majority | 0.9976 | 0.997 | 0.9962 | 0.9957 | 0.9927 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+**hurtbox — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=4 | h=8 | h=16 | h=32 |
+|---|---|---|---|---|---|---|
+| all | persist | 0.9883 | 0.9618 | 0.9348 | 0.8908 | 0.8413 |
+| all | majority | 0.9914 | 0.9788 | 0.9648 | 0.9417 | 0.916 |
+| event | persist | 0.9478 | 0.9307 | 0.9168 | 0.8872 | 0.8333 |
+| event | majority | 0.9497 | 0.9473 | 0.9409 | 0.926 | 0.9088 |
+
+(n por subconjunto a h=1: all=270182, event=28380)
+
+## Suelos del rival q (val; mando del rival en f+h; h = 7, 13 = D+1 para D = 6, 12)
+
+**buttons — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 1.232 | 1.232 | 1.231 |
+| all | persist | 0.4408 | 1.6 | 1.933 |
+| all | cond_act | 0.9146 | 1.067 | 1.116 |
+| all | cond_act_prev | 0.295 | 0.8841 | 1.035 |
+| change | marginal | 2.393 | 2.29 | 2.235 |
+| change | persist | 6.276 | 5.277 | 5.128 |
+| change | cond_act | 2.467 | 2.139 | 2.116 |
+| change | cond_act_prev | 3.312 | 2.289 | 2.218 |
+
+(n por subconjunto a h=1: all=270182, change=18729)
+
+**buttons — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.7246 | 0.7247 | 0.7247 |
+| all | persist | 0.9307 | 0.7 | 0.6265 |
+| all | cond_act | 0.738 | 0.7247 | 0.7247 |
+| all | cond_act_prev | 0.9307 | 0.7666 | 0.7423 |
+| change | marginal | 0.415 | 0.4364 | 0.4439 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.3911 | 0.4364 | 0.4439 |
+| change | cond_act_prev | 0.001014 | 0.3571 | 0.3998 |
+
+(n por subconjunto a h=1: all=270182, change=18729)
+
+**stick — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 3.484 | 3.483 | 3.483 |
+| all | persist | 2.144 | 3.179 | 3.375 |
+| all | cond_act | 3.19 | 3.326 | 3.378 |
+| all | cond_act_prev | 1.726 | 3.157 | 3.508 |
+| change | marginal | 5.514 | 4.243 | 4.081 |
+| change | persist | 6.822 | 4.762 | 4.456 |
+| change | cond_act | 5.358 | 4.157 | 4.026 |
+| change | cond_act_prev | 5.213 | 4.65 | 4.572 |
+
+(n por subconjunto a h=1: all=270182, change=77777)
+
+**stick — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.3418 | 0.3419 | 0.342 |
+| all | persist | 0.7121 | 0.3856 | 0.2943 |
+| all | cond_act | 0.3558 | 0.3453 | 0.3425 |
+| all | cond_act_prev | 0.721 | 0.4471 | 0.3806 |
+| change | marginal | 0.1006 | 0.231 | 0.2406 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.1002 | 0.2291 | 0.2399 |
+| change | cond_act_prev | 0.07632 | 0.1429 | 0.1884 |
+
+(n por subconjunto a h=1: all=270182, change=77777)
+
+**cstick — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.3115 | 0.3114 | 0.3114 |
+| all | persist | 0.1761 | 0.3824 | 0.4491 |
+| all | cond_act | 0.2323 | 0.2818 | 0.2958 |
+| all | cond_act_prev | 0.09549 | 0.2396 | 0.2781 |
+| change | marginal | 4.631 | 3.222 | 2.964 |
+| change | persist | 8.657 | 6.089 | 5.574 |
+| change | cond_act | 3.919 | 3.04 | 2.819 |
+| change | cond_act_prev | 3.938 | 3.221 | 2.926 |
+
+(n por subconjunto a h=1: all=270182, change=5455)
+
+**cstick — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.9526 | 0.9526 | 0.9526 |
+| all | persist | 0.9798 | 0.9377 | 0.9201 |
+| all | cond_act | 0.9526 | 0.9526 | 0.9526 |
+| all | cond_act_prev | 0.9801 | 0.954 | 0.9529 |
+| change | marginal | 0.2436 | 0.4432 | 0.482 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.2436 | 0.4432 | 0.482 |
+| change | cond_act_prev | 0.04895 | 0.3881 | 0.4697 |
+
+(n por subconjunto a h=1: all=270182, change=5455)
+
+**btn_A — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.1514 | 0.1514 | 0.1514 |
+| all | persist | 0.05837 | 0.2111 | 0.2601 |
+| all | cond_act | 0.1025 | 0.1316 | 0.1391 |
+| all | cond_act_prev | 0.03974 | 0.1168 | 0.1349 |
+| change | marginal | 1.632 | 1.632 | 1.632 |
+| change | persist | 6.172 | 4.595 | 4.37 |
+| change | cond_act | 2.03 | 1.54 | 1.504 |
+| change | cond_act_prev | 3.231 | 1.742 | 1.599 |
+
+(n por subconjunto a h=1: all=270182, change=2524)
+
+**btn_A — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.9652 | 0.9652 | 0.9652 |
+| all | persist | 0.9907 | 0.9546 | 0.9411 |
+| all | cond_act | 0.9652 | 0.9652 | 0.9652 |
+| all | cond_act_prev | 0.9907 | 0.9657 | 0.9653 |
+| change | marginal | 0.5 | 0.5 | 0.5 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.5 | 0.5 | 0.5 |
+| change | cond_act_prev | 0.01149 | 0.4804 | 0.4965 |
+
+(n por subconjunto a h=1: all=270182, change=2524)
+
+**btn_B — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.1936 | 0.1935 | 0.1936 |
+| all | persist | 0.06163 | 0.2148 | 0.265 |
+| all | cond_act | 0.09966 | 0.1395 | 0.1568 |
+| all | cond_act_prev | 0.0392 | 0.1204 | 0.1462 |
+| change | marginal | 1.534 | 1.534 | 1.535 |
+| change | persist | 6.078 | 4.543 | 4.336 |
+| change | cond_act | 1.77 | 1.552 | 1.58 |
+| change | cond_act_prev | 2.929 | 1.788 | 1.731 |
+
+(n por subconjunto a h=1: all=270182, change=2698)
+
+**btn_B — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.9516 | 0.9517 | 0.9517 |
+| all | persist | 0.99 | 0.9535 | 0.9398 |
+| all | cond_act | 0.9628 | 0.9517 | 0.9517 |
+| all | cond_act_prev | 0.99 | 0.9642 | 0.9576 |
+| change | marginal | 0.5004 | 0.5005 | 0.5002 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.3147 | 0.5005 | 0.5002 |
+| change | cond_act_prev | 0 | 0.3474 | 0.4044 |
+
+(n por subconjunto a h=1: all=270182, change=2698)
+
+**btn_X — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.1489 | 0.149 | 0.1489 |
+| all | persist | 0.0613 | 0.1995 | 0.2461 |
+| all | cond_act | 0.1313 | 0.1413 | 0.1433 |
+| all | cond_act_prev | 0.0417 | 0.115 | 0.1348 |
+| change | marginal | 1.65 | 1.65 | 1.649 |
+| change | persist | 6.089 | 4.624 | 4.365 |
+| change | cond_act | 1.942 | 1.529 | 1.515 |
+| change | cond_act_prev | 3.139 | 1.814 | 1.63 |
+
+(n por subconjunto a h=1: all=270182, change=2686)
+
+**btn_X — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.9659 | 0.9659 | 0.9659 |
+| all | persist | 0.9901 | 0.9574 | 0.9443 |
+| all | cond_act | 0.9659 | 0.9659 | 0.9659 |
+| all | cond_act_prev | 0.9901 | 0.9661 | 0.9659 |
+| change | marginal | 0.4996 | 0.4996 | 0.4998 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.4996 | 0.4996 | 0.4998 |
+| change | cond_act_prev | 0 | 0.4675 | 0.4992 |
+
+(n por subconjunto a h=1: all=270182, change=2686)
+
+**btn_Y — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.2235 | 0.2234 | 0.2233 |
+| all | persist | 0.1064 | 0.3609 | 0.431 |
+| all | cond_act | 0.1817 | 0.2022 | 0.2061 |
+| all | cond_act_prev | 0.06995 | 0.1803 | 0.2027 |
+| change | marginal | 1.57 | 1.57 | 1.569 |
+| change | persist | 5.767 | 4.288 | 4.089 |
+| change | cond_act | 1.837 | 1.378 | 1.392 |
+| change | cond_act_prev | 2.926 | 1.552 | 1.462 |
+
+(n por subconjunto a h=1: all=270182, change=4922)
+
+**btn_Y — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.9419 | 0.9419 | 0.942 |
+| all | persist | 0.9818 | 0.9167 | 0.8955 |
+| all | cond_act | 0.9419 | 0.9419 | 0.942 |
+| all | cond_act_prev | 0.9818 | 0.9419 | 0.9419 |
+| change | marginal | 0.5 | 0.5002 | 0.5004 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.5 | 0.5002 | 0.5004 |
+| change | cond_act_prev | 0 | 0.4986 | 0.5003 |
+
+(n por subconjunto a h=1: all=270182, change=4922)
+
+**btn_Z — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.06159 | 0.06148 | 0.06137 |
+| all | persist | 0.02788 | 0.1024 | 0.1195 |
+| all | cond_act | 0.04391 | 0.05459 | 0.05692 |
+| all | cond_act_prev | 0.01594 | 0.04908 | 0.05496 |
+| change | marginal | 2.154 | 2.15 | 2.148 |
+| change | persist | 7.63 | 5.976 | 5.856 |
+| change | cond_act | 2.004 | 1.9 | 1.945 |
+| change | cond_act_prev | 3.339 | 1.999 | 1.989 |
+
+(n por subconjunto a h=1: all=270182, change=984)
+
+**btn_Z — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.9888 | 0.9888 | 0.9889 |
+| all | persist | 0.9964 | 0.9829 | 0.9797 |
+| all | cond_act | 0.9888 | 0.9888 | 0.9889 |
+| all | cond_act_prev | 0.9963 | 0.9893 | 0.9891 |
+| change | marginal | 0.5 | 0.5008 | 0.5013 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.5 | 0.5008 | 0.5013 |
+| change | cond_act_prev | 0.001016 | 0.4962 | 0.494 |
+
+(n por subconjunto a h=1: all=270182, change=984)
+
+**btn_L — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.2189 | 0.219 | 0.219 |
+| all | persist | 0.05249 | 0.2143 | 0.267 |
+| all | cond_act | 0.1745 | 0.1881 | 0.1985 |
+| all | cond_act_prev | 0.03815 | 0.1337 | 0.167 |
+| change | marginal | 1.408 | 1.408 | 1.408 |
+| change | persist | 6.071 | 4.297 | 4.026 |
+| change | cond_act | 1.623 | 1.436 | 1.436 |
+| change | cond_act_prev | 3.471 | 1.869 | 1.739 |
+
+(n por subconjunto a h=1: all=270182, change=2290)
+
+**btn_L — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.9431 | 0.943 | 0.943 |
+| all | persist | 0.9915 | 0.9513 | 0.9352 |
+| all | cond_act | 0.9444 | 0.943 | 0.943 |
+| all | cond_act_prev | 0.9915 | 0.9616 | 0.9497 |
+| change | marginal | 0.4996 | 0.4996 | 0.4997 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.4991 | 0.4996 | 0.4997 |
+| change | cond_act_prev | 0 | 0.3212 | 0.3797 |
+
+(n por subconjunto a h=1: all=270182, change=2290)
+
+**btn_R — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.234 | 0.2339 | 0.2338 |
+| all | persist | 0.07269 | 0.2975 | 0.3442 |
+| all | cond_act | 0.1812 | 0.2092 | 0.2151 |
+| all | cond_act_prev | 0.05036 | 0.1688 | 0.1946 |
+| change | marginal | 1.452 | 1.451 | 1.45 |
+| change | persist | 6.031 | 4.257 | 4.042 |
+| change | cond_act | 1.67 | 1.438 | 1.435 |
+| change | cond_act_prev | 3.347 | 1.801 | 1.688 |
+
+(n por subconjunto a h=1: all=270182, change=3207)
+
+**btn_R — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 0.9375 | 0.9375 | 0.9376 |
+| all | persist | 0.9881 | 0.9313 | 0.9162 |
+| all | cond_act | 0.9375 | 0.9375 | 0.9376 |
+| all | cond_act_prev | 0.9881 | 0.9506 | 0.943 |
+| change | marginal | 0.4998 | 0.5001 | 0.5004 |
+| change | persist | 0 | 0 | 0 |
+| change | cond_act | 0.4998 | 0.5001 | 0.5004 |
+| change | cond_act_prev | 0 | 0.3565 | 0.4173 |
+
+(n por subconjunto a h=1: all=270182, change=3207)
+
+**btn_D_UP — nll (menor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 6.776e-05 | 6.776e-05 | 6.776e-05 |
+| all | persist | 1.296e-09 | 5.843e-09 | 6.707e-09 |
+| all | cond_act | 1.111e-05 | 3.692e-05 | 4.561e-05 |
+| all | cond_act_prev | 6.309e-06 | 3.294e-05 | 4.3e-05 |
+
+(n por subconjunto a h=1: all=270182, change=0)
+
+**btn_D_UP — acc (mayor es mejor)**
+
+| subconjunto | suelo | h=1 | h=7 | h=13 |
+|---|---|---|---|---|
+| all | marginal | 1 | 1 | 1 |
+| all | persist | 1 | 1 | 1 |
+| all | cond_act | 1 | 1 | 1 |
+| all | cond_act_prev | 1 | 1 | 1 |
+
+(n por subconjunto a h=1: all=270182, change=0)
+
+## Humo W0-S frente a suelos (val)
+
+**action — acc**: humo (media ± desv. entre semillas: 2) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| event | 1 | majority | 0.2827 | w0s_oracle_u | 0.6956 ± 0.0015 | +0.4129 | +276.2 | +57.6 % | [+0.402, +0.4226] |
+| event | 1 | majority | 0.2827 | w0s_persist_u | 0.4035 ± 0.0068 | +0.1208 | +17.7 | +16.8 % | [+0.1121, +0.1287] |
+| event | 1 | majority | 0.2827 | w0s_shuffled_u | 0.3463 ± 0.012 | +0.06362 | +5.4 | +8.9 % | [+0.05678, +0.06968] |
+| event | 4 | majority | 0.289 | w0s_oracle_u | 0.6392 ± 0.00082 | +0.3502 | +425.1 | +49.3 % | [+0.3406, +0.3596] |
+| event | 4 | majority | 0.289 | w0s_persist_u | 0.3236 ± 0.0048 | +0.0346 | +7.2 | +4.9 % | [+0.02972, +0.03913] |
+| event | 4 | majority | 0.289 | w0s_shuffled_u | 0.2663 ± 0.0071 | -0.02273 | -3.2 | -3.2 % | [-0.0293, -0.01618] |
+| event | 8 | majority | 0.2817 | w0s_oracle_u | 0.5507 ± 0.00013 | +0.269 | +2125.1 | +37.4 % | [+0.259, +0.2792] |
+| event | 8 | majority | 0.2817 | w0s_persist_u | 0.2249 ± 0.0031 | -0.05677 | -18.5 | -7.9 % | [-0.06299, -0.05098] |
+| event | 8 | majority | 0.2817 | w0s_shuffled_u | 0.197 ± 0.0054 | -0.0847 | -15.8 | -11.8 % | [-0.09329, -0.07731] |
+| ev_action_change | 1 | majority | 0.2821 | w0s_oracle_u | 0.6953 ± 0.0015 | +0.4132 | +276.2 | +57.6 % | [+0.4024, +0.4232] |
+| ev_action_change | 1 | majority | 0.2821 | w0s_persist_u | 0.403 ± 0.0068 | +0.1209 | +17.7 | +16.8 % | [+0.1122, +0.1284] |
+| ev_action_change | 1 | majority | 0.2821 | w0s_shuffled_u | 0.3458 ± 0.012 | +0.06369 | +5.4 | +8.9 % | [+0.0567, +0.07005] |
+| ev_action_change | 4 | majority | 0.2883 | w0s_oracle_u | 0.6389 ± 0.00082 | +0.3505 | +425.1 | +49.3 % | [+0.341, +0.3594] |
+| ev_action_change | 4 | majority | 0.2883 | w0s_persist_u | 0.323 ± 0.0048 | +0.03464 | +7.2 | +4.9 % | [+0.02986, +0.03908] |
+| ev_action_change | 4 | majority | 0.2883 | w0s_shuffled_u | 0.2656 ± 0.0071 | -0.02273 | -3.2 | -3.2 % | [-0.03004, -0.01657] |
+| ev_action_change | 8 | majority | 0.2808 | w0s_oracle_u | 0.5501 ± 0.00013 | +0.2693 | +2036.9 | +37.4 % | [+0.2596, +0.2794] |
+| ev_action_change | 8 | majority | 0.2808 | w0s_persist_u | 0.2239 ± 0.0031 | -0.05683 | -18.5 | -7.9 % | [-0.06279, -0.05084] |
+| ev_action_change | 8 | majority | 0.2808 | w0s_shuffled_u | 0.196 ± 0.0053 | -0.08472 | -15.8 | -11.8 % | [-0.09294, -0.07748] |
+| all | 1 | majority | 0.9223 | w0s_oracle_u | 0.9175 ± 0.00077 | -0.004806 | -6.3 | -6.2 % | [-0.008037, -0.001819] |
+| all | 1 | majority | 0.9223 | w0s_persist_u | 0.8912 ± 0.00031 | -0.03111 | -99.8 | -40.0 % | [-0.03362, -0.02874] |
+| all | 1 | majority | 0.9223 | w0s_shuffled_u | 0.7793 ± 0.007 | -0.1431 | -20.5 | -184.1 % | [-0.1483, -0.1382] |
+| all | 4 | majority | 0.7474 | w0s_oracle_u | 0.8317 ± 5.2e-05 | +0.08421 | +1609.3 | +33.3 % | [+0.07818, +0.08988] |
+| all | 4 | majority | 0.7474 | w0s_persist_u | 0.7373 ± 0.00065 | -0.01017 | -15.6 | -4.0 % | [-0.01309, -0.007257] |
+| all | 4 | majority | 0.7474 | w0s_shuffled_u | 0.6233 ± 0.0049 | -0.1242 | -25.5 | -49.2 % | [-0.1282, -0.12] |
+| all | 8 | majority | 0.6038 | w0s_oracle_u | 0.726 ± 0.00056 | +0.1223 | +217.2 | +30.9 % | [+0.1151, +0.1292] |
+| all | 8 | majority | 0.6038 | w0s_persist_u | 0.5702 ± 0.0005 | -0.03357 | -67.2 | -8.5 % | [-0.03702, -0.03048] |
+| all | 8 | majority | 0.6038 | w0s_shuffled_u | 0.4827 ± 0.0035 | -0.121 | -34.7 | -30.5 % | [-0.1256, -0.1166] |
+
+**pos_x — mae**: humo (media ± desv. entre semillas: 2) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| event | 1 | constvel | 0.6171 | w0s_oracle_u | 0.8242 ± 0.0084 | +0.2071 | +24.7 | -33.6 % | [+0.1932, +0.2207] |
+| event | 1 | constvel | 0.6171 | w0s_persist_u | 0.8347 ± 0.0046 | +0.2177 | +46.8 | -35.3 % | [+0.2028, +0.2306] |
+| event | 1 | constvel | 0.6171 | w0s_shuffled_u | 0.8843 ± 0.0051 | +0.2672 | +52.5 | -43.3 % | [+0.2537, +0.2805] |
+| event | 4 | constvel | 2.168 | w0s_oracle_u | 2.189 ± 0.041 | +0.02134 | +0.5 | -1.0 % | [-0.02796, +0.06938] |
+| event | 4 | constvel | 2.168 | w0s_persist_u | 2.48 ± 0.017 | +0.3121 | +18.0 | -14.4 % | [+0.2849, +0.3425] |
+| event | 4 | constvel | 2.168 | w0s_shuffled_u | 2.942 ± 0.026 | +0.7742 | +29.7 | -35.7 % | [+0.74, +0.8096] |
+| event | 8 | condmean | 4.629 | w0s_oracle_u | 3.918 ± 0.087 | -0.7108 | -8.2 | +15.4 % | [-0.838, -0.5798] |
+| event | 8 | condmean | 4.629 | w0s_persist_u | 4.89 ± 0.028 | +0.2614 | +9.3 | -5.6 % | [+0.1682, +0.3546] |
+| event | 8 | condmean | 4.629 | w0s_shuffled_u | 5.553 ± 0.032 | +0.924 | +29.3 | -20.0 % | [+0.851, +1.002] |
+| all | 1 | constvel | 0.1824 | w0s_oracle_u | 0.4773 ± 0.016 | +0.2949 | +18.9 | -161.7 % | [+0.2896, +0.3012] |
+| all | 1 | constvel | 0.1824 | w0s_persist_u | 0.4747 ± 0.015 | +0.2923 | +19.2 | -160.2 % | [+0.2871, +0.2983] |
+| all | 1 | constvel | 0.1824 | w0s_shuffled_u | 0.5439 ± 0.011 | +0.3615 | +32.1 | -198.2 % | [+0.356, +0.3674] |
+| all | 4 | constvel | 1.16 | w0s_oracle_u | 1.779 ± 0.056 | +0.6185 | +11.0 | -53.3 % | [+0.5923, +0.6461] |
+| all | 4 | constvel | 1.16 | w0s_persist_u | 1.866 ± 0.048 | +0.7062 | +14.8 | -60.9 % | [+0.6859, +0.7278] |
+| all | 4 | constvel | 1.16 | w0s_shuffled_u | 2.311 ± 0.052 | +1.15 | +22.2 | -99.2 % | [+1.124, +1.176] |
+| all | 8 | constvel | 3.219 | w0s_oracle_u | 3.488 ± 0.099 | +0.269 | +2.7 | -8.4 % | [+0.1972, +0.3433] |
+| all | 8 | constvel | 3.219 | w0s_persist_u | 3.997 ± 0.067 | +0.7779 | +11.7 | -24.2 % | [+0.7272, +0.8273] |
+| all | 8 | constvel | 3.219 | w0s_shuffled_u | 4.73 ± 0.065 | +1.511 | +23.1 | -47.0 % | [+1.451, +1.565] |
+
+**pos_y — mae**: humo (media ± desv. entre semillas: 2) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| event | 1 | condmean | 1.183 | w0s_oracle_u | 1.416 ± 0.0066 | +0.2323 | +35.1 | -19.6 % | [+0.2151, +0.2473] |
+| event | 1 | condmean | 1.183 | w0s_persist_u | 1.447 ± 0.0085 | +0.2635 | +30.9 | -22.3 % | [+0.2497, +0.2763] |
+| event | 1 | condmean | 1.183 | w0s_shuffled_u | 1.479 ± 0.0086 | +0.296 | +34.5 | -25.0 % | [+0.282, +0.3079] |
+| event | 4 | condmean | 2.235 | w0s_oracle_u | 2.821 ± 0.015 | +0.5862 | +38.8 | -26.2 % | [+0.5366, +0.6316] |
+| event | 4 | condmean | 2.235 | w0s_persist_u | 3.045 ± 0.012 | +0.8093 | +67.5 | -36.2 % | [+0.7735, +0.8438] |
+| event | 4 | condmean | 2.235 | w0s_shuffled_u | 3.238 ± 0.013 | +1.003 | +75.4 | -44.9 % | [+0.9678, +1.033] |
+| event | 8 | condmean | 4.217 | w0s_oracle_u | 4.892 ± 0.029 | +0.6755 | +23.4 | -16.0 % | [+0.6076, +0.7492] |
+| event | 8 | condmean | 4.217 | w0s_persist_u | 5.576 ± 0.023 | +1.359 | +59.2 | -32.2 % | [+1.315, +1.405] |
+| event | 8 | condmean | 4.217 | w0s_shuffled_u | 5.857 ± 0.014 | +1.64 | +115.2 | -38.9 % | [+1.605, +1.676] |
+| all | 1 | constvel_fd | 0.3273 | w0s_oracle_u | 0.5993 ± 0.015 | +0.272 | +18.0 | -83.1 % | [+0.262, +0.2812] |
+| all | 1 | constvel_fd | 0.3273 | w0s_persist_u | 0.6006 ± 0.016 | +0.2733 | +17.3 | -83.5 % | [+0.2638, +0.2829] |
+| all | 1 | constvel_fd | 0.3273 | w0s_shuffled_u | 0.6702 ± 0.0064 | +0.3429 | +53.3 | -104.8 % | [+0.3327, +0.3524] |
+| all | 4 | condmean | 1.95 | w0s_oracle_u | 2.164 ± 0.044 | +0.2143 | +4.9 | -11.0 % | [+0.1716, +0.2542] |
+| all | 4 | condmean | 1.95 | w0s_persist_u | 2.263 ± 0.045 | +0.3134 | +7.0 | -16.1 % | [+0.2727, +0.3522] |
+| all | 4 | condmean | 1.95 | w0s_shuffled_u | 2.533 ± 0.026 | +0.5833 | +22.3 | -29.9 % | [+0.5444, +0.6205] |
+| all | 8 | condmean | 4.085 | w0s_oracle_u | 4.24 ± 0.065 | +0.1551 | +2.4 | -3.8 % | [+0.07489, +0.2306] |
+| all | 8 | condmean | 4.085 | w0s_persist_u | 4.696 ± 0.058 | +0.6111 | +10.6 | -15.0 % | [+0.5369, +0.6803] |
+| all | 8 | condmean | 4.085 | w0s_shuffled_u | 5.053 ± 0.047 | +0.9682 | +20.8 | -23.7 % | [+0.9045, +1.031] |
+
+**percent — mae**: humo (media ± desv. entre semillas: 2) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| event | 1 | persist | 0.5734 | w0s_oracle_u | 0.5938 ± 0.00031 | +0.02043 | +64.9 | -3.6 % | — |
+| event | 1 | persist | 0.5734 | w0s_persist_u | 0.5939 ± 0.00055 | +0.02055 | +37.5 | -3.6 % | — |
+| event | 1 | persist | 0.5734 | w0s_shuffled_u | 0.5963 ± 0.0003 | +0.02297 | +77.3 | -4.0 % | — |
+| event | 4 | persist | 0.7305 | w0s_oracle_u | 0.8013 ± 0.00012 | +0.0708 | +582.1 | -9.7 % | — |
+| event | 4 | persist | 0.7305 | w0s_persist_u | 0.8025 ± 0.00097 | +0.07201 | +74.4 | -9.9 % | — |
+| event | 4 | persist | 0.7305 | w0s_shuffled_u | 0.8088 ± 0.002 | +0.07821 | +39.5 | -10.7 % | — |
+| event | 8 | persist | 0.9381 | w0s_oracle_u | 1.064 ± 0.00018 | +0.1263 | +686.9 | -13.5 % | — |
+| event | 8 | persist | 0.9381 | w0s_persist_u | 1.073 ± 0.0021 | +0.1344 | +65.1 | -14.3 % | — |
+| event | 8 | persist | 0.9381 | w0s_shuffled_u | 1.08 ± 0.00084 | +0.1417 | +168.5 | -15.1 % | — |
+
+**airborne — acc**: humo (media ± desv. entre semillas: 2) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| event | 1 | majority | 0.8428 | w0s_oracle_u | 0.88 ± 0.0011 | +0.03714 | +32.4 | +23.6 % | — |
+| event | 1 | majority | 0.8428 | w0s_persist_u | 0.8684 ± 0.00097 | +0.02553 | +26.3 | +16.2 % | — |
+| event | 1 | majority | 0.8428 | w0s_shuffled_u | 0.8554 ± 0.0017 | +0.01258 | +7.2 | +8.0 % | — |
+| event | 4 | majority | 0.8034 | w0s_oracle_u | 0.8816 ± 0.00021 | +0.07822 | +380.1 | +39.8 % | — |
+| event | 4 | majority | 0.8034 | w0s_persist_u | 0.8359 ± 0.0011 | +0.03247 | +28.5 | +16.5 % | — |
+| event | 4 | majority | 0.8034 | w0s_shuffled_u | 0.789 ± 0.0013 | -0.0144 | -11.0 | -7.3 % | — |
+| event | 8 | majority | 0.7648 | w0s_oracle_u | 0.8463 ± 0.00012 | +0.08145 | +669.7 | +34.6 % | — |
+| event | 8 | majority | 0.7648 | w0s_persist_u | 0.7593 ± 0.00068 | -0.005544 | -8.1 | -2.4 % | — |
+| event | 8 | majority | 0.7648 | w0s_shuffled_u | 0.7214 ± 3.5e-05 | -0.04346 | -1229.1 | -18.5 % | — |
+
+**action — NLL a h=1** (media ± sd)
+
+- all: w0s_oracle_u 0.3017 ± 0.0025 (mejor suelo majority 0.3263)
+- all: w0s_persist_u 0.4372 ± 0.00093 (mejor suelo majority 0.3263)
+- all: w0s_shuffled_u 0.8706 ± 0.039 (mejor suelo majority 0.3263)
+- event: w0s_oracle_u 0.9865 ± 0.0078 (mejor suelo majority 2.498)
+- event: w0s_persist_u 2.387 ± 0.032 (mejor suelo majority 2.498)
+- event: w0s_shuffled_u 2.868 ± 0.084 (mejor suelo majority 2.498)
+
+## Humo q frente a suelos (val)
+
+**buttons — nll**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | cond_act_prev | 0.295 | q_mlp | 0.2734 ± nan | -0.02161 | +nan | +7.3 % | [-0.02945, -0.01336] |
+| all | 7 | cond_act_prev | 0.8841 | q_mlp | 0.7996 ± nan | -0.08449 | +nan | +9.6 % | [-0.1006, -0.069] |
+| all | 13 | cond_act_prev | 1.035 | q_mlp | 0.9616 ± nan | -0.07365 | +nan | +7.1 % | [-0.0921, -0.05741] |
+| change | 1 | marginal | 2.393 | q_mlp | 2.732 ± nan | +0.3392 | +nan | -14.2 % | [+0.175, +0.5039] |
+| change | 7 | cond_act | 2.139 | q_mlp | 2.025 ± nan | -0.1137 | +nan | +5.3 % | [-0.177, -0.04979] |
+| change | 13 | cond_act | 2.116 | q_mlp | 2.038 ± nan | -0.07836 | +nan | +3.7 % | [-0.1325, -0.02682] |
+
+**buttons — acc**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | cond_act_prev | 0.9307 | q_mlp | 0.9233 ± nan | -0.007425 | +nan | -10.7 % | [-0.01027, -0.004982] |
+| all | 7 | cond_act_prev | 0.7666 | q_mlp | 0.7715 ± nan | +0.004841 | +nan | +2.1 % | [+0.002237, +0.007706] |
+| all | 13 | cond_act_prev | 0.7423 | q_mlp | 0.7475 ± nan | +0.005122 | +nan | +2.0 % | [+0.002488, +0.007972] |
+| change | 1 | marginal | 0.415 | q_mlp | 0.1061 ± nan | -0.3089 | +nan | -52.8 % | [-0.3311, -0.285] |
+| change | 7 | marginal | 0.4364 | q_mlp | 0.3784 ± nan | -0.05797 | +nan | -10.3 % | [-0.06772, -0.048] |
+| change | 13 | marginal | 0.4439 | q_mlp | 0.4107 ± nan | -0.03315 | +nan | -6.0 % | [-0.03984, -0.0266] |
+
+**stick — nll**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | cond_act_prev | 1.726 | q_mlp | 1.915 ± nan | +0.1897 | +nan | -11.0 % | [+0.1259, +0.2632] |
+| all | 7 | cond_act_prev | 3.157 | q_mlp | 2.83 ± nan | -0.3265 | +nan | +10.3 % | [-0.4233, -0.2167] |
+| all | 13 | persist | 3.375 | q_mlp | 3.087 ± nan | -0.2883 | +nan | +8.5 % | [-0.3273, -0.2439] |
+| change | 1 | cond_act_prev | 5.213 | q_mlp | 4.051 ± nan | -1.162 | +nan | +22.3 % | [-1.253, -1.042] |
+| change | 7 | cond_act | 4.157 | q_mlp | 3.817 ± nan | -0.3397 | +nan | +8.2 % | [-0.3783, -0.2897] |
+| change | 13 | cond_act | 4.026 | q_mlp | 3.824 ± nan | -0.202 | +nan | +5.0 % | [-0.2249, -0.1726] |
+
+**stick — acc**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | cond_act_prev | 0.721 | q_mlp | 0.5194 ± nan | -0.2016 | +nan | -72.3 % | [-0.2174, -0.1864] |
+| all | 7 | cond_act_prev | 0.4471 | q_mlp | 0.3913 ± nan | -0.0558 | +nan | -10.1 % | [-0.06856, -0.04354] |
+| all | 13 | cond_act_prev | 0.3806 | q_mlp | 0.3616 ± nan | -0.01908 | +nan | -3.1 % | [-0.02614, -0.01246] |
+| change | 1 | marginal | 0.1006 | q_mlp | 0.1601 ± nan | +0.05948 | +nan | +6.6 % | [+0.036, +0.07603] |
+| change | 7 | marginal | 0.231 | q_mlp | 0.2226 ± nan | -0.008362 | +nan | -1.1 % | [-0.01809, +0.0002279] |
+| change | 13 | marginal | 0.2406 | q_mlp | 0.2352 ± nan | -0.005455 | +nan | -0.7 % | [-0.01024, -0.0001875] |
+
+**cstick — nll**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | cond_act_prev | 0.09549 | q_mlp | 0.1151 ± nan | +0.01961 | +nan | -20.5 % | [+0.01425, +0.02733] |
+| all | 7 | cond_act_prev | 0.2396 | q_mlp | 0.2231 ± nan | -0.01649 | +nan | +6.9 % | [-0.02478, -0.007569] |
+| all | 13 | cond_act_prev | 0.2781 | q_mlp | 0.2613 ± nan | -0.01681 | +nan | +6.0 % | [-0.0243, -0.007908] |
+| change | 1 | cond_act | 3.919 | q_mlp | 3.343 ± nan | -0.5755 | +nan | +14.7 % | [-0.7945, -0.281] |
+| change | 7 | cond_act | 3.04 | q_mlp | 2.82 ± nan | -0.2194 | +nan | +7.2 % | [-0.3058, -0.1234] |
+| change | 13 | cond_act | 2.819 | q_mlp | 2.687 ± nan | -0.1319 | +nan | +4.7 % | [-0.2067, -0.06294] |
+
+**cstick — acc**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | cond_act_prev | 0.9801 | q_mlp | 0.97 ± nan | -0.01007 | +nan | -50.6 % | [-0.01295, -0.007499] |
+| all | 7 | cond_act_prev | 0.954 | q_mlp | 0.9534 ± nan | -0.000596 | +nan | -1.3 % | [-0.002106, +0.001038] |
+| all | 13 | cond_act_prev | 0.9529 | q_mlp | 0.9525 ± nan | -0.000389 | +nan | -0.8 % | [-0.000893, +8.132e-05] |
+| change | 1 | marginal | 0.2436 | q_mlp | 0.1974 ± nan | -0.0462 | +nan | -6.1 % | [-0.09029, -0.01527] |
+| change | 7 | marginal | 0.4432 | q_mlp | 0.4005 ± nan | -0.04272 | +nan | -7.7 % | [-0.05741, -0.02926] |
+| change | 13 | marginal | 0.482 | q_mlp | 0.4727 ± nan | -0.009308 | +nan | -1.8 % | [-0.01575, -0.004228] |
+
+**btn_A — nll**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | cond_act_prev | 0.03974 | q_mlp | 0.03788 ± nan | -0.001856 | +nan | +4.7 % | [-0.002784, -0.0008158] |
+| all | 7 | cond_act_prev | 0.1168 | q_mlp | 0.1019 ± nan | -0.01483 | +nan | +12.7 % | [-0.0174, -0.01216] |
+| all | 13 | cond_act_prev | 0.1349 | q_mlp | 0.1232 ± nan | -0.0117 | +nan | +8.7 % | [-0.01435, -0.008872] |
+| change | 1 | marginal | 1.632 | q_mlp | 2.72 ± nan | +1.088 | +nan | -66.7 % | [+0.9943, +1.173] |
+| change | 7 | cond_act | 1.54 | q_mlp | 1.421 ± nan | -0.1188 | +nan | +7.7 % | [-0.1748, -0.06514] |
+| change | 13 | cond_act | 1.504 | q_mlp | 1.424 ± nan | -0.08059 | +nan | +5.4 % | [-0.1261, -0.03554] |
+
+**btn_A — acc**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | cond_act_prev | 0.9907 | q_mlp | 0.9897 ± nan | -0.001058 | +nan | -11.4 % | [-0.001545, -0.0006776] |
+| all | 7 | cond_act_prev | 0.9657 | q_mlp | 0.9656 ± nan | -0.0001 | +nan | -0.3 % | [-0.001231, +0.001103] |
+| all | 13 | cond_act_prev | 0.9653 | q_mlp | 0.965 ± nan | -0.000248 | +nan | -0.7 % | [-0.0006239, +0.0001067] |
+| change | 1 | marginal | 0.5 | q_mlp | 0.05468 ± nan | -0.4453 | +nan | -89.1 % | [-0.4602, -0.4293] |
+| change | 7 | marginal | 0.5 | q_mlp | 0.4611 ± nan | -0.03891 | +nan | -7.8 % | [-0.05224, -0.02747] |
+| change | 13 | marginal | 0.5 | q_mlp | 0.4966 ± nan | -0.003394 | +nan | -0.7 % | [-0.00647, -0.0002395] |
+
+**btn_X — nll**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | cond_act_prev | 0.0417 | q_mlp | 0.0427 ± nan | +0.001006 | +nan | -2.4 % | [-0.0007056, +0.002977] |
+| all | 7 | cond_act_prev | 0.115 | q_mlp | 0.1095 ± nan | -0.005474 | +nan | +4.8 % | [-0.01164, +0.0001565] |
+| all | 13 | cond_act_prev | 0.1348 | q_mlp | 0.1285 ± nan | -0.006327 | +nan | +4.7 % | [-0.01481, +0.0005655] |
+| change | 1 | marginal | 1.65 | q_mlp | 2.83 ± nan | +1.18 | +nan | -71.5 % | [+1.083, +1.311] |
+| change | 7 | cond_act | 1.529 | q_mlp | 1.645 ± nan | +0.1165 | +nan | -7.6 % | [+0.01399, +0.2447] |
+| change | 13 | cond_act | 1.515 | q_mlp | 1.504 ± nan | -0.01008 | +nan | +0.7 % | [-0.09876, +0.1117] |
+
+**btn_X — acc**: humo (media ± desv. entre semillas: 1) frente al mejor suelo; Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)
+
+| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 1 | persist | 0.9901 | q_mlp | 0.9886 ± nan | -0.001481 | +nan | -14.9 % | [-0.002871, -0.0005175] |
+| all | 7 | cond_act_prev | 0.9661 | q_mlp | 0.9678 ± nan | +0.001629 | +nan | +4.8 % | [-2.076e-05, +0.003719] |
+| all | 13 | marginal | 0.9659 | q_mlp | 0.9659 ± nan | -3.7e-05 | +nan | -0.1 % | [-0.0002542, +0.0002045] |
+| change | 1 | marginal | 0.4996 | q_mlp | 0.06776 ± nan | -0.4319 | +nan | -86.3 % | [-0.4491, -0.4071] |
+| change | 7 | marginal | 0.4996 | q_mlp | 0.4392 ± nan | -0.06039 | +nan | -12.1 % | [-0.07546, -0.04461] |
+| change | 13 | marginal | 0.4998 | q_mlp | 0.4942 ± nan | -0.005578 | +nan | -1.1 % | [-0.008509, -0.002809] |
+
+**q frente a la marginal (NLL, all)**
+
+- buttons h=1: marginal 1.232, q 0.2734 ± nan
+- buttons h=7: marginal 1.232, q 0.7996 ± nan
+- buttons h=13: marginal 1.231, q 0.9616 ± nan
+- stick h=1: marginal 3.484, q 1.915 ± nan
+- stick h=7: marginal 3.483, q 2.83 ± nan
+- stick h=13: marginal 3.483, q 3.087 ± nan
+- cstick h=1: marginal 0.3115, q 0.1151 ± nan
+- cstick h=7: marginal 0.3114, q 0.2231 ± nan
+- cstick h=13: marginal 0.3114, q 0.2613 ± nan
+
+## Tiempos y memoria de las corridas de humo
+| modelo | semilla | parámetros | frames train | épocas | muestras/s (por época) | s/época | eval muestras-fwd/s | RSS pico MB | total s |
+|---|---|---|---|---|---|---|---|---|---|
+| q | 0 | 764878 | 372732 | 2 | 3980/12025 | 93/31 | 10049 | 612 | 155 |
+| w0s | 0 | 687502 | 372732 | 2 | 5466/21032 | 68/18 | 16057 | 636 | 290 |
+| w0s | 1 | 687502 | 372732 | 2 | 2168/2741 | 172/136 | 10970 | 557 | 610 |

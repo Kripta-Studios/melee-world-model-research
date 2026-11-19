@@ -1,0 +1,10 @@
+modelo w0s: 687502 parámetros; train 40 partidas (372732 frames), val 12; carga 0.9s rss 510MB
+  ep0 step 200/727 loss 3.8235 2101 muestras/s rss 562MB
+  ep0 step 400/727 loss 2.6476 3452 muestras/s rss 562MB
+  ep0 step 600/727 loss 2.1681 4753 muestras/s rss 562MB
+{"epoch": 0, "loss": 1.9742724198586674, "seconds": 68.0937750339508, "samples": 372224, "samples_per_s": 5466.344020645253, "rss_mb": 562.29296875}
+  ep1 step 200/727 loss 0.8664 21704 muestras/s rss 562MB
+  ep1 step 400/727 loss 0.8317 20650 muestras/s rss 562MB
+  ep1 step 600/727 loss 0.7979 21129 muestras/s rss 562MB
+{"epoch": 1, "loss": 0.7860914517137666, "seconds": 17.69792675971985, "samples": 372224, "samples_per_s": 21032.068052579747, "rss_mb": 562.29296875}
+{"model": "w0s", "seed": 0, "params": 687502, "train_games": 40, "train_frames": 372732, "train_anchors": 372412, "epochs": 2, "batch": 512, "lr": 0.002, "w_change": 3.0, "hist": 8, "threads": 2, "load_seconds": 0.885791540145874, "train_seconds": 85.81258010864258, "epochs_log": [{"epoch": 0, "loss": 1.9742724198586674, "seconds": 68.0937750339508, "samples": 372224, "samples_per_s": 5466.344020645253, "rss_mb": 562.29296875}, {"epoch": 1, "loss": 0.7860914517137666, "seconds": 17.69792675971985, "samples": 372224, "samples_per_s": 21032.068052579747, "rss_mb": 562.29296875}], "eval_seconds": 201.9173333644867, "eval_forward_samples": 3242184, "eval_forward_samples_per_s": 16056.987015312063, "total_seconds": 290.3997209072113, "max_rss_mb": 636.1328125, "torch": "2.10.0+cu128"}

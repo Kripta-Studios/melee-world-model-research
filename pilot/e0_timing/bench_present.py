@@ -103,5 +103,32 @@ with torch.inference_mode():
             ts.append((time.perf_counter_ns() - t0) / 1e6)
     out.write(json.dumps({"kind": "pi0_aged", **base, "n": len(ts), "p50_ms": pct(ts, .5), "p95_ms": pct(ts, .95),
                           "p99_ms": pct(ts, .99), "max_ms": max(ts)}) + "\n")
+# per-component cost of ONE rollout step at batch K (where the time goes)
+with torch.inference_mode():
+    K = a.K
+    def T(f, n=150):
+        for _ in range(10):
+            f()
+        ts = []
+        for _ in range(n):
+            t0 = time.perf_counter_ns(); f(); ts.append((time.perf_counter_ns() - t0) / 1e3)
+        return {"p50_us": pct(ts, .5), "p99_us": pct(ts, .99)}
+    fr = hist.at(-1).map(lambda x: x.expand(K, *x.shape[1:]).contiguous())
+    wst, wh = model.w.E.core.prefix(model.w.E.emb.seq(hist))
+    wst, wh = model.w.E.core.expand(wst, K), wh.expand(K, -1).contiguous()
+    e = model.w.E.emb(fr); u = torch.randn(K, M.NCTRL); lg = model.w.logits(wh, u, u); ql = model.q.head(wh)
+    samp = M.w0s_sample_next_fast if a.impl == "fast" else model.w.sample_next
+    qs = M.ctrl_sample_fast if a.impl == "fast" else M.CtrlPolicy.sample
+    comp = {"encode_prefix_B1_H16": T(lambda: model.w.E.core.prefix(model.w.E.emb.seq(hist))),
+            "frame_embed_K": T(lambda: model.w.E.emb(fr)),
+            "core_step_K": T(lambda: model.w.E.core.step(wst, e)),
+            "w0s_heads_K": T(lambda: model.w.logits(wh, u, u)),
+            "w0s_sample_decode_K": T(lambda: samp(fr, lg, u, u, g)),
+            "q_head_K": T(lambda: model.q.head(wh)),
+            "q_sample_K": T(lambda: qs(ql, g))}
+    if a.core == "tx":  # no-cache step cost grows with the context: report at the end of an 18-step rollout
+        st18 = torch.cat([wst, e.unsqueeze(1).expand(K, 18, -1)], 1)
+        comp["core_step_K_ctx35"] = T(lambda: model.w.E.core.step(st18, e))
+out.write(json.dumps({"kind": "components", **base, **comp}) + "\n")
 out.write(json.dumps({"kind": "end", **base, "elapsed_s": time.perf_counter() - T0, "peak_rss_mb": peak_rss_mb(),
                       "loadavg_end": open("/proc/loadavg").read().strip(), "truncated": stop}) + "\n")

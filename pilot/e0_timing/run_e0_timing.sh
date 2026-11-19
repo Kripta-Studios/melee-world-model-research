@@ -3,7 +3,7 @@
 # Sequential, nice -n 19, <= 2 torch threads, each run capped at 175 s, RSS guard ~1.05 GB inside the scripts.
 # Before every run: waits until MemAvailable >= MIN_AVAIL_MB (and load1 < MAX_LOAD, for at most WAIT_S), and logs
 # `uptime` + `free -m` to commands.log.
-# Usage: bash run_e0_timing.sh {wrapper|present|e2e|tests} [REPS]
+# Usage: bash run_e0_timing.sh {tests|wrapper|present|e2e|jit} [REPS]
 set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"
 EV="$HERE/../../evidence/E0/timing"
@@ -53,9 +53,15 @@ case "$phase" in
     done; done; done; done ;;
   e2e)  # Task B, whole route: predictor inside RT-strict inside the fake loop (thread backend).
     for rep in $(seq 0 $((REPS-1))); do for th in 1 2; do
-      for spec in gru:6:open mlp:6:open tx_kv:6:open gru:12:closed tx_kv:18:closed; do
+      for spec in gru:6:open tx_kv:12:closed; do
         run $th fake_runner.py --agent present:$spec:$th:fast --mode thread --frames 1200 --rep $rep --out "$RAW/e2e.jsonl"
       done
     done; done ;;
+  jit)  # exploratory: TorchScript trace+freeze of one closed-loop rollout step (inductor breaches the RAM cap)
+    for rep in $(seq 0 $((REPS-1))); do for th in 1 2; do for core in gru tx_kv mlp; do
+      guard; echo "$(date -u +%FT%TZ) START compile_probe $th $core jit | uptime: $(uptime)" >> "$LOG"
+      ( cd "$HERE" && OMP_NUM_THREADS=$th timeout 175 nice -n 19 python3 -I compile_probe.py $th $core jit ) 2>>"$EV/stderr.log" | grep '^{' >> "$EV/jit_probe.jsonl"
+      echo "$(date -u +%FT%TZ) END compile_probe" >> "$LOG"
+    done; done; done ;;
   *) echo "usage: $0 {tests|wrapper|present|e2e} [REPS]"; exit 2 ;;
 esac

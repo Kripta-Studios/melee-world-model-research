@@ -1,0 +1,4 @@
+modelo w0s: 687502 parámetros; train 40 partidas (372732 frames), val 12; carga 8.3s rss 467MB
+  ep0 step 200/200 loss 2.7371 3297 muestras/s rss 598MB
+{"epoch": 0, "loss": 2.7371184450387953, "seconds": 31.058391571044922, "samples": 102400, "samples_per_s": 3297.015551039203, "rss_mb": 598.33203125}
+{"bench": true, "params": 687502, "log": [{"epoch": 0, "loss": 2.7371184450387953, "seconds": 31.058391571044922, "samples": 102400, "samples_per_s": 3297.015551039203, "rss_mb": 598.33203125}]}

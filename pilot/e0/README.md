@@ -55,3 +55,31 @@ el mando de `f` ya actuó sobre el estado de `f`. El objetivo de imitación sin 
 `f+1`. Los frames con `frame_id < 0` corresponden a la cuenta atrás y no son accionables.
 
 Lectura: `a6io.load(path) -> (arrays, meta)`.
+
+## Suelos triviales, prueba de humo y varianza entre semillas (`models/`)
+
+Usa SOLO train/val del split `A6-split-v1` (90/5/5). `test` (18 partidas) no se exporta ni se lee:
+`common.assert_no_test` lo comprueba al exportar y al cargar la caché, contrastando con `evidence/E0/splits.jsonl`.
+
+| Script | Qué hace |
+|---|---|
+| `models/common.py` | Constantes (campos, horizontes, bits de botones), carga de la caché memmap, anclas, máscaras de eventos |
+| `models/export_cache.py` | (venv) npz → memmaps `.npy` `[N, 2]` en `$E0_DATA/cache/e0_floors_v1/` (≈ 320 MB), solo `frame_id ≥ 0` |
+| `models/metrics.py` | Suelos puros (persistencia, velocidad constante, reloj de contadores), acumulador MAE/RMSE/acierto/NLL, conteos dispersos |
+| `models/floors.py` | Ajusta en train y mide en val los suelos de dinámica (h ∈ {1,4,7,8,13,16,32}) y del rival q (h ∈ {1,7,13}) |
+| `models/smoke.py` | (torch del sistema) W0-S MLP y q MLP ≤ 1M parámetros; rollout AR; variantes de mandos oracle/persist/shuffled |
+| `models/summarize.py` | Une todo en `evidence/E0/floors/model_diagnostics.csv` (+ media y sd entre semillas) y emite tablas markdown |
+| `models/logrun.sh` | Envoltorio: espera a `avail ≥ 600 MB`, `nice -n 19`, 2 hilos, `/usr/bin/time -v`; registra en `logs/commands.log` |
+
+```bash
+D=/srv/mail/melee-research-data; P=$D/venv-e0/bin/python; R=pilot/e0/models/logrun.sh
+$R export_cache $P -I pilot/e0/models/export_cache.py          # caché memmap (venv: numpy)
+$R floors python3 pilot/e0/models/floors.py                    # suelos -> evidence/E0/floors/floors_*.csv, vocab.json
+bash pilot/e0/models/run_smoke.sh                              # 3 semillas × {w0s, q}, 40 partidas, 2 épocas
+bash pilot/e0/models/run_smoke_rest.sh                         # PENDIENTE: q s1, w0s s2, q s2 (ver FLOORS_REPORT §6)
+python3 pilot/e0/models/summarize.py > evidence/E0/floors/logs/summarize.out
+cd pilot/e0 && python3 -m unittest tests.test_floors_metrics -v   # con torch del sistema (el venv salta 2 tests)
+```
+
+`floors.py` y `summarize.py` solo necesitan numpy (sirven el venv o el python del sistema). `smoke.py` usa el torch
+2.10 CPU del sistema: no se instaló nada en el venv. Logs de cada ejecución en `evidence/E0/floors/logs/`.

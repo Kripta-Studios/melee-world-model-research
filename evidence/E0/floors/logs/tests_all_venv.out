@@ -1,0 +1,8 @@
+.............ss/home/kripta/melee-research/pilot/e0/parse_a6.py:43: ResourceWarning: unclosed file <_io.BufferedReader name='/srv/mail/melee-research-data/slp/00e4223851539c47b8022b05c7780328a7860e83.slp'>
+  data = open(path, "rb").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+......
+----------------------------------------------------------------------
+Ran 21 tests in 0.867s
+
+OK (skipped=2)

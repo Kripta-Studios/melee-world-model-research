@@ -1,0 +1,5 @@
+modelo q: 764878 parámetros; train 40 partidas (372732 frames), val 12; carga 0.3s rss 754MB
+  ep0 step 200/726 loss 16.2398 17560 muestras/s rss 789MB
+  ep0 step 400/726 loss 13.2445 14481 muestras/s rss 789MB
+  ep0 step 600/726 loss 12.1084 14419 muestras/s rss 789MB
+{"epoch": 0, "loss": 11.682021590303783, "seconds": 27.917192935943604, "samples": 371712, "samples_per_s": 13314.805713199692, "rss_mb": 789.30859375}

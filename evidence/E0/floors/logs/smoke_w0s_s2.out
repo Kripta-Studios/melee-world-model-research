@@ -1,0 +1,2 @@
+modelo w0s: 687502 parámetros; train 40 partidas (372732 frames), val 12; carga 0.3s rss 789MB
+WATCHDOG: VmRSS 915 MB > 880 MB, abortando

@@ -1,0 +1,15 @@
+test_anchors_room_for_history_and_horizon (tests.test_floors_metrics.TestFloors.test_anchors_room_for_history_and_horizon) ... ok
+test_const_velocity_exact_on_linear_motion (tests.test_floors_metrics.TestFloors.test_const_velocity_exact_on_linear_motion) ... ok
+test_counter_clock (tests.test_floors_metrics.TestFloors.test_counter_clock) ... ok
+test_no_test_split (tests.test_floors_metrics.TestFloors.test_no_test_split) ... ok
+test_persistence_h0_zero_error (tests.test_floors_metrics.TestFloors.test_persistence_h0_zero_error) ... ok
+test_rise_and_masks (tests.test_floors_metrics.TestFloors.test_rise_and_masks) ... ok
+test_sparse_counts_majority_and_nll (tests.test_floors_metrics.TestFloors.test_sparse_counts_majority_and_nll) ... ok
+test_window_change_excludes_f_itself (tests.test_floors_metrics.TestFloors.test_window_change_excludes_f_itself) ... ok
+test_q_target_is_f_plus_1_and_port_swap (tests.test_floors_metrics.TestSmokeTargets.test_q_target_is_f_plus_1_and_port_swap) ... ok
+test_w0s_window_excludes_future (tests.test_floors_metrics.TestSmokeTargets.test_w0s_window_excludes_future) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.065s
+
+OK

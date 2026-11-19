@@ -1,0 +1,10 @@
+zero thread 300 p50 0.250 p99 7.496 max 20.723 overrun_max 10.723 Counter({'none': 300})
+zero process 300 p50 2.421 p99 768.777 max 862.476 overrun_max 852.476 Counter({'none': 259, 'repeat_last': 41})
+heavytail thread 300 p50 5.296 p99 26.210 max 63.001 overrun_max 53.001 Counter({'none': 276, 'repeat_last': 24})
+heavytail process 300 p50 4.742 p99 16.320 max 21.120 overrun_max 11.120 Counter({'none': 286, 'repeat_last': 14})
+exceed14 thread 300 p50 10.109 p99 11.851 max 14.360 overrun_max 4.360 Counter({'repeat_last': 290, 'neutral': 10})
+exceed14 process 300 p50 10.788 p99 1537.155 max 21043.299 overrun_max 21033.299 Counter({'repeat_last': 288, 'neutral': 10, 'none': 2})
+anytime13 thread 300 p50 10.148 p99 13.504 max 16.002 overrun_max 6.002 Counter({'best_so_far': 299, 'none': 1})
+anytime13 process 300 p50 10.859 p99 27.661 max 35.072 overrun_max 25.072 Counter({'best_so_far': 289, 'none': 8, 'repeat_last': 3})
+
+[exited with code 124]

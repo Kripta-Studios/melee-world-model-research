@@ -1,0 +1,1713 @@
+{
+ "schema_version": "1.0.0",
+ "generated_at": "2026-11-19",
+ "generated_by": "integrador (consolidación A1–A8 + re-verificación local)",
+ "purpose": "Identidad de las fuentes consultadas. No es un lockfile de entorno ejecutable: nada se instaló ni ejecutó.",
+ "revision_fields": {
+  "observed_head": "HEAD observado del clon (ops/clone_inventory.txt) o revisión remota leída",
+  "catalog_revision": "revisión fijada en handoff/melee_swarm/13_REFERENCE_REVISIONS.json",
+  "dependency_pin": "revisión configurada por un consumidor (pyproject/uv.lock/docs)",
+  "installed_described": "lo que el consumidor instala según su lock (no observado instalado aquí)",
+  "experiment_revisions": "revisión declarada/efectiva por un experimento concreto"
+ },
+ "verification_scope_values": [
+  "codigo_leido",
+  "doc_leido",
+  "doc_y_metadatos",
+  "metadatos_y_doc",
+  "solo_metadatos",
+  "no_accedido"
+ ],
+ "local_environment": {
+  "note": "Máquina del swarm: 4 vCPU EPYC, 7,6 GiB, sin GPU, Python 3.12.3, torch 2.10.0+cu128 en CPU; sin ISO, Dolphin, peppi_py, melee, zstandard ni streaming (A7 §1).",
+  "measured_revision": null
+ },
+ "sources": [
+  {
+   "id": "A02",
+   "catalog_id": "A02",
+   "title": "mateo19182/melee-llm (harness, bench, sim adapter, bots, train)",
+   "url": "https://github.com/mateo19182/melee-llm",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "7e179081c6cbab139d860c998b1452ad3dee047c",
+    "observed_head_date": "2026-11-19T12:21:38+01:00",
+    "dependency_pin": null,
+    "installed_described": null,
+    "experiment_revisions": [],
+    "relation_to_catalog": "2bf8b0eb es ancestro de 7e179081; git diff --stat: 10 ficheros (docs/experiments/E32*, docs/experiments/README.md, docs/simulator.md +2, melee_llm/web/training*, train/farm/{faynt,learner,rl,rl_eval,run}.py); runtime, bench, sim, bots, pyproject.toml y uv.lock idénticos (re-verificado por el integrador)"
+   },
+   "catalog_revision": "2bf8b0ebbb7c4a188c06782cd6f250f111c3418b",
+   "license": {
+    "value": "ninguna (sin fichero LICENSE)",
+    "path": null,
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A1",
+    "A2",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8"
+   ],
+   "notes": [
+    "Todas las citas del swarm usan 7e179081.",
+    "docs/simulator.md L7 afirma que pyproject fija melee-sim-light eea7b5fb: desactualizado (fija melee-brute 090e54b0).",
+    "Catálogo A05, A12, A33-A35, A40-A44 están en este repo; A05 no fue citado, el resto con cobertura parcial."
+   ],
+   "catalog_ids_covered": [
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A06",
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A11",
+    "A12",
+    "A13",
+    "A25",
+    "A33",
+    "A34",
+    "A35",
+    "A36",
+    "A37",
+    "A40",
+    "A41",
+    "A42",
+    "A43",
+    "A44",
+    "A45",
+    "A47",
+    "R07",
+    "R08",
+    "R09",
+    "R10"
+   ]
+  },
+  {
+   "id": "A14",
+   "catalog_id": "A14",
+   "title": "mateo19182/melee-brute (simulador + búsqueda exacta, checkpoint/rollback)",
+   "url": "https://github.com/mateo19182/melee-brute",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "9662ec973b9e077ff7b0ff89d6db950f53c11653",
+    "observed_head_date": "2026-11-19T12:04:53+01:00",
+    "dependency_pin": {
+     "sha": "090e54b048b7d51e82f9f6b551046c2ca8b130c7",
+     "where": "melee-llm pyproject.toml L38 [tool.uv.sources] + uv.lock",
+     "date": "2026-11-17T10:03:45+01:00"
+    },
+    "installed_described": {
+     "sha": "090e54b048b7d51e82f9f6b551046c2ca8b130c7",
+     "how": "uv sync de melee-llm (runtime --mode sim y solver)",
+     "farm_checkout": "MELEE_SIM=/mnt/data/melee/native/melee-brute (train/farm/common.py L24): revisión DESCONOCIDA"
+    },
+    "experiment_revisions": [
+     {
+      "experiment": "E31-sim-faithful",
+      "declared": "d3832724ef67f67db4bb4672ff46ae6c134dbad7",
+      "effective_validator": ">= 9662ec973b9e077ff7b0ff89d6db950f53c11653 (flags --played-on/--no-ucf: 0/0/4 apariciones en 090e54b0/d3832724/9662ec97, re-verificado)",
+      "status": "INCONSISTENTE: dos revisiones"
+     }
+    ],
+    "ancestry": "090e54b0 ⊂ d3832724 ⊂ 9662ec97; melee-sim-light eea7b5fb es ancestro de las tres",
+    "abi_note": "090e54b0: ABI 1, gamestate 1208 B, sin hitlag_left; d3832724+: ABI 2, 1240 B, hitlag_left"
+   },
+   "catalog_revision": "9662ec973b9e077ff7b0ff89d6db950f53c11653",
+   "license": {
+    "value": "ninguna (sin fichero LICENSE)",
+    "path": null,
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A1",
+    "A4",
+    "A5",
+    "A7",
+    "A8"
+   ],
+   "notes": [
+    "Cifras de velocidad (12-17 µs/frame) del autor en Ryzen 5950X con load 15-35, tablas anteriores al perfil de build actual (BRUTE.md L84, L100-110); no medidas aquí.",
+    "API pública sin setter de RNG por frame ni eventos de escenario (src/runtime/batch.c L324-326; A8 G01 §3)."
+   ],
+   "catalog_ids_covered": [
+    "A14",
+    "R11"
+   ]
+  },
+  {
+   "id": "A15",
+   "catalog_id": "A15",
+   "title": "kyhavlov/melee-sim-light (upstream del simulador)",
+   "url": "https://github.com/kyhavlov/melee-sim-light",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "eea7b5fbcd0243baf4c1956d52f3e1d0f536edc4",
+    "observed_head_date": "2026-10-20T03:34:04-07:00",
+    "dependency_pin": null,
+    "installed_described": "no instalado por melee-llm (paquete melee_sim en conflicto con melee-brute)",
+    "experiment_revisions": []
+   },
+   "catalog_revision": "eea7b5fbcd0243baf4c1956d52f3e1d0f536edc4",
+   "license": {
+    "value": "ninguna (sin fichero LICENSE)",
+    "path": null,
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A1",
+    "A4",
+    "A6",
+    "A7",
+    "A8"
+   ],
+   "notes": [
+    "Sin checkpoint/rollback (solo save/restore/copy).",
+    "agent_docs/VALIDATION.md L49-52: no reconstruir bytes crudos desde floats procesados."
+   ]
+  },
+  {
+   "id": "A16",
+   "catalog_id": "A16",
+   "title": "vladfi1/libmelee (fork usado por melee-llm)",
+   "url": "https://github.com/vladfi1/libmelee",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "bce21f09984b286e6d36bfd2939e4cd4691f94c2",
+    "observed_head_version": "0.47.3 (melee/version.py, re-verificado)",
+    "observed_head_date": "2026-07-29T18:11:01-04:00",
+    "dependency_pin": {
+     "spec": "melee>=0.47.6 (melee-llm pyproject)",
+     "lock": "melee==0.47.6, registry PyPI (uv.lock L569-571)"
+    },
+    "installed_described": {
+     "version": "0.47.6",
+     "tag": "v0.47.6",
+     "sha": "2d63e7ee948d77ab4e73165ed4c73abbe3ba121b",
+     "branch": "dev",
+     "date": "2026-10-17T18:21:28-04:00",
+     "caveat": "wheel PyPI = tag es INFERENCIA (wheel no descargado)"
+    },
+    "experiment_revisions": [
+     {
+      "consumer": "Faynt",
+      "pin": "0.47.3",
+      "source": "melee-llm docs/bots.md L82"
+     }
+    ],
+    "diff_head_to_installed": "console.py (background_input, Optional fullscreen/gfx_backend/save_replays, interrupt, GCPad), slippstream.py (interrupt); controller.py y cuerpo de __pre_frame idénticos (md5, A8 G01)"
+   },
+   "catalog_revision": "bce21f09984b286e6d36bfd2939e4cd4691f94c2",
+   "license": {
+    "value": "LGPL-3.0",
+    "path": "LICENSE.txt",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A1",
+    "A6",
+    "A8"
+   ],
+   "notes": [
+    "GameState no expone C-stick crudo, gatillos físicos L/R ni semillas RNG (console.py __pre_frame L1145-1212; FRAME_START: pass L1039-1040).",
+    "Licencia detectada por el integrador; ningún especialista la registró."
+   ]
+  },
+  {
+   "id": "A17",
+   "catalog_id": "A17",
+   "title": "project-slippi/dolphin",
+   "url": "https://github.com/project-slippi/dolphin",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": null,
+    "dependency_pin": null,
+    "installed_described": "melee-llm scripts/setup.sh L9-10: AppImage v4.0.0-mainline-beta.19 (render) y vladfi1 4.0.0-mainline-beta.14.1-ExiAI (headless)",
+    "experiment_revisions": []
+   },
+   "catalog_revision": "accd20faa0017338654783e5e3421969e8ddf056",
+   "license": {
+    "value": "no comprobada",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Hash de las AppImage no registrado."
+   ]
+  },
+  {
+   "id": "A48",
+   "catalog_id": "A48",
+   "title": "Slippi Dolphin release v4.0.0-mainline-beta.19",
+   "url": "https://github.com/project-slippi/dolphin/releases/tag/v4.0.0-mainline-beta.19",
+   "type": "binary_release",
+   "revisions": {
+    "dependency_pin": "melee-llm scripts/setup.sh L9 @7e179081",
+    "installed_described": null
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no comprobada",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Solo se leyó el pin en setup.sh."
+   ]
+  },
+  {
+   "id": "A49",
+   "catalog_id": "A49",
+   "title": "Dolphin ExiAI release 4.0.0-mainline-beta.14.1-ExiAI",
+   "url": "https://github.com/vladfi1/dolphin/releases/tag/4.0.0-mainline-beta.14.1-ExiAI",
+   "type": "binary_release",
+   "revisions": {
+    "dependency_pin": "melee-llm scripts/setup.sh L10 @7e179081",
+    "installed_described": null
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no comprobada",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Solo se leyó el pin en setup.sh."
+   ]
+  },
+  {
+   "id": "A18",
+   "catalog_id": "A18",
+   "title": "Slippi replay/stream SPEC",
+   "url": "https://github.com/project-slippi/slippi-wiki/blob/3a85ce8b1f2dae1b487b2529a43c80f5de5885a3/SPEC.md",
+   "type": "doc",
+   "revisions": {
+    "observed_head": "3a85ce8b1f2dae1b487b2529a43c80f5de5885a3"
+   },
+   "catalog_revision": "3a85ce8b1f2dae1b487b2529a43c80f5de5885a3",
+   "license": {
+    "value": "no comprobada",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A6",
+    "A8"
+   ],
+   "notes": [
+    "Frame Start 0x5 random seed desde 2.2.0; Pre-Frame 0x7 seed, 0x31 botones físicos, 0x33/0x37 gatillos físicos, 0x3B/0x40 stick crudo, 0x41/0x42 C-stick crudo desde 3.17.0."
+   ]
+  },
+  {
+   "id": "A19",
+   "catalog_id": "A19",
+   "title": "doldecomp/melee",
+   "url": "https://github.com/doldecomp/melee",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": null
+   },
+   "catalog_revision": "2f8eab8ebd7a2d25541e125abfa246defe1bacec",
+   "license": {
+    "value": "no comprobada",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": []
+  },
+  {
+   "id": "A20",
+   "catalog_id": "A20",
+   "title": "ericyuegu/hal (código HAL)",
+   "url": "https://github.com/ericyuegu/hal",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "37045d974116405dd690efea6109a1d83a2da868",
+    "experiment_revisions": [
+     {
+      "consumer": "melee-llm docs/bots.md",
+      "pin": "37045d9"
+     }
+    ]
+   },
+   "catalog_revision": "37045d974116405dd690efea6109a1d83a2da868",
+   "license": {
+    "value": "ninguna (sin fichero LICENSE): todos los derechos reservados",
+    "path": null,
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A2",
+    "A4",
+    "A6",
+    "A8"
+   ],
+   "notes": [
+    "El catálogo B19 apunta al mismo HEAD.",
+    "Peso publicado = receta 059 (AWR + condicionamiento por retorno + V(s)), no BC pura."
+   ],
+   "catalog_ids_covered": [
+    "A20",
+    "B19"
+   ]
+  },
+  {
+   "id": "A21",
+   "catalog_id": "A21",
+   "title": "HF ericyuegu/hal-base-250m-rc",
+   "url": "https://huggingface.co/ericyuegu/hal-base-250m-rc",
+   "type": "hf_model",
+   "revisions": {
+    "observed_head": "e7fb8378ae15011cb0a414c16a8e5ac8b951fa63",
+    "file": "hal-250m.hal (+ model.safetensors)"
+   },
+   "catalog_revision": "e7fb8378ae15011cb0a414c16a8e5ac8b951fa63",
+   "license": {
+    "value": "MIT (pesos, según la ficha); código sin licencia",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "El repo no nombra qué run es el fichero de HF (candidato W&B vywk3cih, DESC).",
+    "Requiere CUDA."
+   ]
+  },
+  {
+   "id": "A22",
+   "catalog_id": "A22",
+   "title": "Blog HAL: hillclimbing-melee",
+   "url": "https://ericyuegu.com/hillclimbing-melee/",
+   "type": "web_page",
+   "revisions": {
+    "observed_head": null
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "desconocida",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "A2 lo citó con catalog_id B19 por error; el ID correcto es A22.",
+    "Página viva sin versión."
+   ]
+  },
+  {
+   "id": "A23",
+   "catalog_id": "A23",
+   "title": "vladfi1/slippi-ai (Phillip II)",
+   "url": "https://github.com/vladfi1/slippi-ai",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "5ada33e90c6c87fe83a1fb2d1a8105a96fd7b05b",
+    "experiment_revisions": [
+     {
+      "consumer": "melee-llm docs/bots.md y docs/delay.md",
+      "pin": "5ada33e"
+     }
+    ]
+   },
+   "catalog_revision": "5ada33e90c6c87fe83a1fb2d1a8105a96fd7b05b",
+   "license": {
+    "value": "MIT",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A2",
+    "A3",
+    "A6",
+    "A8"
+   ],
+   "notes": [
+    "Excluye el mando del rival (jax/embed.py L461-463).",
+    "split por defecto swap=True mezcla perspectivas (data.py L559-583, L609)."
+   ]
+  },
+  {
+   "id": "A24",
+   "catalog_id": "A24",
+   "title": "HF vladfi/phillip-models (ONNX)",
+   "url": "https://huggingface.co/vladfi/phillip-models",
+   "type": "hf_model",
+   "revisions": {
+    "observed_head": "a5045c5347ec6788a0d6f0801cb8483b3e8d47ce",
+    "file": "index-v1.json (≈188 entradas, hashes, tamaños, retraso)"
+   },
+   "catalog_revision": "a5045c5347ec6788a0d6f0801cb8483b3e8d47ce",
+   "license": {
+    "value": "MIT (ficha)",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_y_metadatos",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "index-v1.json leído en dos tramos (offset 0 y 100000), no completo.",
+    "Elegir modelos concretos y fijar su sha256 del índice."
+   ]
+  },
+  {
+   "id": "A26",
+   "catalog_id": "A26",
+   "title": "erickfm/MIMIC",
+   "url": "https://github.com/erickfm/MIMIC",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "3691f534194f9c2ec52f131c8ab96e3d8674c3fa",
+    "observed_head_date": "2026-11-16T16:07:57-08:00",
+    "dependency_pin": {
+     "sha": "bdfb6293c6709462b77647714b65952d190c116f",
+     "where": "melee-llm docs/bots.md L45 (integración y latencias)",
+     "date": "2026-11-04T15:52:22-08:00"
+    },
+    "diff_pin_to_head": "302 ficheros (sobre todo runs/; train.py 34 líneas); ancestría indeterminable en clon shallow (fetch --depth 1 por el integrador)"
+   },
+   "catalog_revision": "3691f534194f9c2ec52f131c8ab96e3d8674c3fa",
+   "license": {
+    "value": "MIT (build nativa del simulador GPL-3)",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A2",
+    "A6"
+   ],
+   "notes": [
+    "Afirmaciones de código de A2/A6 sobre HEAD, no sobre el pin."
+   ]
+  },
+  {
+   "id": "A27",
+   "catalog_id": "A27",
+   "title": "HF erickfm/MIMIC (checkpoints)",
+   "url": "https://huggingface.co/erickfm/MIMIC",
+   "type": "hf_model",
+   "revisions": {
+    "observed_head": "f49879b67abb64cd7fa76ea033f846fee45571e5",
+    "files": [
+     "fox/model.pt (= fox-20260420-baseline, BC pura)",
+     "fox-master/model.pt (linaje contradictorio)"
+    ]
+   },
+   "catalog_revision": "f49879b67abb64cd7fa76ea033f846fee45571e5",
+   "license": {
+    "value": "MIT",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "fox-master: README dice BC pura; CLAUDE.md L587 dice BC + 100 actualizaciones RL desde 2026-10-29."
+   ]
+  },
+  {
+   "id": "A28",
+   "catalog_id": "A28",
+   "title": "HF dataset erickfm/melee-ranked-replays",
+   "url": "https://huggingface.co/datasets/erickfm/melee-ranked-replays",
+   "type": "hf_dataset",
+   "revisions": {
+    "observed_head": "ef54ddc230e01373ff2a179b49a7e559af788081",
+    "size_bytes_tree": 1429763661491,
+    "files": 936,
+    "used_storage_bytes": 2150462262669
+   },
+   "catalog_revision": "ef54ddc230e01373ff2a179b49a7e559af788081",
+   "license": {
+    "value": "MIT declarada por el redistribuidor; derechos de los replays de origen DESCONOCIDOS",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "metadatos_y_doc",
+   "consulted_by": [
+    "A6"
+   ],
+   "notes": [
+    "README desactualizado respecto a ef54ddc2 (ZELDA_SHEIK y metadata/ inexistentes; hay SHEIK y ZELDA separadas).",
+    "Revisiones anteriores del historial HF mal etiquetadas (notas MIMIC 2026-06-15).",
+    "Cada partida no-ditto duplicada en las carpetas de ambos personajes.",
+    "Nada descargado."
+   ]
+  },
+  {
+   "id": "A46",
+   "catalog_id": "A46",
+   "title": "HF dataset ericyuegu/hal-mds-dataset",
+   "url": "https://huggingface.co/datasets/ericyuegu/hal-mds-dataset",
+   "type": "hf_dataset",
+   "revisions": {
+    "observed_head": "46ca723efd1de791c06300ed62c9278ecdb2f34a",
+    "size_bytes_tree": 172502111208,
+    "files": 7742,
+    "build": "git_sha 03c7a168…, git_dirty: true, artefacto mds-policy-world-v8 (selection.json)"
+   },
+   "catalog_revision": "46ca723efd1de791c06300ed62c9278ecdb2f34a",
+   "license": {
+    "value": "license: other, sin texto; contiene player_codes (datos personales)",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "metadatos_y_doc",
+   "consulted_by": [
+    "A6"
+   ],
+   "notes": [
+    "Leídos: projection.json, selection.json, stats.json, val/index.json de ranked-anonymized-1 y 3 KB de manifest.jsonl.",
+    "README 'at most one cheap death' vs selection.json max_cheap_deaths: 2.",
+    "Sin velocidades, action_state_frame, hitstun, RNG ni stick crudo."
+   ]
+  },
+  {
+   "id": "A29",
+   "catalog_id": "A29",
+   "title": "Na00s/Faynt-Tournament (runtime Faynt)",
+   "url": "https://github.com/Na00s/Faynt-Tournament",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "d20961761814caf01f5db19c945d00ab757730ea",
+    "experiment_revisions": [
+     {
+      "consumer": "melee-llm docs/bots.md",
+      "pin": "d209617"
+     },
+     {
+      "note": "parser slippi-ai Game schema = commit 577965a que fija Faynt (docs/bots.md L82)"
+     }
+    ]
+   },
+   "catalog_revision": "d20961761814caf01f5db19c945d00ab757730ea",
+   "license": {
+    "value": "MIT; parche Dolphin GPL-2.0+",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "El catálogo dice 'metadata'; se leyó código (sources/faynt/268031e7…/model.py)."
+   ]
+  },
+  {
+   "id": "A30",
+   "catalog_id": "A30",
+   "title": "HF frisson-labs/Faynt-10M-Arena",
+   "url": "https://huggingface.co/frisson-labs/Faynt-10M-Arena",
+   "type": "hf_model",
+   "revisions": {
+    "observed_head": "96929127f522c3fe3fc4721bb6fd6f0236e06888",
+    "files": "model.safetensors (FP32) + checkpoint.pt"
+   },
+   "catalog_revision": "96929127f522c3fe3fc4721bb6fd6f0236e06888",
+   "license": {
+    "value": "MIT; 'Offline use only. Do not use or adapt Faynt for Slippi Online'",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "Valor separado (~2,3M) no consta en el paquete HF (DESC)."
+   ]
+  },
+  {
+   "id": "X02",
+   "catalog_id": null,
+   "title": "HF frisson-labs/Faynt-10M-Expert (y colección Faynt: Base, 75M)",
+   "url": "https://huggingface.co/frisson-labs/Faynt-10M-Expert",
+   "type": "hf_model",
+   "revisions": {
+    "observed_head": null
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "MIT (según A2)",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "Revisión HF NO fijada: fijarla antes de usarla como baseline/prior."
+   ]
+  },
+  {
+   "id": "A31",
+   "catalog_id": "A31",
+   "title": "frisson-labs/Reyn",
+   "url": "https://github.com/frisson-labs/Reyn",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "93fa52742e43a3115a990211b3aebb31671d8fdc"
+   },
+   "catalog_revision": "93fa52742e43a3115a990211b3aebb31671d8fdc",
+   "license": {
+    "value": "MIT",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "Solo inferencia; sin código de entrenamiento."
+   ]
+  },
+  {
+   "id": "A32",
+   "catalog_id": "A32",
+   "title": "HF frisson-labs/Reyn-26C",
+   "url": "https://huggingface.co/frisson-labs/Reyn-26C",
+   "type": "hf_model",
+   "revisions": {
+    "observed_head": "6a46ac79f33f80e00c262e8e91abd6cb9c38f4cf"
+   },
+   "catalog_revision": "6a46ac79f33f80e00c262e8e91abd6cb9c38f4cf",
+   "license": {
+    "value": "MIT",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "Método de entrenamiento no documentado."
+   ]
+  },
+  {
+   "id": "A38",
+   "catalog_id": "A38",
+   "title": "Na00s/Faynt-Benchmarks",
+   "url": "https://github.com/Na00s/Faynt-Benchmarks",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "39bc007537501c16d6e2dac6f2bcaafe3b84a8c9"
+   },
+   "catalog_revision": "39bc007537501c16d6e2dac6f2bcaafe3b84a8c9",
+   "license": {
+    "value": "MIT",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A2",
+    "A8"
+   ],
+   "notes": [
+    "El catálogo dice 'metadata'; se leyó código y README.",
+    "README L50: algunas versiones de slippi-ai 'informed RL run or checkpoint selection' (contaminación)."
+   ]
+  },
+  {
+   "id": "A01",
+   "catalog_id": "A01",
+   "title": "Sitio público Melee × LLM",
+   "url": "https://melee.m19182.dev/",
+   "type": "web_page",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Ya 'unverified' en el catálogo."
+   ]
+  },
+  {
+   "id": "A39",
+   "catalog_id": "A39",
+   "title": "slippi.gg",
+   "url": "https://slippi.gg/",
+   "type": "web_page",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": []
+  },
+  {
+   "id": "X01",
+   "catalog_id": null,
+   "title": "vladfi1/phillip (Phillip histórico, código de B17/B18)",
+   "url": "https://github.com/vladfi1/phillip",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "114aea4c446b31359c5637b271db52b200440caa"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "AMBIGUA: LICENSE GPLv3 vs setup.py L39 license='MIT'",
+    "path": "LICENSE; setup.py",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A2",
+    "A4",
+    "A8"
+   ],
+   "notes": [
+    "Pesos en Google Drive, no en el repo. TF1, python_requires<3.12."
+   ]
+  },
+  {
+   "id": "B03-code",
+   "catalog_id": "B03",
+   "title": "lucas-maes/le-wm (LeWorldModel)",
+   "url": "https://github.com/lucas-maes/le-wm",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "8edfeb336732b5f3ce7b8b210d0ba370a09e2cac",
+    "catalog_head_sha": "8edfeb336732b5f3ce7b8b210d0ba370a09e2cac"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "MIT",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A3",
+    "A4",
+    "A7",
+    "A8"
+   ],
+   "notes": [
+    "SIGReg module.py L10-36; objetivo de planificación = MSE al embedding meta (jepa.py L112-153)."
+   ]
+  },
+  {
+   "id": "B02-code",
+   "catalog_id": "B02",
+   "title": "galilai-group/lejepa",
+   "url": "https://github.com/galilai-group/lejepa",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "c293d291ca87cd4fddee9d3fffe4e914c7272052",
+    "catalog_head_sha": "c293d291ca87cd4fddee9d3fffe4e914c7272052"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "CC BY-NC 4.0",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A3",
+    "A7"
+   ],
+   "notes": [
+    "API del README errónea (A3 C1); preferir copias MIT."
+   ]
+  },
+  {
+   "id": "B07-code",
+   "catalog_id": "B07",
+   "title": "MLO-lab/LeVJEPA",
+   "url": "https://github.com/MLO-lab/LeVJEPA",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "a748e0fbaa0ec548cad283978b818779708a3bd7",
+    "catalog_head_sha": "a748e0fbaa0ec548cad283978b818779708a3bd7"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "MIT",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A3"
+   ],
+   "notes": [
+    "SIGReg con DDP correcto (loss.py)."
+   ]
+  },
+  {
+   "id": "B13-code",
+   "catalog_id": "B13",
+   "title": "facebookresearch/jepa-wms",
+   "url": "https://github.com/facebookresearch/jepa-wms",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "13cf1d9c7e476f53c17714d2e0f1dc239a883ce0",
+    "catalog_head_sha": "13cf1d9c7e476f53c17714d2e0f1dc239a883ce0"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "CC BY-NC 4.0",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A3",
+    "A4"
+   ],
+   "notes": []
+  },
+  {
+   "id": "B04-code",
+   "catalog_id": "B04",
+   "title": "facebookresearch/vjepa2 (también B05/B06)",
+   "url": "https://github.com/facebookresearch/vjepa2",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "204698b45b3712590f06245fbfba32d3be539812",
+    "catalog_head_sha": "204698b45b3712590f06245fbfba32d3be539812"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "MIT (3 archivos Apache-2.0); licencia de pesos no consta",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A3",
+    "A4"
+   ],
+   "notes": []
+  },
+  {
+   "id": "B01-code",
+   "catalog_id": "B01",
+   "title": "facebookresearch/ijepa",
+   "url": "https://github.com/facebookresearch/ijepa",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "52c1ae95d05f743e000e8f10a1f3a79b10cff048",
+    "catalog_head_sha": "52c1ae95d05f743e000e8f10a1f3a79b10cff048"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "CC BY-NC 4.0",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A3"
+   ],
+   "notes": []
+  },
+  {
+   "id": "B11-code",
+   "catalog_id": "B11",
+   "title": "gaoyuezhou/dino_wm",
+   "url": "https://github.com/gaoyuezhou/dino_wm",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "0a9492fa12044b852ae9e001cc74604b79c8bb0c",
+    "catalog_head_sha": "0a9492fa12044b852ae9e001cc74604b79c8bb0c"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "MIT",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A4"
+   ],
+   "notes": []
+  },
+  {
+   "id": "B08-code",
+   "catalog_id": "B08",
+   "title": "danijar/dreamerv3",
+   "url": "https://github.com/danijar/dreamerv3",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "e01491fad6434b2245a3b8ca201dd7faedcc458c",
+    "catalog_head_sha": "e01491fad6434b2245a3b8ca201dd7faedcc458c"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "MIT",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A4"
+   ],
+   "notes": []
+  },
+  {
+   "id": "B12-code",
+   "catalog_id": "B12",
+   "title": "nicklashansen/tdmpc2",
+   "url": "https://github.com/nicklashansen/tdmpc2",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "332f19e4aba4bffe2dc736f45ea7f7bdc585903a",
+    "catalog_head_sha": "332f19e4aba4bffe2dc736f45ea7f7bdc585903a"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "MIT",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A4",
+    "A7"
+   ],
+   "notes": []
+  },
+  {
+   "id": "R02",
+   "catalog_id": "R02",
+   "title": "google-research/rliable",
+   "url": "https://github.com/google-research/rliable",
+   "type": "git_repo",
+   "revisions": {
+    "observed_head": "3ccd9f4dea577a04d3d2b557f259aac08badbd81",
+    "catalog_head_sha": "3ccd9f4dea577a04d3d2b557f259aac08badbd81"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "Apache-2.0",
+    "path": "LICENSE",
+    "status": "INSPECCIONADO_EN_CODIGO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "codigo_leido",
+   "consulted_by": [
+    "A8"
+   ],
+   "notes": [
+    "Repo archivado (catálogo); depende de arch>=5.3.1,<8 no instalado; sin bootstrap jerárquico."
+   ]
+  },
+  {
+   "id": "X03",
+   "catalog_id": null,
+   "title": "HF quentinll/lewm-pusht (pesos LeWM)",
+   "url": "https://huggingface.co/quentinll/lewm-pusht",
+   "type": "hf_model",
+   "revisions": {
+    "observed_head": null
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "ver notas",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A3"
+   ],
+   "notes": [
+    "Revisión no fijada; MIT según la ficha; píxeles Push-T, no reutilizable para Melee-estado."
+   ]
+  },
+  {
+   "id": "X04",
+   "catalog_id": null,
+   "title": "HF galilai-group/LeVJEPA-1.5-Large",
+   "url": "https://huggingface.co/galilai-group/LeVJEPA-1.5-Large",
+   "type": "hf_model",
+   "revisions": {
+    "observed_head": null
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "ver notas",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A3"
+   ],
+   "notes": [
+    "Revisión no fijada; CC BY-NC 4.0."
+   ]
+  },
+  {
+   "id": "X05",
+   "catalog_id": null,
+   "title": "le-wm.github.io (página del proyecto)",
+   "url": "https://le-wm.github.io/",
+   "type": "web_page",
+   "revisions": {
+    "observed_head": null
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "ver notas",
+    "path": null,
+    "status": "DOCUMENTADO_POR_AUTOR"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A3"
+   ],
+   "notes": []
+  },
+  {
+   "id": "B17",
+   "catalog_id": "B17",
+   "title": "At Human Speed · Firoiu, Ju, Tenenbaum (2018)",
+   "url": "https://arxiv.org/abs/1810.07286",
+   "type": "paper",
+   "revisions": {
+    "observed_version": "1810.07286v1 (PDF sha256 d93cb1de64eb73d0d015bb2643643749f49cd4f0cb1756c621c02b3e2f5a19db)"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no aplicable / derechos de autor del paper",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A2",
+    "A4",
+    "A6",
+    "A8"
+   ],
+   "notes": [
+    "Tabla 1 confundida por días de entrenamiento (3/10/7) y 6-8 partidas por agente (A8-004)."
+   ]
+  },
+  {
+   "id": "B03",
+   "catalog_id": "B03",
+   "title": "LeWorldModel · Maes et al. (2026)",
+   "url": "https://arxiv.org/abs/2603.19312",
+   "type": "paper",
+   "revisions": {
+    "observed_version": "2603.19312v3"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no aplicable / derechos de autor del paper",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A3",
+    "A4",
+    "A5",
+    "A8"
+   ],
+   "notes": []
+  },
+  {
+   "id": "B02",
+   "catalog_id": "B02",
+   "title": "LeJEPA y SIGReg · Balestriero y LeCun (2025)",
+   "url": "https://arxiv.org/abs/2511.08544",
+   "type": "paper",
+   "revisions": {
+    "observed_version": "2511.08544v3"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no aplicable / derechos de autor del paper",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A3"
+   ],
+   "notes": []
+  },
+  {
+   "id": "B05",
+   "catalog_id": "B05",
+   "title": "V-JEPA 2 / 2-AC · Assran et al. (2025)",
+   "url": "https://arxiv.org/abs/2506.09985",
+   "type": "paper",
+   "revisions": {
+    "observed_version": "2506.09985v1"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no aplicable / derechos de autor del paper",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A3",
+    "A4"
+   ],
+   "notes": [
+    "B04 comparte arXiv."
+   ]
+  },
+  {
+   "id": "B12",
+   "catalog_id": "B12",
+   "title": "TD-MPC2 · Hansen et al. (2024)",
+   "url": "https://arxiv.org/abs/2310.16828",
+   "type": "paper",
+   "revisions": {
+    "observed_version": "2310.16828v2"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no aplicable / derechos de autor del paper",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A4"
+   ],
+   "notes": []
+  },
+  {
+   "id": "B20",
+   "catalog_id": "B20",
+   "title": "Faynt · Janati et al. (2026)",
+   "url": "https://arxiv.org/abs/2610.02144",
+   "type": "paper",
+   "revisions": {
+    "observed_version": "2610.02144v1"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no aplicable / derechos de autor del paper",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A2"
+   ],
+   "notes": [
+    "Solo abstract."
+   ]
+  },
+  {
+   "id": "B09",
+   "catalog_id": "B09",
+   "title": "MuZero · Schrittwieser et al. (2020)",
+   "url": "https://arxiv.org/abs/1911.08265",
+   "type": "paper",
+   "revisions": {
+    "observed_version": "1911.08265v2"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no aplicable / derechos de autor del paper",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A4",
+    "A5"
+   ],
+   "notes": [
+    "Catálogo enlaza Nature (s41586-020-03051-4); se leyó arXiv v2."
+   ]
+  },
+  {
+   "id": "R01",
+   "catalog_id": "R01",
+   "title": "Deep RL at the Edge of the Statistical Precipice",
+   "url": "https://arxiv.org/abs/2108.13264",
+   "type": "paper",
+   "revisions": {
+    "observed_version": null
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no aplicable / derechos de autor del paper",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A8"
+   ],
+   "notes": [
+    "Versión no registrada."
+   ]
+  },
+  {
+   "id": "B22",
+   "catalog_id": "B22",
+   "title": "OpenSpiel · Lanctot et al. (2019)",
+   "url": "https://arxiv.org/abs/1908.09453",
+   "type": "paper",
+   "revisions": {
+    "observed_version": null
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "no aplicable / derechos de autor del paper",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "solo_metadatos",
+   "consulted_by": [
+    "A4",
+    "A5"
+   ],
+   "notes": [
+    "Solo ficha del catálogo."
+   ]
+  },
+  {
+   "id": "R05",
+   "catalog_id": "R05",
+   "title": "PyTorch CUDA semantics 2.15",
+   "url": "https://docs.pytorch.org/docs/2.15/notes/cuda.html",
+   "type": "doc",
+   "revisions": {
+    "observed_version": "2.15 (instalado aquí: torch 2.10.0 CPU)"
+   },
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [
+    "A7"
+   ],
+   "notes": []
+  },
+  {
+   "id": "R06",
+   "catalog_id": "R06",
+   "title": "libmelee GameState (readthedocs)",
+   "url": "https://libmelee.readthedocs.io/en/latest/gamestate.html",
+   "type": "doc",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [
+    "A6"
+   ],
+   "notes": [
+    "A6 citó R06 pero leyó código de libmelee bce21f09."
+   ]
+  },
+  {
+   "id": "B01",
+   "catalog_id": "B01",
+   "title": "I-JEPA paper",
+   "url": "https://arxiv.org/abs/2301.08243",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Paper no leído; se leyó su código (ver entrada -code)."
+   ]
+  },
+  {
+   "id": "B04",
+   "catalog_id": "B04",
+   "title": "V-JEPA 2 paper (B05 comparte arXiv)",
+   "url": "https://arxiv.org/abs/2506.09985",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "doc_leido",
+   "consulted_by": [],
+   "notes": [
+    "Paper cubierto por la entrada B05 (mismo arXiv)."
+   ]
+  },
+  {
+   "id": "B06",
+   "catalog_id": "B06",
+   "title": "V-JEPA 2.1",
+   "url": "https://arxiv.org/abs/2603.14482",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Paper no leído; se leyó su código (ver entrada -code)."
+   ]
+  },
+  {
+   "id": "B07",
+   "catalog_id": "B07",
+   "title": "LeVJEPA paper",
+   "url": "https://arxiv.org/abs/2608.27395",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Paper no leído; se leyó su código (ver entrada -code)."
+   ]
+  },
+  {
+   "id": "B08",
+   "catalog_id": "B08",
+   "title": "DreamerV3 paper",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12003158/",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Paper no leído; se leyó su código (ver entrada -code)."
+   ]
+  },
+  {
+   "id": "B10",
+   "catalog_id": "B10",
+   "title": "AlphaZero",
+   "url": "https://doi.org/10.1126/science.aar6404",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "No consultado por el swarm."
+   ]
+  },
+  {
+   "id": "B11",
+   "catalog_id": "B11",
+   "title": "DINO-WM paper",
+   "url": "https://proceedings.mlr.press/v267/zhou25t.html",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Paper no leído; se leyó su código (ver entrada -code)."
+   ]
+  },
+  {
+   "id": "B13",
+   "catalog_id": "B13",
+   "title": "JEPA-WMs paper",
+   "url": "https://arxiv.org/abs/2512.24497",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "Paper no leído; se leyó su código (ver entrada -code)."
+   ]
+  },
+  {
+   "id": "B14",
+   "catalog_id": "B14",
+   "title": "Sutton y Barto",
+   "url": "https://www.andrew.cmu.edu/course/10-703/textbook/BartoSutton.pdf",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "No consultado por el swarm."
+   ]
+  },
+  {
+   "id": "B15",
+   "catalog_id": "B15",
+   "title": "PPO",
+   "url": "https://arxiv.org/abs/1707.06347",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "No consultado por el swarm."
+   ]
+  },
+  {
+   "id": "B16",
+   "catalog_id": "B16",
+   "title": "Markov Games · Littman",
+   "url": "https://aima.eecs.berkeley.edu/~russell/classes/cs294/f21/papers/Littman_ICML94_Markov_Games.pdf",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "No consultado por el swarm."
+   ]
+  },
+  {
+   "id": "B18",
+   "catalog_id": "B18",
+   "title": "Beating the World's Best (paper)",
+   "url": "https://arxiv.org/abs/1702.06230",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "No consultado por el swarm."
+   ]
+  },
+  {
+   "id": "B21",
+   "catalog_id": "B21",
+   "title": "DROID",
+   "url": "https://arxiv.org/abs/2403.12945",
+   "type": "paper",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "No consultado por el swarm."
+   ]
+  },
+  {
+   "id": "R03",
+   "catalog_id": "R03",
+   "title": "Gymnasium Env API",
+   "url": "https://gymnasium.farama.org/api/env/",
+   "type": "doc",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "No consultado por el swarm."
+   ]
+  },
+  {
+   "id": "R04",
+   "catalog_id": "R04",
+   "title": "PettingZoo Parallel API",
+   "url": "https://pettingzoo.farama.org/api/parallel/",
+   "type": "doc",
+   "revisions": {},
+   "catalog_revision": null,
+   "license": {
+    "value": "—",
+    "path": null,
+    "status": "DESCONOCIDO"
+   },
+   "accessed_at": "2026-11-19",
+   "verification_scope": "no_accedido",
+   "consulted_by": [],
+   "notes": [
+    "No consultado por el swarm."
+   ]
+  }
+ ]
+}

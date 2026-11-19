@@ -5,3 +5,6 @@ __pycache__/
 .venv/
 pilot/**/data/
 pilot/**/*.pt
+ops/stopped_*.txt
+ops/stopped_at.txt
+ops/restore_services.sh

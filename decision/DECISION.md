@@ -1,5 +1,7 @@
 # DECISIÓN — modelo del mundo aprendido (JEPA / LeWorldModel) para Melee
 
+> **Nota del coordinador (2026-11-19):** la integración posterior encontró errores e imprecisiones en este documento (D-1 a D-7: p. ej. los 2,8 ms son del MPC de prueba de A7 y no del predictor del presente; el coste de E4 no incluye S0-MC; con 400 partidas por brazo un "sin efecto" real solo se declara ~61 % de las veces). La decisión no cambia; las correcciones están en `deliverables/CRITICAL_REVIEW.md` §7 y ya aplicadas en `deliverables/`.
+
 Fecha: 2026-11-19. Rol: decisor. Base: `decision/brainstorm_{defensor,esceptico,pragmatico}.md`, `evidence/A8/*` (incl. `G01_shadow_sim_check.md`) y comprobaciones puntuales en `evidence/A4`–`A7`. No se ha ejecutado nada nuevo. Etiquetas: **SOP** soportado (código inspeccionado o medición con artefacto), **INF** inferido, **PEND** pendiente de experimento, **HIP** estimación mía sin medir (todos los costes lo son; USD ≈ EUR).
 
 ## 0. Decisión en cinco líneas

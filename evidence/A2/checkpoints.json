@@ -1,0 +1,318 @@
+{
+ "agent_id": "A2",
+ "observed_at": "2026-11-19",
+ "note": "Ningún peso descargado ni ejecutado. Campos ausentes = no verificados. Ver BASELINES.md y claims.jsonl.",
+ "checkpoints": [
+  {
+   "id": "hal-base-250m-rc",
+   "project": "ericyuegu/hal",
+   "weights_url": "https://huggingface.co/ericyuegu/hal-base-250m-rc/tree/e7fb8378ae15011cb0a414c16a8e5ac8b951fa63",
+   "weights_revision": "e7fb8378ae15011cb0a414c16a8e5ac8b951fa63",
+   "file": "hal-250m.hal (+ model.safetensors)",
+   "size_bytes_documented": "0.99 GB según melee-llm docs/bots.md L47",
+   "weights_license": "MIT (ficha HF)",
+   "code_license": "ninguna (sin LICENSE)",
+   "observation": {
+    "type": "estado estructurado",
+    "fields": "pos x/y, %, escudo, facing, hitlag; acción(1024), stock, saltos, hurtbox, airborne; 4 ranuras jugador (ego, nana ego, nana rival, rival); 4 items (pos, vel, tipo, estado); stage, personajes; identidad ego (código/rango); mando propio previo; sin velocidades",
+    "context_frames": 256,
+    "opponent_controller": false
+   },
+   "action": {
+    "discretization": "botones 256 combos / stick 65 clusters / c-stick 9 / gatillos 25, autorregresivo c→main→triggers→buttons",
+    "chunking": "offsets 1..12,16,20,24,28; despliegue predicción 4, prefijo 2, replan 2",
+    "frame_skip": "no"
+   },
+   "architecture": "transformer causal: tronco 12×1024×16h + decodificador temporal 6×1024, cabeza de valor, condicionador de retorno",
+   "params": 246862205,
+   "objective_project": "BC, AWR, IQL, flow matching, cabezas de estado (archivo); sin RL online",
+   "objective_checkpoint": "RL offline: AWR (β=150) + condicionamiento por retorno 60f + V(s)",
+   "data": "~1.3M partidas, 44 fuentes (6 ranked anonimizados + 38 pros), MDS",
+   "memory": "contexto transformer + KV cache",
+   "delay": "no entrenado con retraso; real-time chunking; 0 añadido en play local (Dolphin espera), 3 en escalera",
+   "dynamics_component": "ninguno en el peso; GameStateExpert (029) y StateHead (060) solo auxiliares sin checkpoint",
+   "training_code_available": "sí pero rígido (059) y sin licencia",
+   "inference_cost": "GPU requerida; p95 6.49 ms RTX3060 (autor); p50 4.35 ms 3090 (melee-llm)",
+   "published_results": "91–5 vs slippi-ai imitation, 24–72 vs gm-v1 (HAL 2f vs 21f); ~2200 Elo escalera",
+   "claims": [
+    "A2-001",
+    "A2-002",
+    "A2-003",
+    "A2-004",
+    "A2-005",
+    "A2-006",
+    "A2-038"
+   ],
+   "role": "referencia externa de imitación condicionada por retorno; no baseline principal"
+  },
+  {
+   "id": "MIMIC fox-20260420-baseline (HF carpeta fox/)",
+   "project": "erickfm/MIMIC",
+   "weights_url": "https://huggingface.co/erickfm/MIMIC/tree/f49879b67abb64cd7fa76ea033f846fee45571e5",
+   "weights_revision": "f49879b67abb64cd7fa76ea033f846fee45571e5",
+   "file": "fox/model.pt",
+   "weights_license": "MIT",
+   "code_license": "MIT (build nativa del sim GPL-3)",
+   "observation": {
+    "type": "estado estructurado",
+    "fields": "184 dims: stage, 2 personajes, 2 acciones embebidos; por jugador pos, %, stock, saltos, 5 velocidades, hitlag, hitstun, escudo, flags; mando propio previo one-hot 56; sin proyectiles/Nana",
+    "context_frames": 180,
+    "opponent_controller": false
+   },
+   "action": {
+    "discretization": "shoulder 3 → c-stick 9 → stick 37 → botones 7, autorregresivo",
+    "chunking": "no",
+    "frame_skip": "no"
+   },
+   "architecture": "transformer causal 6×512×8h, d_ff 2048, posiciones relativas Shaw",
+   "params": "~20M",
+   "objective_project": "BC + PPO online sin crítico en build nativa (KL 0.01 al BC)",
+   "objective_checkpoint": "BC puro",
+   "data": "31,030 partidas master Fox (melee-ranked-replays)",
+   "memory": "contexto transformer 180 frames",
+   "delay": "0 (target[i]=buttons[i+1])",
+   "dynamics_component": "ninguno",
+   "training_code_available": "sí (train.py, recipes); RL requiere build con ISO",
+   "inference_cost": "~0.5 ms bf16 CUDA graphs (autor); p50 3.4 ms 3090 (melee-llm)",
+   "published_results": "30–0 vs CPU-9 Fox FD (notas del autor)",
+   "claims": [
+    "A2-007",
+    "A2-008",
+    "A2-009",
+    "A2-039"
+   ],
+   "role": "referencia externa de BC pura pequeña"
+  },
+  {
+   "id": "MIMIC fox-master",
+   "project": "erickfm/MIMIC",
+   "weights_url": "https://huggingface.co/erickfm/MIMIC/tree/f49879b67abb64cd7fa76ea033f846fee45571e5",
+   "weights_revision": "f49879b67abb64cd7fa76ea033f846fee45571e5",
+   "file": "fox-master/model.pt",
+   "objective_checkpoint": "CONTRADICTORIO: BC puro (README) o BC+100 actualizaciones RL (CLAUDE.md desde 2026-10-29)",
+   "claims": [
+    "A2-010",
+    "A2-011"
+   ],
+   "role": "no usar sin verificar metadatos"
+  },
+  {
+   "id": "phillip-models gm (y master/diamond/bronze)",
+   "project": "vladfi1/slippi-ai",
+   "weights_url": "https://huggingface.co/vladfi/phillip-models/raw/a5045c5347ec6788a0d6f0801cb8483b3e8d47ce/index-v1.json",
+   "weights_revision": "a5045c5347ec6788a0d6f0801cb8483b3e8d47ce",
+   "file": "gm.onnx",
+   "size_bytes": 195786742,
+   "weights_license": "MIT (ficha)",
+   "code_license": "MIT",
+   "observation": {
+    "type": "estado estructurado",
+    "fields": "p0/p1: %, facing, x, y, acción, invulnerable, personaje, saltos, escudo, on_ground, nana; stage, Randall, FoD, 15 items; nombre/rating; acción propia previa; SIN mando rival; filtro de tech del rival",
+    "opponent_controller": false
+   },
+   "action": {
+    "discretization": "custom_v1 (416 botones×c-stick, 85 stick) o embedding por ejes según versión",
+    "chunking": "no",
+    "frame_skip": "1 por defecto"
+   },
+   "architecture": "tx_like (LSTM/GRU residual + FFW), no atención",
+   "params": "~98M [INF por tamaño fp16]",
+   "objective_project": "BC con retraso + PPO con KL al maestro, self-play",
+   "objective_checkpoint": "RL (agent_type RL en índice)",
+   "data": "réplicas Slippi ranked (filtros en slippi_db/preprocessing.py)",
+   "memory": "estado recurrente",
+   "delay": "21 frames (cola de acciones; inherente)",
+   "dynamics_component": "ninguno",
+   "training_code_available": "sí (JAX)",
+   "inference_cost": "diamond (~98M) 10.8-12.7 ms CPU batch 1 (autor); p50 2.2 ms 3090 (melee-llm)",
+   "published_results": "sin cifras propias; externas con asimetría de retraso",
+   "claims": [
+    "A2-012",
+    "A2-013",
+    "A2-014",
+    "A2-015",
+    "A2-016",
+    "A2-017"
+   ],
+   "role": "rival de evaluación con retraso nativo; no baseline a igual retraso"
+  },
+  {
+   "id": "phillip-models fox_d18_imitation_v3",
+   "project": "vladfi1/slippi-ai",
+   "weights_url": "https://huggingface.co/vladfi/phillip-models/raw/a5045c5347ec6788a0d6f0801cb8483b3e8d47ce/index-v1.json",
+   "weights_revision": "a5045c5347ec6788a0d6f0801cb8483b3e8d47ce",
+   "size_bytes": 21244744,
+   "objective_checkpoint": "IMITATION (BC alineada a 18 frames de retraso)",
+   "delay": "18 frames",
+   "params": "~10.6M [INF]",
+   "claims": [
+    "A2-015",
+    "A2-016"
+   ],
+   "role": "par BC del eje de retraso"
+  },
+  {
+   "id": "phillip-models fox_d18_ditto_v4 / fox_d21_ditto_v6.2",
+   "project": "vladfi1/slippi-ai",
+   "weights_url": "https://huggingface.co/vladfi/phillip-models/raw/a5045c5347ec6788a0d6f0801cb8483b3e8d47ce/index-v1.json",
+   "weights_revision": "a5045c5347ec6788a0d6f0801cb8483b3e8d47ce",
+   "size_bytes": {
+    "fox_d21_ditto_v6.2": 89631659,
+    "fox_d18_ditto_v4": "no verificado en el tramo leído"
+   },
+   "objective_checkpoint": "RL (ditto)",
+   "delay": "18 / 21 frames",
+   "claims": [
+    "A2-015"
+   ],
+   "role": "par RL del eje de retraso; seleccionar uno y fijar sha256"
+  },
+  {
+   "id": "phillip histórico delay18/FalcoBF",
+   "project": "vladfi1/phillip",
+   "weights_url": "https://github.com/vladfi1/phillip/blob/114aea4c446b31359c5637b271db52b200440caa/agents/delay18/FalcoBF/params",
+   "weights_revision": "114aea4c446b31359c5637b271db52b200440caa",
+   "weights_license": "ambigua (GPLv3 LICENSE vs MIT setup.py)",
+   "observation": {
+    "type": "estado RAM estructurado",
+    "fields": "2 jugadores sin items ni stage; sin mando"
+   },
+   "action": {
+    "discretization": "35 acciones discretas (custom)",
+    "frame_skip": "act_every 3"
+   },
+   "architecture": "GRU 512 + actor 128 + crítico 128 + modelo 256",
+   "objective_checkpoint": "actor-crítico asíncrono, self-play, sin datos humanos",
+   "delay": "6 pasos × 3 = 18 frames",
+   "dynamics_component": "SÍ: phillip/model.py Model predice el siguiente estado de ambos jugadores desde la acción propia en cola (6 pasos), usado en inferencia; ignora al rival",
+   "training_code_available": "sí (TF1, bit-rot)",
+   "availability": "pesos no en el repo (Google Drive)",
+   "claims": [
+    "A2-018",
+    "A2-019",
+    "A2-020",
+    "A2-040"
+   ],
+   "role": "precedente histórico de dinámica; no reutilizable"
+  },
+  {
+   "id": "Faynt-10M-Arena",
+   "project": "frisson-labs / Na00s Faynt",
+   "weights_url": "https://huggingface.co/frisson-labs/Faynt-10M-Arena/tree/96929127f522c3fe3fc4721bb6fd6f0236e06888",
+   "weights_revision": "96929127f522c3fe3fc4721bb6fd6f0236e06888",
+   "file": "model.safetensors (FP32) + checkpoint.pt",
+   "weights_license": "MIT, 'Offline use only'",
+   "code_license": "MIT (parche Dolphin GPL-2.0+)",
+   "observation": {
+    "type": "estado estructurado (Game de slippi-ai)",
+    "fields": "p0/p1 personaje, acción, posición, daño, escudo, saltos, facing, mando, nana; stage, Randall, FoD; 15 items; mando ejecutado",
+    "context_frames": 256
+   },
+   "action": {
+    "discretization": "728 conjunto (botones/hombro/c-stick) × 85 stick, autorregresivo",
+    "chunking": "no",
+    "frame_skip": "no (offset 1 frame)"
+   },
+   "architecture": "transformer 5×384, GQA 6/2, RoPE, SwiGLU, anillo 256",
+   "params": 10163629,
+   "objective_project": "BC → currículo+destilación → PPO con KL al maestro (self-play/CPU-9)",
+   "objective_checkpoint": "Base→Expert→PPO run1 (step 1318, KL 0.1, 72 self+24 CPU9 Fox) → run2 (step 632, KL 0.003 fwd/rev, 100% self-play)",
+   "data": "839,942 réplicas ranked (melee-ranked-replays@ef54ddc2); RL solo dittos Fox",
+   "memory": "contexto 256 (anillo)",
+   "delay": "0 frames",
+   "dynamics_component": "ninguno; valor separado ~2.3M no confirmado en el paquete HF",
+   "training_code_available": "PPO sí (Faynt-Benchmarks); BC no publicado",
+   "inference_cost": "5.2 ms T4 (autor); CPU 8 hilos p50 8.1 / p95 10.3 / p99 11.5 ms (melee-llm)",
+   "published_results": "240/244 espejos vs slippi-ai a 21/24f; 68/68 vs slippi-ai privado a 0f (Expert 23/68)",
+   "claims": [
+    "A2-021",
+    "A2-022",
+    "A2-023",
+    "A2-024",
+    "A2-025",
+    "A2-026",
+    "A2-027"
+   ],
+   "role": "baseline externo RL sin dinámica; prior del planificador"
+  },
+  {
+   "id": "Faynt-10M-Expert",
+   "project": "frisson-labs",
+   "weights_url": "https://huggingface.co/frisson-labs/Faynt-10M-Expert",
+   "weights_revision": null,
+   "objective_checkpoint": "BC + currículo (B-mix10) + destilación 75M; sin RL",
+   "published_results": "106/152 panel inicial; 23/68 vs slippi-ai privado 0f",
+   "claims": [
+    "A2-021",
+    "A2-025"
+   ],
+   "note": "Revisión HF no fijada en esta auditoría",
+   "role": "baseline externo de imitación; control de Arena"
+  },
+  {
+   "id": "Faynt-10M-Base / 75M-*",
+   "project": "frisson-labs",
+   "weights_url": "https://huggingface.co/collections/frisson-labs/faynt",
+   "weights_revision": null,
+   "objective_checkpoint": "Base: BC pretrain; 75M: 75,305,709 parámetros, Arena step 980",
+   "claims": [
+    "A2-021",
+    "A2-025"
+   ],
+   "role": "referencias de escala; no prioritarias"
+  },
+  {
+   "id": "Reyn-26C",
+   "project": "frisson-labs/Reyn",
+   "weights_url": "https://huggingface.co/frisson-labs/Reyn-26C/tree/6a46ac79f33f80e00c262e8e91abd6cb9c38f4cf",
+   "weights_revision": "6a46ac79f33f80e00c262e8e91abd6cb9c38f4cf",
+   "weights_license": "MIT",
+   "code_license": "MIT",
+   "observation": {
+    "type": "estado estructurado (FRAME_SPEC)",
+    "context_frames": 256
+   },
+   "action": {
+    "discretization": "728×85 (CustomV1Codec)"
+   },
+   "architecture": "tronco Faynt-10M congelado [INF] + adaptador de atención cruzada sobre órdenes + StateAdapter + TauntHead; router tipo BERT",
+   "params": "33M según melee-llm",
+   "objective_checkpoint": "no documentado",
+   "delay": "0",
+   "dynamics_component": "ninguno",
+   "training_code_available": "no",
+   "published_results": "81.8% seguimiento de órdenes (1,368/1,672)",
+   "claims": [
+    "A2-028"
+   ],
+   "role": "jerarquía de control; fuera de baselines"
+  },
+  {
+   "id": "melee-llm meleebot bc-6m-v1 / bc-20m-ft / rl-yoshi-*",
+   "project": "mateo19182/melee-llm (no publicado)",
+   "weights_url": null,
+   "weights_revision": null,
+   "observation": {
+    "type": "estado estructurado del .slp",
+    "fields": "por jugador pos, 5 vel, %, escudo, state_age, hitstun, acción, hitlag, stocks, saltos, facing, airborne, invuln; mando propio t y mando RIVAL t−delay",
+    "context_frames": 256,
+    "opponent_controller": true
+   },
+   "action": {
+    "discretization": "shoulder 3 / c-stick 9 / stick 40 k-means / botones 32"
+   },
+   "architecture": "transformer causal 6×256 (5.4M) o 20.7M",
+   "objective_checkpoint": "BC (bc-*) y PPO self-play en melee-sim-light (rl-yoshi-*)",
+   "delay": "embedding de delay 0-12; PPO a 3 frames",
+   "dynamics_component": "ninguno",
+   "training_code_available": "sí (pipeline detenido por el autor)",
+   "published_results": "E07 5/6 vs CPU-9; E09/E10 PPO no transfiere; E11 Fox 2/24",
+   "claims": [
+    "A2-030",
+    "A2-031",
+    "A2-032"
+   ],
+   "role": "no reutilizar receta; reutilizar env/recompensa"
+  }
+ ]
+}

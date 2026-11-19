@@ -1,0 +1,156 @@
+{
+  "schema": "A8 evidence gaps v1",
+  "agent_id": "A8",
+  "date": "2026-11-19",
+  "status": "PROPUESTA: ningún hueco está cerrado; ningún experimento listado se ha ejecutado",
+  "ranking_rule": "prioridad = reducción de incertidumbre sobre la recomendación / coste; empate → el que no requiere ISO primero",
+  "scales": {
+    "uncertainty_reduction": "alta = puede invertir la recomendación; media = cambia el alcance o el orden de trabajo; baja = refina",
+    "cost": "S = horas de una persona sin hardware especial; M = días o GPU de alquiler horas; L = días de GPU/CPU multi-núcleo; XL = semanas"
+  },
+  "gaps": [
+    {
+      "id": "G-01",
+      "priority": 1,
+      "gap": "Viabilidad y exactitud de un simulador sombra en partidas Dolphin del bench: ¿llegan C-stick crudo y gatillos físicos de ambos jugadores por el flujo Slippi que reciben los bots? ¿lleva FrameStart el random_seed por frame y lo admite la API pública del simulador? ¿qué fracción de frames queda en sincronía?",
+      "why": "Decide si el 'nicho Dolphin' de la dinámica aprendida es estrecho o es todo el bench (conclusión 17 de CRITICAL_REVIEW). Hoy descansa en A4-027, falsa tal como está escrita.",
+      "evidence_now": ["A8-003", "A8-005", "A4-027", "A5-036", "A1-012"],
+      "test": "Parte A (sin ISO, S): leer SPEC de Slippi y libmelee/peppi para los offsets de raw C-stick, gatillos físicos y FrameStart seed por versión; inspeccionar la API Python de melee-sim-light/melee-brute buscando inyección de RNG por frame. Parte B (ISO, M): reproducir ≥50 partidas del bench con la sombra y medir frames en sincronía (H5).",
+      "requires": ["parte A: nada", "parte B: ISO"],
+      "uncertainty_reduction": "alta",
+      "cost": "S (A) + M (B)"
+    },
+    {
+      "id": "G-02",
+      "priority": 2,
+      "gap": "Throughput de un pipeline fusionado en GPU (política + dinámica aprendida 1-5M, CUDA graphs, batch 4k-64k) frente a la granja simulador+política documentada (Faynt farm 6.337 frames/s con 8 procesos; Phillip en sim: política 8,6 ms vs simulador 0,66 ms por frame)",
+      "why": "Es el contraejemplo X1 a favor del world model (imaginación masiva) y nadie lo midió; el swarm lo descartó por comparación por frame en CPU.",
+      "evidence_now": ["A7-014", "A7-015", "A1-031", "A8-008"],
+      "test": "H12 del plan con datos sintéticos; sincronizar con torch.cuda.Event.",
+      "requires": ["GPU"],
+      "uncertainty_reduction": "alta",
+      "cost": "M"
+    },
+    {
+      "id": "G-03",
+      "priority": 3,
+      "gap": "Panel contrafactual de regret de decisión: argmax de W0-S / W1-L / P0 frente al del simulador sobre ≥2.000 estados raíz con mismos candidatos, q y V̂",
+      "why": "Es el corte más barato con verdad exacta que separa 'la dinámica aprendida sirve para decidir' de 'predice bien en replays'. Minutos de simulador.",
+      "evidence_now": ["A4-024", "A5-042"],
+      "test": "G3/H7 del plan",
+      "requires": ["ISO", "predictor y V̂ entrenados (datos)"],
+      "uncertainty_reduction": "alta",
+      "cost": "M"
+    },
+    {
+      "id": "G-04",
+      "priority": 4,
+      "gap": "Sensibilidad relativa del resultado a q (modelo del rival), a V̂ y a la dinámica",
+      "why": "C3 de la conclusión ('valor terminal y rival importan más') es solo aritmética de descuento (A5-030); el ranking entre candidatos puede depender de golpes dentro del horizonte.",
+      "evidence_now": ["A5-030", "A4-028"],
+      "test": "Offline primero en el panel de G-03 (S0 con V̂ permutado; S0 con q copia vs q BC); luego H8/H9 en juego",
+      "requires": ["ISO"],
+      "uncertainty_reduction": "alta",
+      "cost": "M"
+    },
+    {
+      "id": "G-05",
+      "priority": 5,
+      "gap": "Varianza entre semillas σ_s de la tasa de victoria de BC y BC+PPO en Fox ditto",
+      "why": "Determina si 5 semillas bastan: con σ_s = 5 pp el MDE con 5 semillas es ~11 pp; para 5 pp harían falta ~24 semillas (power_result.json). Sin esto el diseño de E3 es ciego.",
+      "evidence_now": ["A8-011"],
+      "test": "Piloto E2: ≥3 semillas de B0 y B1 × 200 partidas; o, sin ISO, reanalizar curvas/semillas publicadas si existen (MIMIC, Faynt) — no localizado",
+      "requires": ["ISO", "GPU"],
+      "uncertainty_reduction": "media",
+      "cost": "L"
+    },
+    {
+      "id": "G-06",
+      "priority": 6,
+      "gap": "Coste por frame del simulador en el hardware objetivo y por la ruta que usaría S0 (EnvBatch+checkpoint vs World+StateBuilder), medido junto a W0-S/W1-L en la misma máquina",
+      "why": "Todas las comparaciones de velocidad cruzan máquinas (5950X vs EPYC) y rutas (17 µs C vs 0,35 ms World); afecta la comparación a igual tiempo (K6).",
+      "evidence_now": ["A1-018", "A8-008", "A7-014"],
+      "test": "python -m melee_brute bench + banco A7 en la misma máquina",
+      "requires": ["ISO"],
+      "uncertainty_reduction": "media",
+      "cost": "S"
+    },
+    {
+      "id": "G-07",
+      "priority": 7,
+      "gap": "Error de 'predecir el presente' bajo demora D ∈ {0,6,18} con q frente a marginal, y efecto en una política entrenada con la cola como entrada",
+      "why": "Contraejemplo X4 (At Human Speed); la evidencia a favor está confundida (3 vs 10 días de entrenamiento) y la en contra es indirecta.",
+      "evidence_now": ["A8-004", "A2-019", "A2-012"],
+      "test": "Offline en replays reparseados (G2 del plan)",
+      "requires": ["datos (.slp + peppi_py)"],
+      "uncertainty_reduction": "media",
+      "cost": "M"
+    },
+    {
+      "id": "G-08",
+      "priority": 8,
+      "gap": "Latencia del ARPredictor transformer con KV-cache (CPU 1-2 hilos y GPU) para W1-L en RT",
+      "why": "La sustitución por GRU (A5) cambia lo que mide W1−W0; las mediciones de A4/A7 son sin caché.",
+      "evidence_now": ["A7-011", "A4-025"],
+      "test": "Extender pilot/a7_bench con caché incremental",
+      "requires": ["nada (CPU local) / GPU para la variante GPU"],
+      "uncertainty_reduction": "baja",
+      "cost": "S"
+    },
+    {
+      "id": "G-09",
+      "priority": 9,
+      "gap": "Tasa de divergencia de 'replay-to-reach' para replays humanos sin RNG inyectado",
+      "why": "15/40 es de bots del autor (A8-005); la cobertura y el sesgo de selección del panel C2 de estados humanos es desconocida.",
+      "evidence_now": ["A4-021", "A8-005"],
+      "test": "sim/parity.py sobre una muestra de replays ranked",
+      "requires": ["ISO", "datos"],
+      "uncertainty_reduction": "media",
+      "cost": "S"
+    },
+    {
+      "id": "G-10",
+      "priority": 10,
+      "gap": "Test de aliasing / historia mínima H con Match.hash",
+      "why": "Fija la entrada de W0-S/W1-L con verdad exacta; hoy H=8 es provisional.",
+      "evidence_now": ["A4-022", "A4-003"],
+      "test": "A4 §5.4",
+      "requires": ["ISO"],
+      "uncertainty_reduction": "baja",
+      "cost": "S"
+    },
+    {
+      "id": "G-11",
+      "priority": 11,
+      "gap": "Qué versiones de slippi-ai informaron la selección de Faynt; qué splits entrenaron hal-base-250m-rc y Faynt",
+      "why": "Contaminación de rivales de test y de partidas de test si se usan como prior/referencia.",
+      "evidence_now": ["A8-006", "A6-018"],
+      "test": "Leer apéndices F.5-F.11 del paper de Faynt y SOURCE_MANIFEST; preguntar a los autores",
+      "requires": ["nada"],
+      "uncertainty_reduction": "media",
+      "cost": "S"
+    },
+    {
+      "id": "G-12",
+      "priority": 12,
+      "gap": "Beneficio de representación JEPA (E1/E2 vs E0b vs E1-S) en probes y curvas BC con tamaño de datos",
+      "why": "Contraejemplo X5; independiente de la pregunta de dinámica en decisión.",
+      "evidence_now": ["A3-PROP-001", "A3-MEL-003"],
+      "test": "Probes offline y BC a 3 tamaños de corpus (G2); fuerza de juego solo en G7",
+      "requires": ["datos", "GPU para escala"],
+      "uncertainty_reduction": "media",
+      "cost": "M (offline) / XL (juego con ≥5 semillas)"
+    },
+    {
+      "id": "G-13",
+      "priority": 13,
+      "gap": "Revisión de motor de la granja (checkout MELEE_SIM) frente al pin del runtime (090e54b0, sin hitlag_left)",
+      "why": "Resultados de farm y de --mode sim pueden venir de motores distintos.",
+      "evidence_now": ["A1-025"],
+      "test": "Registrar el SHA del checkout de la granja",
+      "requires": ["acceso a la máquina del autor"],
+      "uncertainty_reduction": "baja",
+      "cost": "S"
+    }
+  ]
+}

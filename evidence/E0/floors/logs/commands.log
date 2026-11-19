@@ -28,3 +28,8 @@
 2026-11-19T16:10:07Z NOTE run_smoke_rest.sh detenido por el entorno (Claude Code) por memoria del sistema críticamente baja; no se relanza sin permiso
 2026-11-19T16:10:16Z START summarize | python3 pilot/e0/models/summarize.py | avail=1765MB | load=82.30
 2026-11-19T16:10:22Z END summarize rc=0 wall=0:05.07 user_s=4.26 maxrss_kb=48532
+2026-11-19T16:16:05Z NOTE coordinador: servidor sin memoria; el proceso de ~970 MB matado por el OOM-killer a las 17:09 (hora local) coincide con smoke_q_s1 relanzado a las 16:08:38Z: probablemente mío. Sin procesos vivos. No se lanzan más corridas con torch; se cierra con lo que hay en disco
+2026-11-19T16:16:19Z START summarize | python3 pilot/e0/models/summarize.py | avail=1786MB | load=108.32
+2026-11-19T16:16:23Z END summarize rc=0 wall=0:04.30 user_s=4.26 maxrss_kb=47952
+2026-11-19T16:16:27Z START summarize | python3 pilot/e0/models/summarize.py | avail=1589MB | load=99.89
+2026-11-19T16:16:32Z END summarize rc=0 wall=0:04.03 user_s=4.07 maxrss_kb=48576

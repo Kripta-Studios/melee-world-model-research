@@ -9,7 +9,8 @@ from collections import defaultdict
 
 import numpy as np
 
-COLS = ["model", "family", "field", "h", "subset", "seed", "n", "mae", "rmse", "within1", "within5", "acc", "nll"]
+COLS = ["model", "family", "field", "h", "subset", "seed", "n", "mae", "rmse", "within1", "within5", "acc", "nll",
+        "n_seeds"]
 POS_FIELDS = ("pos_x", "pos_y")
 X_SIGNED = ("pos_x", "vel_air_x_self", "vel_x_attack", "vel_ground_x_self")  # se canonicalizan por facing
 

@@ -3,9 +3,20 @@
 Implementador E0 (paso "suelos + humo"), 2026-11-19. Etiquetas: **REP** (medido aquí, con comando registrado en
 `logs/commands.log`), **INF**, **EST** (estimación no medida), **PROP**.
 
-**Estado: INCOMPLETO en la parte de semillas.** De las 6 corridas de humo previstas (3 de W0-S y 3 de q) hay 3 válidas:
-W0-S con semillas 0 y 1, y q con la semilla 0. W0-S s2, q s1 y q s2 no terminaron (ver §6.1). Las desviaciones entre
-semillas de W0-S son de **n = 2** y las de q **no existen**. No sirven todavía para calibrar los gates de E1.
+**Estado: cerrado con lo que hay en disco, por orden del coordinador** (servidor sin memoria; no se lanza ningún
+proceso más con torch).
+
+Los suelos triviales están **completos**. Del humo terminaron **3 de 6 corridas**:
+
+| modelo | semillas terminadas | semillas cortadas y motivo |
+|---|---|---|
+| W0-S (`w0s_*`) | **2**: s0, s1 | s2: abortada por mi watchdog de VmRSS (> 880 MB) al arrancar; su relanzamiento lo paró el entorno por memoria baja |
+| q (`q_mlp`) | **1**: s0 | s1: abortada por el watchdog; relanzada y muerta (casi seguro por el OOM-killer del servidor hacia las 17:09 hora local, un proceso de ~970 MB, probablemente esta corrida). s2: nunca llegó a terminar (matada a mano para no tener dos procesos; el relanzamiento lo paró el entorno) |
+
+**La desviación entre semillas queda SIN ESTIMAR para ambos modelos (< 3 semillas).** El insumo "2× la desviación
+entre semillas" para los gates de E1 sigue pendiente. `model_diagnostics.csv` solo trae filas `seed=mean` (con
+`n_seeds`) y ninguna `seed=std`. Para W0-S doy los dos valores por semilla como información, no como estimación de
+la dispersión.
 
 Todas las cifras salen de `model_diagnostics.csv`, `floors_diagnostics.csv`, `runs/*.json` y
 `logs/summarize.out`. Ese último fichero tiene todas las tablas completas: todos los campos, todos los subconjuntos y
@@ -133,24 +144,24 @@ NLL por frame. "buttons" es la suma de las NLL de los 8 bits; el stick usa top-5
 - Simplificaciones declaradas frente a DESIGN §3.3: MLP en lugar de un transformer de entidades, sin two-hot ni modo
   de contadores, sin espejo, sin proyectiles y sin entrenar el despliegue (solo h = 1).
 
-### 4.1 W0-S frente al mejor suelo (media ± sd, n = 2 semillas; IC95 bootstrap por partida, 12 partidas)
+### 4.1 W0-S frente al mejor suelo (media de 2 semillas, valores s0 / s1; sd sin estimar; IC95 bootstrap por partida, 12 partidas)
 
 Acierto de `action` en eventos (mejor suelo: majority):
 
 | h | suelo | oracle_u | persist_u | shuffled_u |
 |---|---|---|---|---|
-| 1 | 0.283 | 0.696 ± 0.0015 | 0.404 ± 0.0068 | 0.346 ± 0.012 |
-| 4 | 0.289 | 0.639 ± 0.0008 (Δ +0.350, IC [+0.341, +0.360]) | 0.324 ± 0.0048 (Δ +0.035, IC [+0.030, +0.039]; 7× sd) | 0.266 ± 0.0071 |
-| 8 | 0.282 | 0.551 ± 0.0001 (Δ +0.269, IC [+0.259, +0.279]) | 0.225 ± 0.0031 (Δ −0.057, IC [−0.063, −0.051]) | 0.197 ± 0.0054 |
+| 1 | 0.283 | 0.696 (0.697 / 0.695) | 0.404 (0.399 / 0.408) | 0.346 (0.338 / 0.355) |
+| 4 | 0.289 | 0.639 (0.639 / 0.640); Δ +0.350, IC [+0.341, +0.360] | 0.324 (0.320 / 0.327); Δ +0.035, IC [+0.030, +0.039] | 0.266 (0.261 / 0.271) |
+| 8 | 0.282 | 0.551 (0.551 / 0.551); Δ +0.269, IC [+0.259, +0.279] | 0.225 (0.223 / 0.227); Δ −0.057, IC [−0.063, −0.051] | 0.197 (0.193 / 0.201) |
 
 MAE de la posición en eventos:
 
 | campo | h | mejor suelo | oracle_u | persist_u | shuffled_u |
 |---|---|---|---|---|---|
-| pos_x | 4 | constvel 2.168 | 2.189 ± 0.041 (IC Δ [−0.03, +0.07]) | 2.480 ± 0.017 | 2.942 ± 0.026 |
-| pos_x | 8 | condmean 4.629 | **3.918 ± 0.087** (−15.4 %, IC Δ [−0.84, −0.58]; 8× sd) | 4.890 ± 0.028 | 5.553 ± 0.032 |
-| pos_y | 4 | condmean 2.235 | 2.821 ± 0.015 | 3.045 ± 0.012 | 3.238 ± 0.013 |
-| pos_y | 8 | condmean 4.217 | 4.892 ± 0.029 | 5.576 ± 0.023 | 5.857 ± 0.014 |
+| pos_x | 4 | constvel 2.168 | 2.189 (2.160 / 2.218); IC Δ [−0.03, +0.07] | 2.480 (2.467 / 2.492) | 2.942 |
+| pos_x | 8 | condmean 4.629 | **3.918 (3.856 / 3.979)**; −15.4 %, IC Δ [−0.84, −0.58] | 4.890 (4.870 / 4.910) | 5.553 |
+| pos_y | 4 | condmean 2.235 | 2.821 (2.811 / 2.832) | 3.045 (3.036 / 3.053) | 3.238 |
+| pos_y | 8 | condmean 4.217 | 4.892 (4.872 / 4.913) | 5.576 (5.560 / 5.592) | 5.857 |
 
 Otros campos:
 - En `percent` el modelo es peor que la persistencia en todos los h (eventos h = 8: 1,064 frente a 0,938). INF:
@@ -165,14 +176,16 @@ Otros campos:
    subconjuntos que los suelos. Las salidas tienen sentido: el error crece con h y el modelo bate claramente a la
    persistencia en eventos.
 2. **Sí usa las acciones.** Barajar los mandos futuros empeora todas las métricas frente a oracle_u. En la acción en
-   eventos a h = 4 la caída es de 0,639 a 0,266, unas 50 veces la sd. El modelo no ignora la entrada de acción.
+   eventos a h = 4 la caída es de 0,639 a 0,266 (en ambas semillas: 0,639/0,261 y 0,640/0,271). El modelo no ignora la
+   entrada de acción.
 3. **¿Supera al mejor suelo en eventos a h ∈ {4, 8}?**
    - Solo con mandos oráculo. Mejora la acción en eventos, con una reducción relativa del error de 49 % a h = 4 y de
-     37 % a h = 8. Ambos efectos superan con mucho 2× sd y su IC95 por partida excluye 0. También mejora pos_x a h = 8
-     (−15 %).
+     37 % a h = 8, y pos_x a h = 8 (−15 %). Su IC95 por partida excluye 0. El criterio "> 2× sd entre semillas" no
+     se puede evaluar porque la sd está sin estimar, aunque las dos semillas difieren ≤ 0,2 pp frente a efectos de
+     27–35 pp.
    - **Con la información justa (persist_u) no lo supera de forma útil.**
-     - Acción a h = 4: +3,5 pp, una reducción relativa del error de solo el 4,9 % (< 10 % de G1-dyn), aunque es 7× sd
-       y el IC excluye 0.
+     - Acción a h = 4: +3,5 pp, una reducción relativa del error de solo el 4,9 % (< 10 % de G1-dyn). El IC por
+       partida excluye 0, y las dos semillas difieren en 0,7 pp.
      - Acción a h = 8: peor que majority (−5,7 pp).
      - Posición: peor que el mejor suelo a h = 4 y 8.
    - Con ≤ 1M parámetros, 40 partidas y 2 épocas, esto **no decide G1**. Además G1-dyn en E1 se medirá con el rival
@@ -186,11 +199,10 @@ Otros campos:
      aprendió a copiar u_f en 2 épocas. A E1 le conviene darle u_f como entrada residual.
    - En frames de cambio de mando el acierto queda por debajo de la marginal (stick h = 7: 0,223 frente a 0,231),
      aunque la NLL es mejor.
-5. **Desviación entre semillas (W0-S, n = 2).** En estas métricas va de 1e-4 a 1e-2 en acierto y de 0,005 a 0,09 u
-   en MAE de posición. Por ejemplo, la acción en eventos con persist_u tiene sd 0,005 a h = 4 y 0,003 a h = 8.
-   **Con n = 2 la sd es muy poco fiable** (el IC de una sd con 1 grado de libertad abarca ~0,45×–32×). El IC
-   bootstrap por partida, con 12 partidas, suele ser más ancho que 2× sd. La varianza por partida domina sobre la
-   varianza por semilla, así que en E1 el factor limitante será el número de partidas de test, no las semillas (INF).
+5. **Desviación entre semillas: SIN ESTIMAR** (W0-S tiene 2 semillas y q, 1; hacen falta ≥ 3). Como dato, la
+   diferencia |s0 − s1| de W0-S en las métricas de arriba es de 0,0001–0,01 en acierto y de 0,02–0,12 u en MAE de
+   posición. El IC bootstrap por partida (12 partidas) es del mismo orden o más ancho. INF: la variación entre
+   partidas pesará al menos tanto como la variación entre semillas, pero con 2 semillas no se puede afirmar.
 
 ## 5. Tiempos y memoria (REP) y extrapolación a E1 (EST)
 
@@ -218,13 +230,16 @@ Otros campos:
 
 ## 6. Limitaciones y problemas
 
-1. **Semillas incompletas.**
+1. **Semillas incompletas** (tabla al principio).
    - `smoke_q_s1` y `smoke_w0s_s2` las abortó mi watchdog interno de VmRSS (> 880 MB). La causa fue una copia doble
      en `Block` y retener vistas del memmap: se corrigió.
-   - El relanzamiento (`run_smoke_rest.sh`) lo **detuvo el entorno de Claude Code por memoria del sistema
-     críticamente baja**: la RAM disponible bajaba a 90–450 MB por otros procesos.
-   - No lo relancé sin permiso. Para completar: `bash pilot/e0/models/run_smoke_rest.sh` y después `summarize.py`.
-     Son unos 4–7 min de CPU por corrida.
+   - El relanzamiento (`run_smoke_rest.sh`) lo detuvo el entorno de Claude Code por memoria del sistema críticamente
+     baja, y el coordinador informó de un proceso de ~970 MB muerto por el OOM-killer a las 17:09. Es probablemente
+     el `smoke_q_s1` relanzado. Como VmRSS incluye ~250 MB de librerías de torch mapeadas, el watchdog no bastó
+     para evitarlo.
+   - Por orden del coordinador no se lanza nada más con torch. Completar las 3 semillas es tarea pendiente para
+     cuando el servidor tenga memoria (o en la GPU de E1): `bash pilot/e0/models/run_smoke_rest.sh` y después
+     `summarize.py`, unos 4–7 min de CPU por corrida.
    - Las semillas 0–1 de W0-S se entrenaron con el código anterior al cambio de `Block`. Ese cambio afecta solo a la
      memoria y a cómo se calculan μ/σ, que pasan a hacerse por campo (mismos valores salvo redondeo float32).
    - Hasta en tres arranques lancé procesos con "available" < 600 MB (`floors`, `bench_w0s`, `smoke_w0s_s0`, ver
@@ -245,7 +260,8 @@ Otros campos:
 ## 7. Artefactos
 
 - `floors_diagnostics.csv`: suelos, 2.406 filas.
-- `model_diagnostics.csv`: suelos + humo por semilla + filas `seed=mean` y `seed=std`; 6.492 filas.
+- `model_diagnostics.csv`: suelos + humo por semilla + filas `seed=mean` con `n_seeds` (sin `seed=std`, porque
+  hay < 3 semillas); 5.454 filas.
 - `floors_per_game.csv` y `runs/*_per_game.csv`: métricas por partida para el bootstrap.
 - `runs/smoke_*.json`: tiempos, RSS y lista de sha1 de train.
 - `vocab.json`: vocabularios de acción y stick.

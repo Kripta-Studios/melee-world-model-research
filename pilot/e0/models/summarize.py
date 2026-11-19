@@ -1,7 +1,7 @@
 """Une suelos + corridas de humo en model_diagnostics.csv y emite tablas markdown (stdout) para FLOORS_REPORT.md.
 
-Filas añadidas: para cada modelo de humo, seed="mean" y seed="std" (desviación típica muestral entre las 3 semillas,
-ddof=1). Comparaciones contra el MEJOR suelo por (campo, h, subconjunto), con IC95 bootstrap por partida (val).
+Filas añadidas: para cada modelo de humo, seed="mean" (media de las semillas terminadas, columna n_seeds) y, SOLO si
+hay >= 3 semillas, seed="std" (ddof=1). Con < 3 semillas la desviación entre semillas queda sin estimar. Comparaciones contra el MEJOR suelo por (campo, h, subconjunto), con IC95 bootstrap por partida (val).
 Uso: python3 pilot/e0/models/summarize.py > evidence/E0/floors/logs/summarize.out
 """
 from __future__ import annotations
@@ -42,7 +42,8 @@ def main():
         groups.setdefault((r["model"], r["family"], r["field"], r["h"], r["subset"]), []).append(r)
     agg = []
     for k, rs in groups.items():
-        for stat in ("mean", "std"):
+        # la desviación entre semillas solo se estima con >= 3 semillas (encargo); con menos, queda sin estimar
+        for stat in (("mean", "std") if len(rs) >= 3 else ("mean",)):
             o = dict(model=k[0], family=k[1], field=k[2], h=k[3], subset=k[4], seed=stat, n=rs[0]["n"])
             for m in ("mae", "rmse", "within1", "within5", "acc", "nll"):
                 v = np.array([f(r[m]) for r in rs])
@@ -54,6 +55,10 @@ def main():
     allrows = floors + runs + agg
     M.write_rows(os.path.join(D, "model_diagnostics.csv"), allrows)
     print(f"model_diagnostics.csv: {len(allrows)} filas ({len(floors)} suelos, {len(runs)} humo, {len(agg)} agregados)")
+    for m in sorted({r["model"] for r in runs}):
+        ss = sorted({r["seed"] for r in runs if r["model"] == m})
+        print(f"- {m}: {len(ss)} semilla(s) terminada(s) {ss}; desviación entre semillas "
+              f"{'estimada' if len(ss) >= 3 else 'SIN ESTIMAR (< 3 semillas)'}")
 
     idx = {}
     for r in allrows:
@@ -144,10 +149,10 @@ def main():
         return (min(cands) if better == "low" else max(cands))
 
     def cmp_table(fam, field, met, better, hs, subs, models_smoke, floor_models):
-        print(f"\n**{field} — {met}**: humo (media ± desv. entre semillas: {len(seeds_of.get(models_smoke[0], []))}) frente al mejor suelo; "
-              "Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val)\n")
-        print("| subconjunto | h | mejor suelo | valor suelo | modelo | media ± sd | Δ | Δ/sd | mejora relativa | IC95 Δ |")
-        print("|---|---|---|---|---|---|---|---|---|---|")
+        print(f"\n**{field} — {met}**: humo (nº de semillas terminadas: {len(seeds_of.get(models_smoke[0], []))}) frente al mejor suelo; "
+              "Δ = modelo − suelo; IC95 bootstrap por partida (12 partidas de val); sd solo con ≥ 3 semillas\n")
+        print("| subconjunto | h | mejor suelo | valor suelo | modelo | media (sd) | por semilla | Δ | Δ/sd | mejora relativa | IC95 Δ |")
+        print("|---|---|---|---|---|---|---|---|---|---|---|")
         for sub in subs:
             for h in hs:
                 bv, bm = best_floor(fam, field, h, sub, met, better, floor_models)
@@ -163,8 +168,12 @@ def main():
                         rel = (bv - mu) / bv
                     lo, hi, ng = boot_diff(ms, bm, field, h, sub, met)
                     ci = "—" if np.isnan(lo) else f"[{lo:+.4g}, {hi:+.4g}]"
-                    print(f"| {sub} | {h} | {bm} | {bv:.4g} | {ms} | {mu:.4g} ± {sd:.2g} | {d:+.4g} | "
-                          f"{d / sd if sd > 0 else np.nan:+.1f} | {rel * 100:+.1f} % | {ci} |")
+                    sds = "sin estimar" if np.isnan(sd) else f"{sd:.2g}"
+                    ratio = "—" if np.isnan(sd) or sd == 0 else f"{d / sd:+.1f}"
+                    per = " / ".join(f"s{sd_}={get(ms, fam, field, h, sub, sd_, met):.4g}"
+                                     for sd_ in sorted(seeds_of.get(ms, [])))
+                    print(f"| {sub} | {h} | {bm} | {bv:.4g} | {ms} | {mu:.4g} (sd: {sds}) | {per} | {d:+.4g} | "
+                          f"{ratio} | {rel * 100:+.1f} % | {ci} |")
 
     smoke_dyn = ["w0s_oracle_u", "w0s_persist_u", "w0s_shuffled_u"]
     if any(r["model"].startswith("w0s") for r in runs):
@@ -182,8 +191,9 @@ def main():
         for sub in ("all", "event"):
             bv, bm = best_floor("dyn", "action", 1, sub, "nll", "low", ["persist", "majority", "marginal"])
             for ms in smoke_dyn:
-                print(f"- {sub}: {ms} {get(ms, 'dyn', 'action', 1, sub, 'mean', 'nll'):.4g} ± "
-                      f"{get(ms, 'dyn', 'action', 1, sub, 'std', 'nll'):.2g} (mejor suelo {bm} {bv:.4g})")
+                sdv = get(ms, 'dyn', 'action', 1, sub, 'std', 'nll')
+                print(f"- {sub}: {ms} {get(ms, 'dyn', 'action', 1, sub, 'mean', 'nll'):.4g} (sd: "
+                      f"{'sin estimar' if np.isnan(sdv) else f'{sdv:.2g}'}) (mejor suelo {bm} {bv:.4g})")
     if any(r["model"] == "q_mlp" for r in runs):
         print("\n## Humo q frente a suelos (val)")
         for comp in ("buttons", "stick", "cstick", "btn_A", "btn_X"):
@@ -195,7 +205,8 @@ def main():
                 mg = get("marginal", "q", comp, h, "all", "-", "nll")
                 mu = get("q_mlp", "q", comp, h, "all", "mean", "nll")
                 sd = get("q_mlp", "q", comp, h, "all", "std", "nll")
-                print(f"- {comp} h={h}: marginal {mg:.4g}, q {mu:.4g} ± {sd:.2g}")
+                print(f"- {comp} h={h}: marginal {mg:.4g}, q {mu:.4g} (sd entre semillas: "
+                      f"{'sin estimar' if np.isnan(sd) else f'{sd:.2g}'})")
 
     # ---------------- tiempos ----------------
     print("\n## Tiempos y memoria de las corridas de humo")

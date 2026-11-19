@@ -38,3 +38,14 @@ más de ~300 MB de disco, no lances procesos largos. No hay ISO de Melee: nada q
 - Informes densos y concretos (hallazgos, evidencias, dudas, decisiones), no resúmenes genéricos de papers.
 - Tu mensaje final al coordinador: ≤ 25 líneas con hallazgos clave, sorpresas/contradicciones con el paquete,
   y dudas que bloquean a otros roles.
+
+## Anexo fase E0 (2026-11-19, sustituye a los límites de arriba donde difiera)
+- El usuario autorizó continuar con E0: venv propio con lectores de datos y ≤ 1 GB de replays en el segundo disco.
+- Datos, venv y cachés SOLO en `/srv/mail/melee-research-data/` (disco compartido con otros proyectos: no toques
+  ninguna otra carpeta de `/srv/mail`). Tope duro: 3 GB en total en esa carpeta (≤ 1 GB de replays). Nada de datos
+  en el repo; el código va en `pilot/` y los resultados pequeños (JSON/CSV/MD, < 5 MB) en `evidence/E0/`.
+- Los servicios de producción están ACTIVOS y la RAM disponible ronda 2 GB: usa `nice -n 19`, ≤ 2 hilos
+  (`OMP_NUM_THREADS`, `torch.set_num_threads`), respeta el tope de RAM que te dé tu encargo, y antes de cada
+  ejecución pesada comprueba `free -m`: si "available" < 600 MB, espera o reduce. No pares ni toques servicios.
+- No instales paquetes de sistema ni en el Python global: solo `pip` dentro del venv indicado.
+- No hagas git commit/push: lo hace el coordinador (los commits son solo de Kripta-Studios, sin trailers).

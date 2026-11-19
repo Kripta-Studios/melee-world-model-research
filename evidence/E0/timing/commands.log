@@ -1,0 +1,4 @@
+2026-11-19T15:32:03Z START unittest | uptime:  16:32:03 up  8:01,  2 users,  load average: 87.28, 99.44, 79.17
+2026-11-19T15:32:09Z END rc=0 unittest
+2026-11-19T15:32:18Z START unittest | uptime:  16:32:18 up  8:02,  2 users,  load average: 68.02, 94.58, 77.91
+2026-11-19T15:32:23Z END rc=0 unittest

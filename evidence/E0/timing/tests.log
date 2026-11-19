@@ -1,0 +1,19 @@
+test_core_equal (test_kv_cache.TestKV.test_core_equal) ... ok
+test_fast_sampling_matches_reference_semantics (test_kv_cache.TestKV.test_fast_sampling_matches_reference_semantics)
+Vectorised sampler: same shapes/dtypes/ranges; with near-deterministic logits, same discrete outcome. ... ok
+test_full_predict_equal (test_kv_cache.TestKV.test_full_predict_equal)
+Whole predictor (W0-S + closed-loop q + pi0) with the same weights and the same random streams. ... ok
+test_shapes_and_params (test_kv_cache.TestKV.test_shapes_and_params) ... ok
+test_best_so_far (test_rt_strict.TestRTStrict.test_best_so_far) ... ok
+test_crash_goes_to_fallback (test_rt_strict.TestRTStrict.test_crash_goes_to_fallback) ... ok
+test_fake_loop_bounded_by_budget (test_rt_strict.TestRTStrict.test_fake_loop_bounded_by_budget)
+An agent that always exceeds the budget never holds the loop beyond the deadline (+ tolerance). ... ok
+test_late_answer_falls_back_in_order_and_never_blocks (test_rt_strict.TestRTStrict.test_late_answer_falls_back_in_order_and_never_blocks) ... ok
+test_late_result_option_uses_aged_answer (test_rt_strict.TestRTStrict.test_late_result_option_uses_aged_answer) ... ok
+test_on_time_answer_is_used (test_rt_strict.TestRTStrict.test_on_time_answer_is_used) ... ok
+test_trace_has_protocol_fields (test_rt_strict.TestRTStrict.test_trace_has_protocol_fields) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.862s
+
+OK

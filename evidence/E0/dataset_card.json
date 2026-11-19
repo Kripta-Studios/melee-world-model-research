@@ -1,0 +1,910 @@
+{
+ "schema": "A6 (E0)",
+ "parser": "peppi-py==0.8.6 + slpraw(E0); rollback=LAST",
+ "source": {
+  "dataset": "erickfm/melee-ranked-replays",
+  "revision": "ef54ddc230e01373ff2a179b49a7e559af788081",
+  "tarballs": [
+   {
+    "tarball": "FOX/FOX_diamond-diamond_a1.tar.gz",
+    "url": "https://huggingface.co/datasets/erickfm/melee-ranked-replays/resolve/ef54ddc230e01373ff2a179b49a7e559af788081/FOX/FOX_diamond-diamond_a1.tar.gz",
+    "members_seen": 2883,
+    "bytes_streamed": 2422722560,
+    "read_to_end": false,
+    "http_retries": 0,
+    "http_errors": []
+   }
+  ],
+  "bytes_streamed_total": 2422722560,
+  "stop_reason": "max_saved_bytes",
+  "stream_reason_counts": {
+   "not_fox_ditto": 2591,
+   "accepted": 288,
+   "no_contest": 4
+  }
+ },
+ "filter": "2 jugadores humanos, ambos Fox (ID externo 2), sin teams, sin Nana, GameEnd TIME!/GAME!, last_frame >= 1500, frames contiguos desde -123, sha1 único",
+ "n_games": 288,
+ "n_parse_failures": 0,
+ "parse_failures": [],
+ "frames": {
+  "total_unique": 2829740,
+  "total_playable_frame_id_ge_0": 2794316,
+  "total_raw_rows_with_rollback_copies": 2930642,
+  "per_game_unique": {
+   "n": 288,
+   "min": 3476.0,
+   "p10": 6937.6,
+   "median": 9756.5,
+   "mean": 9825.486111111111,
+   "p90": 12839.1,
+   "max": 16017.0
+  }
+ },
+ "duration_seconds_playable": {
+  "n": 288,
+  "min": 55.88333333333333,
+  "p10": 113.57666666666667,
+  "median": 160.55833333333334,
+  "mean": 161.70810185185186,
+  "p90": 211.935,
+  "max": 264.9
+ },
+ "rollback": {
+  "frames_with_duplicates_total": 96371,
+  "frac_frames_with_duplicates": 0.03405648575487501,
+  "per_game_frac": {
+   "n": 288,
+   "min": 0.0,
+   "p10": 0.0,
+   "median": 0.0018158248469194592,
+   "mean": 0.03542602537122457,
+   "p90": 0.0852013069974109,
+   "max": 0.6236680327868852
+  },
+  "extra_rows_frac": 0.035657692932919635,
+  "max_copies_seen": 7,
+  "games_with_any_rollback": 229
+ },
+ "slippi_versions": {
+  "3.15.0": 199,
+  "3.14.0": 89
+ },
+ "stages": {
+  "28": 15,
+  "31": 104,
+  "32": 12,
+  "8": 66,
+  "3": 80,
+  "2": 11
+ },
+ "end_methods": {
+  "Game": 288
+ },
+ "major_scene": {
+  "8": 288
+ },
+ "crosscheck_peppi_vs_slpraw_all_ok": true,
+ "coverage_overall": {
+  "frame_id": 1.0,
+  "n_copies": 1.0,
+  "rng_seed": 1.0,
+  "scene_frame_counter": 1.0,
+  "latest_finalized": 1.0,
+  "character": 1.0,
+  "action": 1.0,
+  "pos_x": 1.0,
+  "pos_y": 1.0,
+  "facing": 1.0,
+  "percent": 1.0,
+  "shield": 1.0,
+  "last_attack_landed": 1.0,
+  "combo_count": 1.0,
+  "last_hit_by": 1.0,
+  "stocks": 1.0,
+  "action_frame": 1.0,
+  "flags1": 1.0,
+  "flags2": 1.0,
+  "flags3": 1.0,
+  "flags4": 1.0,
+  "flags5": 1.0,
+  "misc_as": 1.0,
+  "hitstun_left": 1.0,
+  "airborne": 1.0,
+  "ground_id": 1.0,
+  "jumps_left": 1.0,
+  "l_cancel": 1.0,
+  "hurtbox": 1.0,
+  "vel_air_x_self": 1.0,
+  "vel_y_self": 1.0,
+  "vel_x_attack": 1.0,
+  "vel_y_attack": 1.0,
+  "vel_ground_x_self": 1.0,
+  "hitlag_left": 1.0,
+  "animation_index": 1.0,
+  "pre_rng_seed": 1.0,
+  "pre_action": 1.0,
+  "pre_pos_x": 1.0,
+  "pre_pos_y": 1.0,
+  "pre_facing": 1.0,
+  "joy_x": 1.0,
+  "joy_y": 1.0,
+  "cstick_x": 1.0,
+  "cstick_y": 1.0,
+  "trigger": 1.0,
+  "buttons": 1.0,
+  "buttons_phys": 1.0,
+  "trig_l_phys": 1.0,
+  "trig_r_phys": 1.0,
+  "raw_x": 1.0,
+  "pre_percent": 1.0,
+  "raw_y": 0.691,
+  "raw_cx": 0.0,
+  "raw_cy": 0.0,
+  "items": 1.0
+ },
+ "coverage_by_version": {
+  "3.14.0": {
+   "n_games": 89,
+   "fields": {
+    "frame_id": 1.0,
+    "n_copies": 1.0,
+    "rng_seed": 1.0,
+    "scene_frame_counter": 1.0,
+    "latest_finalized": 1.0,
+    "character": 1.0,
+    "action": 1.0,
+    "pos_x": 1.0,
+    "pos_y": 1.0,
+    "facing": 1.0,
+    "percent": 1.0,
+    "shield": 1.0,
+    "last_attack_landed": 1.0,
+    "combo_count": 1.0,
+    "last_hit_by": 1.0,
+    "stocks": 1.0,
+    "action_frame": 1.0,
+    "flags1": 1.0,
+    "flags2": 1.0,
+    "flags3": 1.0,
+    "flags4": 1.0,
+    "flags5": 1.0,
+    "misc_as": 1.0,
+    "hitstun_left": 1.0,
+    "airborne": 1.0,
+    "ground_id": 1.0,
+    "jumps_left": 1.0,
+    "l_cancel": 1.0,
+    "hurtbox": 1.0,
+    "vel_air_x_self": 1.0,
+    "vel_y_self": 1.0,
+    "vel_x_attack": 1.0,
+    "vel_y_attack": 1.0,
+    "vel_ground_x_self": 1.0,
+    "hitlag_left": 1.0,
+    "animation_index": 1.0,
+    "pre_rng_seed": 1.0,
+    "pre_action": 1.0,
+    "pre_pos_x": 1.0,
+    "pre_pos_y": 1.0,
+    "pre_facing": 1.0,
+    "joy_x": 1.0,
+    "joy_y": 1.0,
+    "cstick_x": 1.0,
+    "cstick_y": 1.0,
+    "trigger": 1.0,
+    "buttons": 1.0,
+    "buttons_phys": 1.0,
+    "trig_l_phys": 1.0,
+    "trig_r_phys": 1.0,
+    "raw_x": 1.0,
+    "pre_percent": 1.0,
+    "raw_y": 0.0,
+    "raw_cx": 0.0,
+    "raw_cy": 0.0,
+    "items": 1.0
+   }
+  },
+  "3.15.0": {
+   "n_games": 199,
+   "fields": {
+    "frame_id": 1.0,
+    "n_copies": 1.0,
+    "rng_seed": 1.0,
+    "scene_frame_counter": 1.0,
+    "latest_finalized": 1.0,
+    "character": 1.0,
+    "action": 1.0,
+    "pos_x": 1.0,
+    "pos_y": 1.0,
+    "facing": 1.0,
+    "percent": 1.0,
+    "shield": 1.0,
+    "last_attack_landed": 1.0,
+    "combo_count": 1.0,
+    "last_hit_by": 1.0,
+    "stocks": 1.0,
+    "action_frame": 1.0,
+    "flags1": 1.0,
+    "flags2": 1.0,
+    "flags3": 1.0,
+    "flags4": 1.0,
+    "flags5": 1.0,
+    "misc_as": 1.0,
+    "hitstun_left": 1.0,
+    "airborne": 1.0,
+    "ground_id": 1.0,
+    "jumps_left": 1.0,
+    "l_cancel": 1.0,
+    "hurtbox": 1.0,
+    "vel_air_x_self": 1.0,
+    "vel_y_self": 1.0,
+    "vel_x_attack": 1.0,
+    "vel_y_attack": 1.0,
+    "vel_ground_x_self": 1.0,
+    "hitlag_left": 1.0,
+    "animation_index": 1.0,
+    "pre_rng_seed": 1.0,
+    "pre_action": 1.0,
+    "pre_pos_x": 1.0,
+    "pre_pos_y": 1.0,
+    "pre_facing": 1.0,
+    "joy_x": 1.0,
+    "joy_y": 1.0,
+    "cstick_x": 1.0,
+    "cstick_y": 1.0,
+    "trigger": 1.0,
+    "buttons": 1.0,
+    "buttons_phys": 1.0,
+    "trig_l_phys": 1.0,
+    "trig_r_phys": 1.0,
+    "raw_x": 1.0,
+    "pre_percent": 1.0,
+    "raw_y": 1.0,
+    "raw_cx": 0.0,
+    "raw_cy": 0.0,
+    "items": 1.0
+   }
+  }
+ },
+ "nonconstant_field_games": {
+  "vel_air_x_self": 288,
+  "vel_x_attack": 288,
+  "hitstun_left": 288,
+  "action_frame": 288,
+  "hitlag_left": 288
+ },
+ "bytes": {
+  "slp_total": 1003332353,
+  "slp_per_frame": 354.5669754111685,
+  "npz_total": 129885401,
+  "npz_per_frame_measured": 45.9001183854347,
+  "uncompressed_arrays_total": 874570620,
+  "uncompressed_per_frame": 309.06394933810174,
+  "zstd3_total": 92666404,
+  "zstd3_per_frame": 32.74732095528211,
+  "zstd19_per_frame_first20": 25.50837273773992,
+  "note": "por frame = ambos puertos + cabecera de frame + ítems (ragged); el npz incluye meta_json"
+ },
+ "disk_usage_bytes": {
+  "slp": 1003332353,
+  "parsed": 129885401,
+  "venv-e0": 250074623
+ },
+ "disk_usage_total_bytes": 1383974956,
+ "gate_95": {
+  "threshold": 0.95,
+  "frac_games_with": {
+   "velocities": 1.0,
+   "hitstun": 1.0,
+   "action_state_frame": 1.0
+  },
+  "frac_games_with_all_three": 1.0,
+  "passed": true
+ },
+ "fields": {
+  "frame_id": {
+   "group": "frame",
+   "peppi_path": "id",
+   "dtype": "i4",
+   "unit": "frame",
+   "spec": "Pre/Post 0x1, FrameStart 0x1",
+   "since": "0.1.0",
+   "level": "index"
+  },
+  "n_copies": {
+   "group": "frame",
+   "peppi_path": null,
+   "dtype": "u1",
+   "unit": "copias",
+   "spec": "nº de veces que el frame aparece en el flujo (rollback); derivado",
+   "since": "0.1.0",
+   "level": "training_metadata"
+  },
+  "rng_seed": {
+   "group": "frame",
+   "peppi_path": "start.random_seed",
+   "dtype": "u4",
+   "unit": "estado RNG",
+   "spec": "FrameStart 0x5",
+   "since": "2.2.0",
+   "level": "simulator_snapshot"
+  },
+  "scene_frame_counter": {
+   "group": "frame",
+   "peppi_path": "start.scene_frame_counter",
+   "dtype": "u4",
+   "unit": "frames",
+   "spec": "FrameStart 0x9",
+   "since": "3.10.0",
+   "level": "training_metadata"
+  },
+  "latest_finalized": {
+   "group": "frame",
+   "peppi_path": "end.latest_finalized_frame",
+   "dtype": "i4",
+   "unit": "frame_id",
+   "spec": "FrameBookend 0x5",
+   "since": "3.7.0",
+   "level": "training_metadata"
+  },
+  "character": {
+   "group": "post",
+   "peppi_path": "post.character",
+   "dtype": "u1",
+   "unit": "id interno",
+   "spec": "Post 0x7",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "action": {
+   "group": "post",
+   "peppi_path": "post.state",
+   "dtype": "u2",
+   "unit": "id de action state",
+   "spec": "Post 0x8",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "pos_x": {
+   "group": "post",
+   "peppi_path": "post.position.x",
+   "dtype": "f4",
+   "unit": "unidades de mundo",
+   "spec": "Post 0xA",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "pos_y": {
+   "group": "post",
+   "peppi_path": "post.position.y",
+   "dtype": "f4",
+   "unit": "unidades de mundo",
+   "spec": "Post 0xE",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "facing": {
+   "group": "post",
+   "peppi_path": "post.direction",
+   "dtype": "f4",
+   "unit": "signo -1/+1",
+   "spec": "Post 0x12",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "percent": {
+   "group": "post",
+   "peppi_path": "post.percent",
+   "dtype": "f4",
+   "unit": "% daño",
+   "spec": "Post 0x16",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "shield": {
+   "group": "post",
+   "peppi_path": "post.shield",
+   "dtype": "f4",
+   "unit": "[0,60]",
+   "spec": "Post 0x1A",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "last_attack_landed": {
+   "group": "post",
+   "peppi_path": "post.last_attack_landed",
+   "dtype": "u1",
+   "unit": "id de ataque",
+   "spec": "Post 0x1E",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "combo_count": {
+   "group": "post",
+   "peppi_path": "post.combo_count",
+   "dtype": "u1",
+   "unit": "conteo",
+   "spec": "Post 0x1F",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "last_hit_by": {
+   "group": "post",
+   "peppi_path": "post.last_hit_by",
+   "dtype": "u1",
+   "unit": "puerto",
+   "spec": "Post 0x20",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "stocks": {
+   "group": "post",
+   "peppi_path": "post.stocks",
+   "dtype": "u1",
+   "unit": "vidas",
+   "spec": "Post 0x21",
+   "since": "0.1.0",
+   "level": "observation"
+  },
+  "action_frame": {
+   "group": "post",
+   "peppi_path": "post.state_age",
+   "dtype": "f4",
+   "unit": "frames en el estado (fraccional)",
+   "spec": "Post 0x22",
+   "since": "0.2.0",
+   "level": "observation"
+  },
+  "flags1": {
+   "group": "post",
+   "peppi_path": "post.state_flags.0",
+   "dtype": "u1",
+   "unit": "bits",
+   "spec": "Post 0x26",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "flags2": {
+   "group": "post",
+   "peppi_path": "post.state_flags.1",
+   "dtype": "u1",
+   "unit": "bits (0x20 hitlag, 0x08 fastfall)",
+   "spec": "Post 0x27",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "flags3": {
+   "group": "post",
+   "peppi_path": "post.state_flags.2",
+   "dtype": "u1",
+   "unit": "bits (0x80 escudo)",
+   "spec": "Post 0x28",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "flags4": {
+   "group": "post",
+   "peppi_path": "post.state_flags.3",
+   "dtype": "u1",
+   "unit": "bits (0x02 hitstun)",
+   "spec": "Post 0x29",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "flags5": {
+   "group": "post",
+   "peppi_path": "post.state_flags.4",
+   "dtype": "u1",
+   "unit": "bits (0x40 muerto, 0x80 fuera de pantalla)",
+   "spec": "Post 0x2A",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "misc_as": {
+   "group": "post",
+   "peppi_path": "post.misc_as",
+   "dtype": "f4",
+   "unit": "multiuso; hitstun restante si flags4&0x02",
+   "spec": "Post 0x2B",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "hitstun_left": {
+   "group": "post",
+   "peppi_path": null,
+   "dtype": "f4",
+   "unit": "frames; = misc_as si flags4&0x02, si no 0 (derivado)",
+   "spec": "Post 0x2B + 0x29 bit 0x02",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "airborne": {
+   "group": "post",
+   "peppi_path": "post.airborne",
+   "dtype": "u1",
+   "unit": "0 suelo / 1 aire",
+   "spec": "Post 0x2F",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "ground_id": {
+   "group": "post",
+   "peppi_path": "post.ground",
+   "dtype": "u2",
+   "unit": "id de suelo",
+   "spec": "Post 0x30",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "jumps_left": {
+   "group": "post",
+   "peppi_path": "post.jumps",
+   "dtype": "u1",
+   "unit": "saltos",
+   "spec": "Post 0x32",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "l_cancel": {
+   "group": "post",
+   "peppi_path": "post.l_cancel",
+   "dtype": "u1",
+   "unit": "0/1/2",
+   "spec": "Post 0x33",
+   "since": "2.0.0",
+   "level": "observation"
+  },
+  "hurtbox": {
+   "group": "post",
+   "peppi_path": "post.hurtbox_state",
+   "dtype": "u1",
+   "unit": "0 vuln / 1 invuln / 2 intang",
+   "spec": "Post 0x34",
+   "since": "2.1.0",
+   "level": "observation"
+  },
+  "vel_air_x_self": {
+   "group": "post",
+   "peppi_path": "post.velocities.self_x_air",
+   "dtype": "f4",
+   "unit": "unidades/frame",
+   "spec": "Post 0x35",
+   "since": "3.5.0",
+   "level": "observation"
+  },
+  "vel_y_self": {
+   "group": "post",
+   "peppi_path": "post.velocities.self_y",
+   "dtype": "f4",
+   "unit": "unidades/frame",
+   "spec": "Post 0x39",
+   "since": "3.5.0",
+   "level": "observation"
+  },
+  "vel_x_attack": {
+   "group": "post",
+   "peppi_path": "post.velocities.knockback_x",
+   "dtype": "f4",
+   "unit": "unidades/frame",
+   "spec": "Post 0x3D",
+   "since": "3.5.0",
+   "level": "observation"
+  },
+  "vel_y_attack": {
+   "group": "post",
+   "peppi_path": "post.velocities.knockback_y",
+   "dtype": "f4",
+   "unit": "unidades/frame",
+   "spec": "Post 0x41",
+   "since": "3.5.0",
+   "level": "observation"
+  },
+  "vel_ground_x_self": {
+   "group": "post",
+   "peppi_path": "post.velocities.self_x_ground",
+   "dtype": "f4",
+   "unit": "unidades/frame",
+   "spec": "Post 0x45",
+   "since": "3.5.0",
+   "level": "observation"
+  },
+  "hitlag_left": {
+   "group": "post",
+   "peppi_path": "post.hitlag",
+   "dtype": "f4",
+   "unit": "frames",
+   "spec": "Post 0x49",
+   "since": "3.8.0",
+   "level": "observation"
+  },
+  "animation_index": {
+   "group": "post",
+   "peppi_path": "post.animation_index",
+   "dtype": "u4",
+   "unit": "índice",
+   "spec": "Post 0x4D",
+   "since": "3.11.0",
+   "level": "observation"
+  },
+  "pre_rng_seed": {
+   "group": "pre",
+   "peppi_path": "pre.random_seed",
+   "dtype": "u4",
+   "unit": "estado RNG",
+   "spec": "Pre 0x7",
+   "since": "0.1.0",
+   "level": "simulator_snapshot"
+  },
+  "pre_action": {
+   "group": "pre",
+   "peppi_path": "pre.state",
+   "dtype": "u2",
+   "unit": "action state antes del frame",
+   "spec": "Pre 0xB",
+   "since": "0.1.0",
+   "level": "training_metadata"
+  },
+  "pre_pos_x": {
+   "group": "pre",
+   "peppi_path": "pre.position.x",
+   "dtype": "f4",
+   "unit": "unidades de mundo",
+   "spec": "Pre 0xD",
+   "since": "0.1.0",
+   "level": "training_metadata"
+  },
+  "pre_pos_y": {
+   "group": "pre",
+   "peppi_path": "pre.position.y",
+   "dtype": "f4",
+   "unit": "unidades de mundo",
+   "spec": "Pre 0x11",
+   "since": "0.1.0",
+   "level": "training_metadata"
+  },
+  "pre_facing": {
+   "group": "pre",
+   "peppi_path": "pre.direction",
+   "dtype": "f4",
+   "unit": "signo",
+   "spec": "Pre 0x15",
+   "since": "0.1.0",
+   "level": "training_metadata"
+  },
+  "joy_x": {
+   "group": "pre",
+   "peppi_path": "pre.joystick.x",
+   "dtype": "f4",
+   "unit": "procesado [-1,1]",
+   "spec": "Pre 0x19",
+   "since": "0.1.0",
+   "level": "control"
+  },
+  "joy_y": {
+   "group": "pre",
+   "peppi_path": "pre.joystick.y",
+   "dtype": "f4",
+   "unit": "procesado [-1,1]",
+   "spec": "Pre 0x1D",
+   "since": "0.1.0",
+   "level": "control"
+  },
+  "cstick_x": {
+   "group": "pre",
+   "peppi_path": "pre.cstick.x",
+   "dtype": "f4",
+   "unit": "procesado [-1,1]",
+   "spec": "Pre 0x21",
+   "since": "0.1.0",
+   "level": "control"
+  },
+  "cstick_y": {
+   "group": "pre",
+   "peppi_path": "pre.cstick.y",
+   "dtype": "f4",
+   "unit": "procesado [-1,1]",
+   "spec": "Pre 0x25",
+   "since": "0.1.0",
+   "level": "control"
+  },
+  "trigger": {
+   "group": "pre",
+   "peppi_path": "pre.triggers",
+   "dtype": "f4",
+   "unit": "procesado [0,1]",
+   "spec": "Pre 0x29",
+   "since": "0.1.0",
+   "level": "control"
+  },
+  "buttons": {
+   "group": "pre",
+   "peppi_path": "pre.buttons",
+   "dtype": "u4",
+   "unit": "bitmask procesado",
+   "spec": "Pre 0x2D",
+   "since": "0.1.0",
+   "level": "control"
+  },
+  "buttons_phys": {
+   "group": "pre",
+   "peppi_path": "pre.buttons_physical",
+   "dtype": "u2",
+   "unit": "bitmask físico (mantenido)",
+   "spec": "Pre 0x31",
+   "since": "0.1.0",
+   "level": "control"
+  },
+  "trig_l_phys": {
+   "group": "pre",
+   "peppi_path": "pre.triggers_physical.l",
+   "dtype": "f4",
+   "unit": "físico [0,1]",
+   "spec": "Pre 0x33",
+   "since": "0.1.0",
+   "level": "control"
+  },
+  "trig_r_phys": {
+   "group": "pre",
+   "peppi_path": "pre.triggers_physical.r",
+   "dtype": "f4",
+   "unit": "físico [0,1]",
+   "spec": "Pre 0x37",
+   "since": "0.1.0",
+   "level": "control"
+  },
+  "raw_x": {
+   "group": "pre",
+   "peppi_path": "pre.raw_analog_x",
+   "dtype": "i1",
+   "unit": "crudo UCF",
+   "spec": "Pre 0x3B",
+   "since": "1.2.0",
+   "level": "control"
+  },
+  "pre_percent": {
+   "group": "pre",
+   "peppi_path": "pre.percent",
+   "dtype": "f4",
+   "unit": "% daño antes del frame",
+   "spec": "Pre 0x3C",
+   "since": "1.4.0",
+   "level": "training_metadata"
+  },
+  "raw_y": {
+   "group": "pre",
+   "peppi_path": "pre.raw_analog_y",
+   "dtype": "i1",
+   "unit": "crudo",
+   "spec": "Pre 0x40",
+   "since": "3.15.0",
+   "level": "control"
+  },
+  "raw_cx": {
+   "group": "pre",
+   "peppi_path": null,
+   "dtype": "i1",
+   "unit": "crudo C-stick",
+   "spec": "Pre 0x41 (slpraw)",
+   "since": "3.17.0",
+   "level": "control"
+  },
+  "raw_cy": {
+   "group": "pre",
+   "peppi_path": null,
+   "dtype": "i1",
+   "unit": "crudo C-stick",
+   "spec": "Pre 0x42 (slpraw)",
+   "since": "3.17.0",
+   "level": "control"
+  },
+  "item_row": {
+   "group": "item",
+   "peppi_path": null,
+   "dtype": "i4",
+   "unit": "fila (índice en frame_id) a la que pertenece",
+   "spec": "derivado",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_type": {
+   "group": "item",
+   "peppi_path": "type",
+   "dtype": "u2",
+   "unit": "id de ítem",
+   "spec": "Item 0x5",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_state": {
+   "group": "item",
+   "peppi_path": "state",
+   "dtype": "u1",
+   "unit": "estado",
+   "spec": "Item 0x7",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_facing": {
+   "group": "item",
+   "peppi_path": "direction",
+   "dtype": "f4",
+   "unit": "signo",
+   "spec": "Item 0x8",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_vel_x": {
+   "group": "item",
+   "peppi_path": "velocity.x",
+   "dtype": "f4",
+   "unit": "unidades/frame",
+   "spec": "Item 0xC",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_vel_y": {
+   "group": "item",
+   "peppi_path": "velocity.y",
+   "dtype": "f4",
+   "unit": "unidades/frame",
+   "spec": "Item 0x10",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_pos_x": {
+   "group": "item",
+   "peppi_path": "position.x",
+   "dtype": "f4",
+   "unit": "unidades de mundo",
+   "spec": "Item 0x14",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_pos_y": {
+   "group": "item",
+   "peppi_path": "position.y",
+   "dtype": "f4",
+   "unit": "unidades de mundo",
+   "spec": "Item 0x18",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_damage": {
+   "group": "item",
+   "peppi_path": "damage",
+   "dtype": "u2",
+   "unit": "daño recibido",
+   "spec": "Item 0x1C",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_timer": {
+   "group": "item",
+   "peppi_path": "timer",
+   "dtype": "f4",
+   "unit": "frames hasta expirar",
+   "spec": "Item 0x1E",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_spawn_id": {
+   "group": "item",
+   "peppi_path": "id",
+   "dtype": "u4",
+   "unit": "spawn id",
+   "spec": "Item 0x22",
+   "since": "3.0.0",
+   "level": "observation"
+  },
+  "item_owner": {
+   "group": "item",
+   "peppi_path": "owner",
+   "dtype": "i1",
+   "unit": "puerto 0-3 / -1",
+   "spec": "Item 0x2A",
+   "since": "3.6.0",
+   "level": "observation"
+  }
+ }
+}

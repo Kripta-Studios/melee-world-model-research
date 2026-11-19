@@ -1,0 +1,25 @@
+{
+ "repo": "erickfm/melee-ranked-replays",
+ "revision": "ef54ddc230e01373ff2a179b49a7e559af788081",
+ "tarballs": [
+  {
+   "tarball": "FOX/FOX_diamond-diamond_a1.tar.gz",
+   "url": "https://huggingface.co/datasets/erickfm/melee-ranked-replays/resolve/ef54ddc230e01373ff2a179b49a7e559af788081/FOX/FOX_diamond-diamond_a1.tar.gz",
+   "members_seen": 59,
+   "bytes_streamed": 50001920,
+   "read_to_end": false
+  }
+ ],
+ "stop_reason": "max_stream_bytes",
+ "accepted": 5,
+ "saved_bytes": 17954136,
+ "bytes_streamed_total": 50001920,
+ "reason_counts": {
+  "not_fox_ditto": 53,
+  "accepted": 5,
+  "stream_cut:ReadError": 1
+ },
+ "elapsed_s": 33.3,
+ "min_last_frame": 1500,
+ "dry_run": false
+}

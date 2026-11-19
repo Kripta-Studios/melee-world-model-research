@@ -1,0 +1,6 @@
+test_last_copy_index_order (test_slpraw.TestSlpRaw.test_last_copy_index_order) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.016s
+
+OK

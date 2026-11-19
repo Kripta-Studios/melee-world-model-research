@@ -1,0 +1,449 @@
+{
+ "schema_version": "A5-search-budget-0.1",
+ "agent_id": "A5",
+ "date": "2026-11-19",
+ "status": "PROPUESTA",
+ "note": "Presupuestos igualados entre brazos de planificación (P0, S0, W0, W1, H0) y fórmulas parametrizadas por latencia por evaluación. Nada se ejecutó en Melee ni en el simulador (no hay ISO). Las cifras de latencia de modelos aprendidos son mediciones de A7 en esta máquina compartida (REPRODUCIDO por A7, pesos aleatorios, sin cabezas de decodificación); las del simulador son DOCUMENTADO_POR_AUTOR en otra máquina. Las estimaciones por tramo son INFERENCIA aritmética (scratchpad budget.py) y deben sustituirse por medición integral en E2.",
+ "provenance": {
+  "learned_latency_REPRODUCIDO_por_A7": {
+   "artifact": "evidence/A7/measurements/summary.json",
+   "sha256": "6fed94ae7339fb73f98cfeea426f1be11850b51682b982fbcbe8e368abd8d512",
+   "what": "pstep (un paso del predictor a lote B), encode (lote 1, H=32), rollout(K,T), decision(K,T); arch mlp/gru/tx, tiers 1M/5M/15M, 1 y 3 hilos; AMD EPYC-Genoa 4 vCPU compartidos, torch 2.10 CPU fp32 eager",
+   "script": "pilot/a7_bench/bench_infer.py",
+   "limits": [
+    "pesos aleatorios, S=192, A=32, D=192: no es W0-S/W1-L reales",
+    "sin muestreo de cabezas categóricas ni decodificación de campos",
+    "servidor compartido con carga 2.6-4.7; p99 ruidoso"
+   ]
+  },
+  "learned_latency_REPRODUCIDO_por_A4": {
+   "artifact": "evidence/A4/checks/predictor_latency_result.json",
+   "sha256": "e504ac12aaa3ffa304376bd3036f198a6b426b9a6fb45ef43e51a9e8246167e9",
+   "values_us_per_candidate_step_batch512": {
+    "MLP_0.69M": 9.8,
+    "MLP_1.9M": 36,
+    "ARPred_1.19M_T16": 783,
+    "ARPred_10.79M_T3": 916,
+    "ARPred_10.79M_T16": 5375
+   }
+  },
+  "simulator_DOCUMENTADO_POR_AUTOR": {
+   "frame_inside_search_us": "12-15 (melee-brute BRUTE.md L102 @9662ec97, Ryzen 9 5950X cargado)",
+   "frame_from_python_with_obs_us": "17 (BRUTE.md L105)",
+   "checkpoint_rollback_us": "4.4/4.5 (BRUTE.md L103)",
+   "searched_position_us": "25-30 (BRUTE.md L90); 18 tras LTO, 16.5 con PGO (L109-110)",
+   "python_search_effective_steps_per_s": "12000 => ~83 us/paso (melee-llm docs/optimal-play.md L474-476 @7e179081)",
+   "state_build_ms_per_frame": "0.23 StateBuilder + 0.12 simulador (melee-llm docs/simulator.md L65)",
+   "local_measurement": "DESCONOCIDO: requiere ISO NTSC 1.02; ejecutar `python -m melee_brute bench` en la máquina objetivo (BRUTE.md L108)"
+  },
+  "proposal_prior_DOCUMENTADO_POR_AUTOR": {
+   "Faynt-10M_cpu_8threads_ms": "p50 8.1 / p95 10.3 / p99 11.5, max 15 (melee-llm docs/bots.md L53)",
+   "consequence": "INFERENCIA: incompatible con búsqueda adicional dentro de 16,67 ms en CPU; en tiempo real el prior debe ser un B0 pequeño (~1M) que comparta encoder; Faynt solo como prior en paused_untimed"
+  }
+ },
+ "clock_categories": {
+  "realtime": {
+   "frame_ms": 16.667,
+   "rule": "Una decisión por frame; p99 del tiempo integral de decisión <= C_rt y <= 1% de plazos perdidos (06 §Presupuesto temporal). Una ejecución que se ralentiza es slow/inválida, no se reclasifica (06 L139).",
+   "C_rt_formula": "C_rt = 16.667 - t_obs_io - t_send - m_p99",
+   "defaults_PROPUESTA": {
+    "sim": {
+     "t_obs_io_ms": 0.35,
+     "t_send_ms": 0.05,
+     "m_p99_ms": 4.25,
+     "C_rt_ms": 12.0,
+     "basis": "0.23+0.12 ms documentados (simulator.md L65); margen por jitter observado en A7 (p99 hasta 2-5x p50 con 3 hilos)"
+    },
+    "dolphin": {
+     "t_obs_io_ms": "DESCONOCIDO (medir t_obs_available -> policy_start, A6 measurements_required)",
+     "C_rt_ms": "<=12 provisional"
+    }
+   },
+   "dolphin_semantics": "En realtime Dolphin bloquea esperando el mando (A1-002); un agente lento ralentiza la partida y la marca slow (<50 fps medio). El planificador debe imponer su propio plazo y caer al fallback, nunca bloquear."
+  },
+  "paused_untimed": {
+   "rule": "Ejecución separada en la que el juego espera la decisión (sim síncrono o Dolphin fast/paused con blocking_input). Se declara aparte; sus resultados no se trasladan a realtime.",
+   "C_pu_ms_default": 250,
+   "C_pu_ms_sweep": [
+    50,
+    250,
+    1000,
+    4000
+   ],
+   "note": "Las búsquedas exactas por matriz de pagos de melee-llm cuestan 1-4 s por frame a H=6 y 30-60 s a H=8 (optimal-play.md L474-476): pertenecen a esta categoría o a etiquetado offline."
+  },
+  "accelerated_training": {
+   "rule": "Solo recolección/entrenamiento; nunca evaluación (07 clock_semantics)."
+  }
+ },
+ "decision_cost_formulas": {
+  "common": "t_dec = t_enc + t_prior + t_roll + t_q + t_score + t_agg (+ t_lp si agregación por matriz)",
+  "B": "B = N * K (lote de ramas por paso); para matriz de pagos B = N * M",
+  "learned_W": "t_roll = sum_{s=1}^{ceil(T/step)} c_step(B) ; c_step(B) interpolado en log B sobre A7 pstep ; step=1 (W0-S) o 4 (W1-L)",
+  "learned_q_closed_loop": "t_q = ceil(T/step) * c_q(B), con q MLP ~1M ; t_q = 0 si la hipótesis del rival es una secuencia muestreada en la raíz (válido solo si T <= D + 1 + R_opp)",
+  "sim_S0": "t_roll = B * (T * c_sim + c_ckpt + c_rb) / P ; P = procesos con réplica sincronizada de la partida (PROPUESTA: workers que aplican cada frame la misma acción conjunta real y ramifican con take-back)",
+  "sim_q_closed_loop": "t_q = T * c_q(B) si q lee filas nativas por lote; si q exige GameState libmelee añadir B*T*0.23 ms (StateBuilder, DOC) -> inviable en realtime",
+  "P0": "t_roll = 0 ; t_score = c_Q(N) o log pi(N) ; mismos N candidatos",
+  "prior": "t_prior = c_prior(1) en la raíz + muestreo de N secuencias del prior factorizado; continuación en lazo cerrado añade ceil(T/step)*c_prior(B)",
+  "anytime": "evaluar candidatos en orden de prior (top-1 del prior primero) y cortar al llegar a C; N_eff <= N se registra por decisión"
+ },
+ "matching_rules": {
+  "equal_counts": "Mismos N, K (o M), T, mismas semillas de muestreo del prior y del rival, misma función J y mismo V_hat entre P0/S0/W0/W1. Se informa t_dec por brazo. Un brazo cuyo p99 supere C_rt solo corre en paused_untimed.",
+  "equal_wall_time": "Se fijan K y T; cada brazo recibe N_max = max N con p99(t_dec) <= C (C_rt o C_pu). Se informa N_eff medio.",
+  "shared_components": [
+   "generador de candidatos (prior + menú)",
+   "modelo del rival q y sus K muestras (mismos índices de semilla)",
+   "recompensa r y V_hat(x) definidos sobre el estado estructurado",
+   "agregación (media; CVaR_0.25 como secundaria)",
+   "fallback"
+  ],
+  "what_may_differ": [
+   "fuente de dinámica: ninguna (P0), motor (S0), W0-S, W1-L",
+   "coste por paso"
+  ],
+  "report_both": "Toda comparación par a par se publica a igual número y a igual tiempo (06 Control de puntuación)."
+ },
+ "tiers": {
+  "RT-a": {
+   "clock": "realtime",
+   "N": 16,
+   "K": 4,
+   "T_frames": 8,
+   "commit_frames": 1,
+   "replan_every_frames": 1
+  },
+  "RT-b": {
+   "clock": "realtime",
+   "N": 32,
+   "K": 4,
+   "T_frames": 8,
+   "commit_frames": 1,
+   "replan_every_frames": 1
+  },
+  "RT-c": {
+   "clock": "realtime",
+   "N": 16,
+   "K": 4,
+   "T_frames": 16,
+   "commit_frames": 1,
+   "replan_every_frames": 1
+  },
+  "RT-2f": {
+   "clock": "realtime",
+   "N": 32,
+   "K": 4,
+   "T_frames": 16,
+   "commit_frames": 2,
+   "replan_every_frames": 2,
+   "note": "presupuesto 2*C_rt a cambio de +1 frame de envejecimiento; registrar como reloj distinto. melee-llm documenta que pasar de 1 a 2 frames por input cambia el valor del duelo a 12,59 de 0 a 0,382 (optimal-play.md L367-372)"
+  },
+  "PU-a": {
+   "clock": "paused_untimed",
+   "N": 32,
+   "K": 8,
+   "T_frames": 16,
+   "commit_frames": 1,
+   "replan_every_frames": 1
+  },
+  "PU-b": {
+   "clock": "paused_untimed",
+   "N": 64,
+   "K": 8,
+   "T_frames": 32,
+   "commit_frames": 1,
+   "replan_every_frames": 1
+  },
+  "PU-matrix": {
+   "clock": "paused_untimed",
+   "N_own_macros": 8,
+   "M_opp_macros": 8,
+   "T_frames": 16,
+   "leaf": "continuación en lazo cerrado con prior propio y q; V_hat en T",
+   "agg": "valor del juego matricial N x M (LP) y muestreo de la estrategia mixta",
+   "note": "B = 64 ramas; mismo coste de rollout que RT-a con T=16"
+  }
+ },
+ "estimates_INFERENCIA": {
+  "basis": "A7 pstep/encode 1 hilo (REPRODUCIDO por A7) y cifras de simulador documentadas por autor en otra máquina; p99_sum = suma de p99 por paso (cota conservadora). Excluye t_prior, decodificación de cabezas y Python del planificador.",
+  "by_tier": {
+   "RT-a": {
+    "N": 16,
+    "K": 4,
+    "T_frames": 8,
+    "rollouts_B": 64,
+    "W0-S_mlp1M_step1": {
+     "open_loop_opp_ms_p50": 7.32,
+     "open_loop_opp_ms_p99_sum": 11.76,
+     "closed_loop_q_ms_p50": 13.44,
+     "closed_loop_q_ms_p99_sum": 22.18
+    },
+    "W0-S_gru1M_step1": {
+     "open_loop_opp_ms_p50": 6.99,
+     "open_loop_opp_ms_p99_sum": 7.89,
+     "closed_loop_q_ms_p50": 13.11,
+     "closed_loop_q_ms_p99_sum": 18.31
+    },
+    "W1-L_gru1M_block4": {
+     "open_loop_opp_ms_p50": 2.65,
+     "open_loop_opp_ms_p99_sum": 2.98,
+     "closed_loop_q_ms_p50": 4.18,
+     "closed_loop_q_ms_p99_sum": 5.58
+    },
+    "W1-L_tx1M_block4": {
+     "open_loop_opp_ms_p50": 20.46,
+     "open_loop_opp_ms_p99_sum": 24.88,
+     "closed_loop_q_ms_p50": 21.99,
+     "closed_loop_q_ms_p99_sum": 27.49
+    },
+    "S0_C_internal_5950X_DOC": {
+     "P1_open_loop_ms": 8.25,
+     "P3_open_loop_ms": 2.75,
+     "P1_closed_loop_q_ms": 14.37
+    },
+    "S0_python_obs_5950X_DOC": {
+     "P1_open_loop_ms": 9.27,
+     "P3_open_loop_ms": 3.09,
+     "P1_closed_loop_q_ms": 15.39
+    },
+    "S0_python_search_effective_DOC": {
+     "P1_open_loop_ms": 43.07,
+     "P3_open_loop_ms": 14.36,
+     "P1_closed_loop_q_ms": 49.18
+    }
+   },
+   "RT-b": {
+    "N": 32,
+    "K": 4,
+    "T_frames": 8,
+    "rollouts_B": 128,
+    "W0-S_mlp1M_step1": {
+     "open_loop_opp_ms_p50": 15.66,
+     "open_loop_opp_ms_p99_sum": 29.3,
+     "closed_loop_q_ms_p50": 30.13,
+     "closed_loop_q_ms_p99_sum": 57.26
+    },
+    "W0-S_gru1M_step1": {
+     "open_loop_opp_ms_p50": 14.76,
+     "open_loop_opp_ms_p99_sum": 16.28,
+     "closed_loop_q_ms_p50": 29.22,
+     "closed_loop_q_ms_p99_sum": 44.24
+    },
+    "W1-L_gru1M_block4": {
+     "open_loop_opp_ms_p50": 4.59,
+     "open_loop_opp_ms_p99_sum": 5.08,
+     "closed_loop_q_ms_p50": 8.21,
+     "closed_loop_q_ms_p99_sum": 12.07
+    },
+    "W1-L_tx1M_block4": {
+     "open_loop_opp_ms_p50": 56.46,
+     "open_loop_opp_ms_p99_sum": 59.83,
+     "closed_loop_q_ms_p50": 60.07,
+     "closed_loop_q_ms_p99_sum": 66.82
+    },
+    "S0_C_internal_5950X_DOC": {
+     "P1_open_loop_ms": 16.5,
+     "P3_open_loop_ms": 5.5,
+     "P1_closed_loop_q_ms": 30.96
+    },
+    "S0_python_obs_5950X_DOC": {
+     "P1_open_loop_ms": 18.55,
+     "P3_open_loop_ms": 6.18,
+     "P1_closed_loop_q_ms": 33.01
+    },
+    "S0_python_search_effective_DOC": {
+     "P1_open_loop_ms": 86.13,
+     "P3_open_loop_ms": 28.71,
+     "P1_closed_loop_q_ms": 100.59
+    }
+   },
+   "RT-c": {
+    "N": 16,
+    "K": 4,
+    "T_frames": 16,
+    "rollouts_B": 64,
+    "W0-S_mlp1M_step1": {
+     "open_loop_opp_ms_p50": 13.44,
+     "open_loop_opp_ms_p99_sum": 22.18,
+     "closed_loop_q_ms_p50": 25.68,
+     "closed_loop_q_ms_p99_sum": 43.02
+    },
+    "W0-S_gru1M_step1": {
+     "open_loop_opp_ms_p50": 12.78,
+     "open_loop_opp_ms_p99_sum": 14.44,
+     "closed_loop_q_ms_p50": 25.02,
+     "closed_loop_q_ms_p99_sum": 35.28
+    },
+    "W1-L_gru1M_block4": {
+     "open_loop_opp_ms_p50": 4.1,
+     "open_loop_opp_ms_p99_sum": 4.62,
+     "closed_loop_q_ms_p50": 7.16,
+     "closed_loop_q_ms_p99_sum": 9.83
+    },
+    "W1-L_tx1M_block4": {
+     "open_loop_opp_ms_p50": 39.72,
+     "open_loop_opp_ms_p99_sum": 48.43,
+     "closed_loop_q_ms_p50": 42.78,
+     "closed_loop_q_ms_p99_sum": 53.64
+    },
+    "S0_C_internal_5950X_DOC": {
+     "P1_open_loop_ms": 15.93,
+     "P3_open_loop_ms": 5.31,
+     "P1_closed_loop_q_ms": 28.17
+    },
+    "S0_python_obs_5950X_DOC": {
+     "P1_open_loop_ms": 17.98,
+     "P3_open_loop_ms": 5.99,
+     "P1_closed_loop_q_ms": 30.22
+    },
+    "S0_python_search_effective_DOC": {
+     "P1_open_loop_ms": 85.56,
+     "P3_open_loop_ms": 28.52,
+     "P1_closed_loop_q_ms": 97.8
+    }
+   },
+   "PU-a": {
+    "N": 32,
+    "K": 8,
+    "T_frames": 16,
+    "rollouts_B": 256,
+    "W0-S_mlp1M_step1": {
+     "open_loop_opp_ms_p50": 46.82,
+     "open_loop_opp_ms_p99_sum": 92.35,
+     "closed_loop_q_ms_p50": 92.43,
+     "closed_loop_q_ms_p99_sum": 183.35
+    },
+    "W0-S_gru1M_step1": {
+     "open_loop_opp_ms_p50": 43.86,
+     "open_loop_opp_ms_p99_sum": 47.99,
+     "closed_loop_q_ms_p50": 89.48,
+     "closed_loop_q_ms_p99_sum": 138.99
+    },
+    "W1-L_gru1M_block4": {
+     "open_loop_opp_ms_p50": 11.87,
+     "open_loop_opp_ms_p99_sum": 13.0,
+     "closed_loop_q_ms_p50": 23.27,
+     "closed_loop_q_ms_p99_sum": 35.75
+    },
+    "W1-L_tx1M_block4": {
+     "open_loop_opp_ms_p50": 183.71,
+     "open_loop_opp_ms_p99_sum": 188.21,
+     "closed_loop_q_ms_p50": 195.12,
+     "closed_loop_q_ms_p99_sum": 210.96
+    },
+    "S0_C_internal_5950X_DOC": {
+     "P1_open_loop_ms": 63.72,
+     "P3_open_loop_ms": 21.24,
+     "P1_closed_loop_q_ms": 109.33
+    },
+    "S0_python_obs_5950X_DOC": {
+     "P1_open_loop_ms": 71.91,
+     "P3_open_loop_ms": 23.97,
+     "P1_closed_loop_q_ms": 117.52
+    },
+    "S0_python_search_effective_DOC": {
+     "P1_open_loop_ms": 342.25,
+     "P3_open_loop_ms": 114.08,
+     "P1_closed_loop_q_ms": 387.86
+    }
+   },
+   "PU-b": {
+    "N": 64,
+    "K": 8,
+    "T_frames": 32,
+    "rollouts_B": 512,
+    "W0-S_mlp1M_step1": {
+     "open_loop_opp_ms_p50": 187.49,
+     "open_loop_opp_ms_p99_sum": 401.85,
+     "closed_loop_q_ms_p50": 373.78,
+     "closed_loop_q_ms_p99_sum": 802.36
+    },
+    "W0-S_gru1M_step1": {
+     "open_loop_opp_ms_p50": 247.49,
+     "open_loop_opp_ms_p99_sum": 376.67,
+     "closed_loop_q_ms_p50": 433.78,
+     "closed_loop_q_ms_p99_sum": 777.18
+    },
+    "W1-L_gru1M_block4": {
+     "open_loop_opp_ms_p50": 62.77,
+     "open_loop_opp_ms_p99_sum": 95.17,
+     "closed_loop_q_ms_p50": 109.35,
+     "closed_loop_q_ms_p99_sum": 195.3
+    },
+    "W1-L_tx1M_block4": {
+     "open_loop_opp_ms_p50": 742.25,
+     "open_loop_opp_ms_p99_sum": 760.38,
+     "closed_loop_q_ms_p50": 788.82,
+     "closed_loop_q_ms_p99_sum": 860.5
+    },
+    "S0_C_internal_5950X_DOC": {
+     "P1_open_loop_ms": 250.32,
+     "P3_open_loop_ms": 83.44,
+     "P1_closed_loop_q_ms": 436.6
+    },
+    "S0_python_obs_5950X_DOC": {
+     "P1_open_loop_ms": 283.08,
+     "P3_open_loop_ms": 94.36,
+     "P1_closed_loop_q_ms": 469.37
+    },
+    "S0_python_search_effective_DOC": {
+     "P1_open_loop_ms": 1364.43,
+     "P3_open_loop_ms": 454.81,
+     "P1_closed_loop_q_ms": 1550.72
+    }
+   }
+  },
+  "reading": {
+   "RT-a": "Caben en C_rt=12 ms: W0-S GRU 1M con rival en lazo abierto (7,0/7,9 ms), W1-L GRU 1M bloque 4 incluso con q en lazo cerrado (4,2/5,6 ms), S0 a 15-17 us/frame con P=1 en lazo abierto (8,3-9,3 ms, DOC otra máquina). No caben: W1-L con ARPredictor transformer (20-25 ms) ni S0 con búsqueda en Python (~43 ms).",
+   "RT-b/RT-c": "Solo W1-L GRU bloque 4 y S0 con P=3 réplicas caben; W0-S a 1 frame no.",
+   "PU": "Todas caben en C_pu=250 ms salvo W1-L transformer y S0-Python en PU-b.",
+   "key": "A igualdad de pasos a 1 frame, un predictor aprendido de ~1M en CPU cuesta ~10-12 us por candidato-paso a lote 64 (A7 rollout K=64 T=8: 6,2 ms), del mismo orden que el simulador documentado (12-17 us/frame): la velocidad no favorece a W0-S. Solo la abstracción temporal de W1-L (4 frames por paso) da más horizonte por milisegundo, y solo con un núcleo recurrente/MLP, no con el transformer de LeWM."
+  }
+ },
+ "opponent_hypotheses": {
+  "K_default": 4,
+  "K_paused": 8,
+  "modes": {
+   "O2_mean": "principal",
+   "O2_cvar0.25": "secundaria",
+   "O3prime_reaction_aware_min": "situacional (H0)",
+   "matrix_NxM": "paused_untimed"
+  },
+  "open_loop_validity": "una secuencia del rival muestreada en la raíz es causalmente válida durante D_self+1+R_opp frames; más allá exige q en lazo cerrado",
+  "R_opp_frames": {
+   "human_like": 12,
+   "zero_delay_bots_Faynt_Reyn": 0
+  }
+ },
+ "objective": {
+  "J": "J(c,k) = sum_{t<T} gamma^t r_t * prod cont + gamma^T V_hat(x_T) - beta*sigma_ens (beta=0 en S0)",
+  "gamma_per_frame": 0.998557,
+  "gamma_basis": "semivida 8 s (A2: slippi-ai/Faynt run 2) => 0.5^(1/480)",
+  "consequence": "con T<=32 el descuento es >=0,955: J lo domina V_hat(x_T) salvo golpes dentro del horizonte; la calidad del planificador es la de V_hat compuesto con la dinámica",
+  "base_score": "s0(c) = log pi_prior(c) (P0-logp) o Q_hat(h_f, c) (P0-Q); J_total = lambda_b*s0(c) + lambda_r*mean_k J(c,k); P0: lambda_r=0"
+ },
+ "privileged_info": {
+  "S0": [
+   "simulator_snapshot completo (memoria de mandos, temporizadores de stick, RNG)",
+   "semilla de la partida",
+   "solo en --mode sim con World pasado al agente (A1-007)"
+  ],
+  "S0-shadow_dolphin": [
+   "mandos aplicados de ambos (I_full)",
+   "RNG por frame del flujo Slippi (FrameStart.random_seed; nivel simulator_snapshot en A6)",
+   "semilla"
+  ],
+  "W0/W1": [
+   "I_full: controller_state del rival del frame actual (A1-013)",
+   "I_human: ninguno"
+  ],
+  "value_training": "V_hat entrenado con estado presente bajo demora = privilegio de entrenamiento (declarar; no en inferencia)"
+ },
+ "fallback": {
+  "levels": [
+   "L1 mejor candidato evaluado hasta el plazo (anytime)",
+   "L2 top-1 del prior (calculado primero, ~0,1-1,4 ms)",
+   "L3 repetir mando previo / neutral"
+  ],
+  "log": "nivel, frame, N_eff y t_dec por decisión"
+ }
+}

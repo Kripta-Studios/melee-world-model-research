@@ -1,0 +1,44 @@
+{
+ "meta": {
+  "torch": "2.10.0+cu128",
+  "threads": 2,
+  "note": "servidor compartido, 4 vCPU; forward sin grad; float32"
+ },
+ "results": [
+  {
+   "model": "MLP h256 L3",
+   "params": 688248,
+   "batch": 512,
+   "ms_per_step": 5.027,
+   "us_per_candidate_step": 9.818
+  },
+  {
+   "model": "MLP h512 L4",
+   "params": 1899896,
+   "batch": 512,
+   "ms_per_step": 18.412,
+   "us_per_candidate_step": 35.961
+  },
+  {
+   "model": "ARPred d128 L4 H8x16 mlp512 T16",
+   "params": 1186816,
+   "batch": 512,
+   "ms_per_step": 401.078,
+   "us_per_candidate_step": 783.355
+  },
+  {
+   "model": "ARPred d192 L6 H16x64 mlp2048 T3",
+   "params": 10788096,
+   "batch": 512,
+   "ms_per_step": 469.037,
+   "us_per_candidate_step": 916.088
+  },
+  {
+   "model": "ARPred d192 L6 H16x64 mlp2048 T16",
+   "params": 10788096,
+   "batch": 512,
+   "ms_per_step": 2752.092,
+   "us_per_candidate_step": 5375.179
+  }
+ ]
+}

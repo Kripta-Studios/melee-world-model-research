@@ -1,0 +1,147 @@
+{
+  "schema_version": "A4-dynamics-0.1",
+  "agent_id": "A4",
+  "status": "PROPUESTA",
+  "date": "2026-11-19",
+  "note": "Contrato de diseño para A5 (planificador) y A1 (integración). Nada está implementado. Etiquetas por bloque. Detalle y justificación en evidence/A4/DYNAMICS.md.",
+  "time": {
+    "base_unit": "frame (60 Hz)",
+    "row_alignment": "fila f = PostFrame(f) + PreFrame(f) de ambos puertos; el mando de la fila f ya actuó sobre el estado de la fila f (A6 timing_contract.row_alignment_in_parsers, INSPECCIONADO_EN_CODIGO)",
+    "transition": "x_{f+1} = F(x_f, m_f, u_self_{f+1}, u_opp_{f+1}, rng_f); el modelo aproxima m_f con la ventana de mandos y no recibe rng_f",
+    "application_frame": "observation_frame + 1 + D_total (A6, PROPUESTA)",
+    "own_committed_queue": "los D mandos propios ya enviados u_self_{f+1..f+D} se pasan como primeros pasos de own_actions y no se optimizan",
+    "W0-S_step_frames": 1,
+    "W1-L_step_frames": 4,
+    "W1-L_step_ablation": [1, 2, 4, 8],
+    "variable_duration": "solo ablación W1-evt; no en el contrato base",
+    "eval_horizons_frames": [1, 4, 8, 16, 32]
+  },
+  "information_regimes": {
+    "I_full": "incluye u_opp_f (mando del rival ya aplicado, presente en libmelee GameState.controller_state; A1 §6.1)",
+    "I_human": "excluye u_opp_f; el modelo debe inferirlo",
+    "never_in_input": ["u_opp_{f+1..} reales (solo teacher forcing y oracle de diagnóstico)", "frame_pre_random_seed / random_seed", "simulator_snapshot", "x_{f+1..}"],
+    "oracle_flags": ["opp_actions_oracle", "present_state_for_value_training"]
+  },
+  "inputs": {
+    "history_frames_H": 8,
+    "history_note": "provisional; fijar con el test de aliasing (DYNAMICS.md §5.4) cuando haya simulador",
+    "per_player_fields": {
+      "continuous": ["pos_x", "pos_y", "speed_air_x_self", "speed_y_self", "speed_x_attack", "speed_y_attack", "speed_ground_x_self", "percent", "shield", "dist_to_nearest_ledge"],
+      "categorical": {"action": 512, "character": 26, "facing": 2, "on_ground": 2, "jumps_left": 7, "stock": 5, "hurtbox_state": 3, "invulnerable": 2},
+      "counters": {"action_frame": "0..255", "hitlag_left": "0..63", "hitstun_left": "0..127 (máscara fuera de hitstun)", "invulnerability_left": "si existe"}
+    },
+    "relative": ["dx", "dy"],
+    "projectiles": {"slots": 4, "fields": ["exists", "type", "pos_x", "pos_y", "vel_x", "vel_y", "owner"]},
+    "stage": ["stage_id", "randall", "fod_platforms"],
+    "controller_per_player_per_frame": {
+      "buttons_held_bits": ["A", "B", "X", "Y", "Z", "L", "R", "D_UP"],
+      "buttons_pressed_edges": "derivado b_f & ~b_{f-1}",
+      "main_stick": "int8 -80..80 por eje (crudo; si el corpus solo tiene procesado, rejilla 1/80 y declararlo)",
+      "c_stick": "int8 -80..80 por eje",
+      "triggers": "L, R 0..140 (rejilla 1/140)",
+      "dims_after_encoding": 16
+    },
+    "canonicalization": "espejo determinista x->-x, vx->-vx, facing invertido, según orientación del yo; nunca como invariancia (A3)",
+    "missing_field_policy": "HAL MDS sin velocidades/action_frame/hitstun/crudos: brazo 'partial_schema' declarado, no resultado (A6)"
+  },
+  "models": {
+    "W0-S": {
+      "kind": "estructurado, decodifica campos explícitos",
+      "trunk": "embeddings por campo -> transformer de entidades (2 jugadores + 4 proyectiles) por frame -> GRU o transformer causal sobre H",
+      "params_target": "0.5-2 M",
+      "heads": {
+        "action": {"type": "categorical", "classes": 512, "plus": "binary 'changes'", "loss": "CE (+BCE), peso extra en frames de cambio"},
+        "facing_on_ground_invulnerable_hurtbox": {"type": "categorical/bernoulli", "loss": "CE/BCE"},
+        "jumps_left_stock": {"type": "categorical", "loss": "CE"},
+        "counters": {"type": "mode{continue,reset,zero} + categorical reset value", "loss": "CE"},
+        "delta_pos_and_speeds": {"type": "two-hot sobre bins symlog (o mezcla de 3 logísticas)", "loss": "CE / NLL", "ablation": "gaussiana con log-escala aprendida (estilo HAL StateHead)"},
+        "absolute_pos": {"type": "regresión activada por teleport (muerte, reaparición, agarre de borde)", "loss": "NLL"},
+        "delta_percent": {"type": "categorical bins 0..60", "loss": "CE"},
+        "shield": {"type": "two-hot", "loss": "CE"},
+        "events": {"type": "multi-label", "labels": ["action_change_self", "action_change_opp", "hit_on_self", "hit_on_opp", "shield_hit", "grab", "death_self", "death_opp", "respawn", "ledge_grab", "tech", "shield_break"], "loss": "BCE"}
+      },
+      "loss_weighting": "NLL por campo normalizada por la NLL de la línea base trivial en validación (o log-escala aprendida)",
+      "masks": ["jugador muerto: sin pérdida de pos/vel", "hitstun_left fuera de hitstun"],
+      "multi_horizon": {
+        "autoregressive": {"train_rollout_steps_K": 8, "step_weight": "rho^t, rho=0.5 (como TD-MPC2)", "feedback": "categóricos muestreados + media two-hot; scheduled sampling"},
+        "direct_heads_offsets": [1, 4, 8, 16, 32]
+      },
+      "trivial_baselines_to_beat": ["persistence", "constant_velocity", "majority_next_action_given(action,action_frame)"]
+    },
+    "W1-L": {
+      "kind": "latente inspirado en LeWorldModel",
+      "faithful_to_LeWM": ["MSE de siguiente embedding + lambda*SIGReg por paso, sin stop-grad ni EMA (le-wm train.py L17-45)", "ARPredictor causal con ConditionalBlock AdaLN-zero (module.py L88-111, L244-285)", "proyector y pred_proj MLP con BatchNorm", "acciones del bloque concatenadas por frame (train.py L68)"],
+      "modified": ["encoder de estado estructurado (el E de A3) en lugar de ViT", "acciones de AMBOS jugadores: c = Emb_self + Emb_opp + Emb_role; UNK del rival con p=0.25 solo para diagnóstico marginal", "historia 4 bloques x 4 frames", "pérdida AR adicional de 2-4 bloques (estilo V-JEPA 2-AC auto_steps)", "cabezas de campos sobre sg(z) para evaluación", "cabezas de recompensa, valor, eventos y continuación", "split por partida"],
+      "latent_dim_D": 128,
+      "latent_dim_sweep": [64, 128, 192, 256],
+      "sigreg": {"lambda": 0.09, "lambda_sweep": [0.01, 0.03, 0.09, 0.2, 0.5], "num_proj": 1024, "knots": 17},
+      "predictor": {"dim": 128, "depth": 4, "heads": 8, "dim_head": 16, "mlp_dim": 512, "params_measured": 1186816, "large_arm": {"dim": 192, "depth": 6, "heads": 16, "dim_head": 64, "mlp_dim": 2048, "params_measured": 10788096}},
+      "variants": {"W1-L-frozen": "cabezas r/V/eventos sobre sg(z): fiel al objetivo LeWM", "W1-L-coupled": "gradiente de r/V al encoder (estilo TD-MPC2); se reporta aparte", "W1-L-goal": "ablación: coste min_g ||z_H - z_g||^2 sobre banco de prototipos ventajosos"}
+    }
+  },
+  "value_heads": {
+    "reward": "r_hat derivado de cabezas de eventos/Δpercent con la recompensa slippi-ai (daño y stocks, suma cero); declarar términos de modelado (A2)",
+    "value": "V_hat(z) offline sobre datos humanos (valor humano-vs-humano: sesgo de política declarado) o valor del PPO de B1 (A2); en entrenamiento con demora puede ver el presente (privilegio declarado)",
+    "continuation": "cont = 1 - P(terminated); truncated nunca como terminated (patrón DreamerV3 agent.py L174-177)",
+    "plan_score": "J = sum_{k<H} gamma^k r_hat_k * prod cont + gamma^H V_hat(z_H)",
+    "gamma": "a fijar con A5; sugerencia semivida 8 s como slippi-ai (A2)"
+  },
+  "opponent": {
+    "joint_dynamics": "p_dyn(x' | h, u_self, u_opp) entrenada con mandos reales de ambos",
+    "policy_model": "q(u_opp | historia visible) BC a la demora de reacción R_opp; evaluada en bucle cerrado sobre el estado imaginado",
+    "modes": {
+      "O1_marginal": "u_opp = UNK; SOLO diagnóstico",
+      "O2_sampled": {"K": 8, "aggregate": ["mean", "CVaR_0.25"]},
+      "O3_worst_case_menu": {"M": "menú de A5", "aggregate": "min"},
+      "O3prime_reaction_aware": "primeros D_self+1+R_opp frames muestreados de q; min sobre menú después",
+      "O4_self_copy": "q = política propia (ditto)"
+    },
+    "R_opp_frames_default": {"human": 12, "bots_zero_delay": 0},
+    "rule": "agregar en utilidad, nunca promediar estados"
+  },
+  "uncertainty": {
+    "aleatoric": "cabezas de distribución",
+    "epistemic": {"ensemble_size": 5, "measure": "varianza (continuos) / JS (categóricos)"},
+    "opponent": "dispersión de J entre hipótesis (separada)",
+    "planner_use": "J - beta * sigma_ens; flag out_of_support"
+  },
+  "interface": {
+    "encoder.encode": {
+      "signature": "encode(history: FrameHistory[B, H]) -> ModelState",
+      "ModelState": "W0-S: buffer estructurado (B, H, fields) + mandos; W1-L: z (B, H/k, D) + mandos crudos del último bloque"
+    },
+    "dynamics.predict": {
+      "signature": "predict(state: ModelState, own_actions: Tensor[B, M, T, 16], opponent_hypotheses: Tensor[B, K, T, 16] | OpponentPolicy | 'UNK', elapsed_frames: int = T, info_regime: 'I_full'|'I_human' = 'I_human') -> Prediction",
+      "own_actions": "mandos por frame en el formato controller_per_player_per_frame; los D primeros = cola comprometida",
+      "opponent_hypotheses": "tensor de secuencias, o una política llamada en bucle cerrado con el estado imaginado, o 'UNK' (solo diagnóstico)",
+      "elapsed_frames": "T múltiplo de step_frames del modelo",
+      "returns": {
+        "fields": "dict campo -> distribución por paso [B, M, K, T/step, ...] (en W1-L vía cabezas sobre sg(z))",
+        "latent": "W1-L: z [B, M, K, T/step, D]",
+        "events": "probabilidades [B, M, K, T/step, 12]",
+        "reward": "[B, M, K, T/step]",
+        "value_terminal": "[B, M, K]",
+        "continuation": "[B, M, K, T/step]",
+        "score_J": "[B, M, K]",
+        "uncertainty": {"ensemble_std": "[B, M, K, T/step, n_fields]", "out_of_support": "[B, M]"},
+        "diagnostics": {"compute_ms": "float", "oracle_used": "bool", "info_regime": "str"}
+      }
+    },
+    "evaluator.score": "score(prediction, agg in {'mean','cvar','min','reaction_aware_min'}) -> Tensor[B, M]",
+    "budget_reference_cpu_REPRODUCIDO": {"MLP_0.69M_batch512_ms": 5.0, "ARPred_1.19M_T16_batch512_ms": 401, "ARPred_10.79M_T3_batch512_ms": 469, "source": "evidence/A4/checks/predictor_latency_result.json"},
+    "simulator_reference_DOCUMENTADO": {"frame_in_search_us": "12-15", "frame_from_python_us": 17, "checkpoint_rollback_us": "4.4/4.5", "source": "melee-brute BRUTE.md 'How fast' @9662ec97"}
+  },
+  "terminal_semantics": {
+    "terminated": ["stocks a 0 (GAME!)", "temporizador interno agotado (TIME!, max_frame=28800 en sim)"],
+    "truncated": ["fin de ventana", "horizonte del planificador", "corte externo"],
+    "invalid": ["No Contest", "LRAS", "frames no contiguos", "crash"],
+    "sudden_death": "fuera del contrato (Dolphin la juega aparte; el simulador no la tiene)"
+  },
+  "data": {
+    "rollback_copy": "LAST",
+    "split": "por partida (A6 split_plan.json), antes de ventanear/perspectivas",
+    "first_matchup": "Fox ditto (el bench fuerza FOX, A1 §3), 1-2 escenarios",
+    "counterfactual_sets": {"C1": "estados alcanzados en sim por políticas BC + ramificación checkpoint/rollback", "C2": "replay-to-reach de .slp con crudos hasta primera divergencia de RNG (melee-llm sim/parity.py)", "C2prime": "validador con RNG grabado (DESCONOCIDO si permite ramificar)", "freeze": "sha256 del conjunto antes de entrenar"}
+  },
+  "decisive_controls": ["W(p_dyn aprendido + q) vs S0(simulador + mismo q), mismo presupuesto, --mode sim", "W vs simulador sombra en Dolphin", "W1-L vs W0-S (E1-S de A3 llevado a dinámica)", "rival oracle vs O2 vs O1 por horizonte"]
+}

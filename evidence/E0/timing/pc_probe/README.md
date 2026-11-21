@@ -71,7 +71,8 @@ máximo es el peor de las 3.
 
 Para distinguirlas, el backend de proceso no comparte GIL; está pendiente.
 
-**Backend de proceso (no ejecutado):** las 18 corridas de modo proceso fallaron al arrancar (`stderr.log` local).
+**Backend de proceso (no ejecutado):** las 18 corridas de modo proceso fallaron al arrancar con `AttributeError: Can't get local object 'main.<locals>.<lambda>'` (traza no versionada:
+llevaba rutas locales).
 `fake_runner.py` pasa una lambda como factory y `spawn` no puede serializarla. Tampoco pasan 3 tests de modo proceso
 en `tests/test_rt_strict.py`; la causa probable es el arranque lento de `spawn` frente al primer plazo (INF).
 

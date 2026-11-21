@@ -416,6 +416,27 @@ class CtrlPolicy(nn.Module):
         return out
 
 
+# ------------------------------------------------------------------------------------------ direct (Fast-JEPA P1)
+DMAX = 18
+
+
+class W0SDirect(nn.Module):
+    """PROPUESTA P1 (research/sota_2611/2611.25927.md): una sola pasada h_f + cola propia f+1..f+D+1 + hipótesis de
+    mando del rival + D  ->  logits del frame f+D+1 (mismo formato de salida que W0-S de un paso). Solo coste."""
+
+    def __init__(self, d=192, hid=256):
+        super().__init__()
+        self.uin = nn.Linear((DMAX + 1) * NCTRL + NCTRL + 1, d)
+        self.head = nn.Sequential(nn.LayerNorm(d), nn.Linear(d, hid), nn.GELU(), nn.Linear(hid, W0S_OUT))
+
+    def logits(self, h, own_queue, u_opp, D):
+        K = h.shape[0]
+        q = torch.zeros(DMAX + 1, NCTRL)
+        q[:D + 1] = own_queue[:D + 1]
+        x = torch.cat([q.reshape(1, -1).expand(K, -1), u_opp, torch.full((K, 1), D / DMAX)], -1)
+        return self.head(h + self.uin(x))
+
+
 # ------------------------------------------------------------------------------------------ predict present
 class PresentPredictor(nn.Module):
     def __init__(self, core="gru", H=16, d=192, d_pi=128, fast=False):
@@ -424,6 +445,7 @@ class PresentPredictor(nn.Module):
         self.w = W0S(core, d, H)
         self.q = CtrlPolicy(core, d, H)
         self.pi = CtrlPolicy("tx" if core.startswith("tx") else core, d_pi, H)
+        self.wd = W0SDirect(d)
 
     def param_counts(self):
         return {"W0S": nparams(self.w), "q": nparams(self.q), "pi0": nparams(self.pi)}
@@ -477,6 +499,34 @@ class PresentPredictor(nn.Module):
         tm["pi0_ms"] = _ms(t2)
         if return_debug:
             return a, {"h": torch.stack(hs, 1), "final": traj[-1], "pi_logits": plg}
+        return a, None
+
+    def predict_direct(self, hist, own_queue, D, K=4, g=None, timings=None):
+        """P1: encode W y q una vez, K hipótesis del rival con una pasada de q, UNA pasada directa a f+D+1,
+        pi0 sobre la ventana real desplazada + el frame imaginado final."""
+        tm = timings if timings is not None else {}
+        t0 = _t()
+        wst, wh = self.w.E.core.prefix(self.w.E.emb.seq(hist))
+        qst, qh = self.q.E.core.prefix(self.q.E.emb.seq(hist))
+        tm["encode_ms"] = _ms(t0)
+        t1 = _t()
+        qsample = ctrl_sample_fast if self.fast else CtrlPolicy.sample
+        wsample = w0s_sample_next_fast if self.fast else self.w.sample_next
+        u_opp = qsample(self.q.head(qh).expand(K, -1), g)
+        lg = self.wd.logits(wh.expand(K, -1), own_queue, u_opp, D)
+        fr = hist.at(-1).map(lambda x: x.expand(K, *x.shape[1:]))
+        fr = wsample(fr, lg, own_queue[D].expand(K, -1), u_opp, g)
+        tm["rollout_ms"] = _ms(t1)
+        t2 = _t()
+        real = hist.map(lambda x:
+                        x[:, 1:].expand(K, x.shape[1] - 1, *x.shape[2:]))  # ventana real sin el frame más viejo
+        last = fr.map(lambda x: x.unsqueeze(1))
+        win = Frames(*(torch.cat([getattr(real, k), getattr(last, k)], 1) for k in Frames.__slots__))
+        pe = self.pi.E.emb.seq(win)
+        core = self.pi.E.core
+        ph = core.full(pe) if isinstance(core, TXCore) else core.prefix(pe)[1]
+        a = CtrlPolicy.mixture_act(self.pi.head(ph))
+        tm["pi0_ms"] = _ms(t2)
         return a, None
 
     def pi0_aged(self, hist):

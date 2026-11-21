@@ -29,6 +29,8 @@ ap.add_argument("--budget_s", type=float, default=160.0)
 ap.add_argument("--rss_cap_mb", type=float, default=1050.0)
 ap.add_argument("--impl", default="ref", choices=("ref", "fast"), help="ref: per-field sampling; fast: vectorised")
 ap.add_argument("--out", required=True)
+ap.add_argument("--mode", default="rollout", choices=("rollout", "direct"),
+                help="direct: PROPUESTA P1 de Fast-JEPA (una pasada a f+D+1); solo q abierto")
 ap.add_argument("--device", default="cpu", choices=("cpu", "cuda"),
                 help="cuda: modelo y estado en GPU; featurize crea tensores en CPU->GPU y cmd.tolist() sincroniza (transferencias incluidas)")
 a = ap.parse_args()
@@ -50,7 +52,7 @@ torch.manual_seed(1000 + a.rep)
 g = torch.Generator(device=a.device).manual_seed(a.rep)
 model = M.PresentPredictor(a.core, H=a.H, fast=a.impl == "fast").eval()
 out = open(a.out, "a")
-base = {"core": a.core, "impl": a.impl, "device": a.device, "threads": a.threads, "rep": a.rep, "K": a.K, "H": a.H}
+base = {"core": a.core, "impl": a.impl, "mode": a.mode, "device": a.device, "threads": a.threads, "rep": a.rep, "K": a.K, "H": a.H}
 out.write(json.dumps({"kind": "env", **base, "params": model.param_counts(), **env_info(a.threads),
                       "gpu": torch.cuda.get_device_name(0) if a.device == "cuda" else None}) + "\n")
 out.flush()
@@ -77,7 +79,7 @@ hist = M.random_frames(1, a.H, g)
 stop = False
 with torch.inference_mode():
     for D in [int(x) for x in a.Ds.split(",")]:
-        for closed in (False, True):
+        for closed in ((False,) if a.mode == "direct" else (False, True)):
             if stop:
                 break
             qname = "closed" if closed else "open"
@@ -89,7 +91,10 @@ with torch.inference_mode():
                 t0 = time.perf_counter_ns()
                 hist = featurize(gss[i], hist)
                 tm["featurize_ms"] = (time.perf_counter_ns() - t0) / 1e6
-                cmd, _ = model.predict(hist, own, D, K=a.K, closed_loop=closed, g=g, timings=tm)
+                if a.mode == "direct":
+                    cmd, _ = model.predict_direct(hist, own, D, K=a.K, g=g, timings=tm)
+                else:
+                    cmd, _ = model.predict(hist, own, D, K=a.K, closed_loop=closed, g=g, timings=tm)
                 cmd = cmd.tolist()
                 dt = (time.perf_counter_ns() - t0) / 1e6
                 if i >= a.warmup:
@@ -99,7 +104,7 @@ with torch.inference_mode():
                 if time.perf_counter() - T0 > a.budget_s or peak_rss_mb() > a.rss_cap_mb:
                     stop = True
                     break
-            rec = {"kind": "present", **base, "D": D, "q": qname, "steps": a.K * (D + 1), "n": len(tot),
+            rec = {"kind": "present", **base, "D": D, "q": qname, "steps": a.K * (1 if a.mode == "direct" else D + 1), "n": len(tot),
                    "p50_ms": pct(tot, .5), "p95_ms": pct(tot, .95), "p99_ms": pct(tot, .99), "max_ms": max(tot) if tot else None,
                    "mean_ms": sum(tot) / len(tot) if tot else None,
                    "stages_p50": {k: pct(v, .5) for k, v in st.items()},

@@ -27,6 +27,13 @@ import threading
 import time
 import traceback
 from collections import deque
+import sys
+
+if sys.platform == "win32":
+    # Windows: los waits con timeout (Condition.wait, Pipe.poll) van atados al temporizador del sistema (15,6 ms por
+    # defecto), lo que rompía el plazo por frame en ~11 ms. 1 ms mientras viva el proceso (se restaura al salir).
+    import ctypes
+    ctypes.windll.winmm.timeBeginPeriod(1)
 
 NEUTRAL = {"buttons": 0, "main": (0, 0), "c": (0, 0), "trig": (0, 0)}
 DEFAULT_CHAIN = ("best_so_far", "repeat_last", "neutral")

@@ -1,0 +1,33 @@
+{
+  "recorded_utc": "2026-11-21T12:29:17Z",
+  "machine": "PC portátil del usuario (Windows)",
+  "gpu": {
+    "nvidia_smi": "NVIDIA GeForce RTX 5070 Ti Laptop GPU, 12227 MiB, 591.86",
+    "torch_name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "vram_mib": 12226,
+    "compute_capability": "12.0",
+    "sm_count": 46
+  },
+  "cpu": {
+    "name": "AMD Ryzen 9 9955HX 16-Core Processor",
+    "physical_cores": 16,
+    "logical_cpus": 32
+  },
+  "ram_gib": 31.2,
+  "disk_free_gib": {
+    "C:\\": 77,
+    "D:\\": 112
+  },
+  "os": "Windows-11-10.0.26200-SP0",
+  "python_torch_env": {
+    "python": "3.12.13",
+    "torch": "2.10.0+cu128",
+    "cuda": "12.8",
+    "cudnn": 91002,
+    "numpy": "2.3.5",
+    "note": "entorno torch reutilizado de otro proyecto local (no se instaló torch para este repo); ruta relativa ../ebook-to-audio/.venv"
+  },
+  "data_env": {
+    "note": "venv propio en $E0_DATA/venv-e0 con peppi-py 0.8.6, zstandard 0.25.0, numpy 2.5.5, psutil; ver evidence/E0/pip_freeze.txt"
+  }
+}

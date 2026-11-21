@@ -5,6 +5,6 @@ cd "$(dirname "$0")/../../.."
 G=${SMOKE_GAMES:-40}; E=${SMOKE_EPOCHS:-2}
 for s in 0 1 2; do
   for m in w0s q; do
-    pilot/e0/models/logrun.sh smoke_${m}_s$s python3 pilot/e0/models/smoke.py --model $m --seed $s --games $G --epochs $E
+    pilot/e0/models/logrun.sh smoke_${m}_s$s "${PY:-python3}" pilot/e0/models/smoke.py --model $m --seed $s --games $G --epochs $E
   done
 done

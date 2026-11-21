@@ -1,5 +1,7 @@
 """Shared helpers: thread pinning, environment capture, adaptive timing with percentiles."""
-import json, os, platform, resource, subprocess, sys, time
+import json, os, platform, subprocess, sys, time
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+import portable as _P  # noqa: E402  (Linux/Windows)
 
 
 def pin_threads(n):
@@ -23,9 +25,9 @@ def env_info(threads):
             return f"ERR {e}"
     return {
         "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "uptime": sh("uptime"),
-        "loadavg": open("/proc/loadavg").read().strip(),
-        "cpu": sh("grep -m1 'model name' /proc/cpuinfo"),
+        "uptime": sh("uptime") if _P.LINUX else "n/a (windows)",
+        "loadavg": _P.loadavg(),
+        "cpu": sh("grep -m1 'model name' /proc/cpuinfo") if _P.LINUX else platform.processor(),
         "nproc": os.cpu_count(),
         "python": sys.version.split()[0],
         "torch": torch.__version__,
@@ -33,12 +35,12 @@ def env_info(threads):
         "torch_threads": torch.get_num_threads(),
         "requested_threads": threads,
         "platform": platform.platform(),
-        "mem_available_mb": int(sh("awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo") or 0),
+        "mem_available_mb": _P.mem_available_mb(),
     }
 
 
 def peak_rss_mb():
-    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+    return _P.peak_rss_mb()
 
 
 def pct(xs, q):

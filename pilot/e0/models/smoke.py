@@ -19,8 +19,9 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import resource
 import sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..'))
+import portable as _P  # noqa: E402  (Linux/Windows)
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -42,12 +43,10 @@ def _watchdog(cap_mb=880):
 
     def run():
         while True:
-            for line in open("/proc/self/status"):
-                if line.startswith("VmRSS"):
-                    mb = int(line.split()[1]) / 1024
-                    if mb > cap_mb:
-                        print(f"WATCHDOG: VmRSS {mb:.0f} MB > {cap_mb} MB, abortando", flush=True)
-                        os._exit(3)
+            mb = _P.rss_mb()
+            if mb > cap_mb:
+                print(f"WATCHDOG: VmRSS {mb:.0f} MB > {cap_mb} MB, abortando", flush=True)
+                os._exit(3)
             time.sleep(1.0)
     threading.Thread(target=run, daemon=True).start()
 OUTDIR = os.path.join(C.REPO, "evidence", "E0", "floors")
@@ -60,7 +59,7 @@ DISC_HEADS = [("facing", I_FAC, 3, 1), ("airborne", I_AIR, 2, 0), ("jumps_left",
 
 
 def rss_mb():
-    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024
+    return _P.peak_rss_mb()
 
 
 def raw_rows(v: dict) -> np.ndarray:

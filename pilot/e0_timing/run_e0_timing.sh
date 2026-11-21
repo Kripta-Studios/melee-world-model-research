@@ -13,7 +13,9 @@ LOG="$EV/commands.log"
 MIN_AVAIL_MB="${MIN_AVAIL_MB:-900}"; MAX_LOAD="${MAX_LOAD:-16}"; WAIT_S="${WAIT_S:-600}"
 REPS="${2:-3}"
 
+sysinfo() { if command -v free >/dev/null; then echo "uptime: $(uptime) | free: $(free -m | awk 'NR==2{print "used="$3" avail="$7}')"; else echo "windows $(hostname)"; fi; }
 guard() {
+  command -v free >/dev/null || return 0   # Windows (Git Bash emula /proc pero no hay free): no se espera
   local t0=$SECONDS
   while :; do
     local av ld; av=$(awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo); ld=$(cut -d' ' -f1 /proc/loadavg)
@@ -26,18 +28,18 @@ guard() {
 run() {  # $1 threads, rest = command (relative to $HERE)
   local th="$1"; shift
   guard
-  echo "$(date -u +%FT%TZ) START $* | uptime: $(uptime) | free: $(free -m | awk 'NR==2{print "used="$3" avail="$7}')" >> "$LOG"
-  ( cd "$HERE" && OMP_NUM_THREADS=$th MKL_NUM_THREADS=$th OPENBLAS_NUM_THREADS=$th timeout 175 nice -n 19 python3 -I "$@" ) >> "$EV/stderr.log" 2>&1
+  echo "$(date -u +%FT%TZ) START $* | $(sysinfo)" >> "$LOG"
+  ( cd "$HERE" && OMP_NUM_THREADS=$th MKL_NUM_THREADS=$th OPENBLAS_NUM_THREADS=$th timeout 175 nice -n 19 "${PY:-python3}" -I "$@" ) >> "$EV/stderr.log" 2>&1
   local rc=$?
-  echo "$(date -u +%FT%TZ) END rc=$rc $* | $(cat /proc/loadavg)" >> "$LOG"
+  echo "$(date -u +%FT%TZ) END rc=$rc $* | $(cat /proc/loadavg 2>/dev/null)" >> "$LOG"
 }
 
 phase="${1:-}"
 case "$phase" in
   tests)
     guard
-    echo "$(date -u +%FT%TZ) START unittest | uptime: $(uptime)" >> "$LOG"
-    ( cd "$HERE/../.." && OMP_NUM_THREADS=1 timeout 175 nice -n 19 python3 -I -m unittest discover -s pilot/e0_timing/tests -v ) > "$EV/tests.log" 2>&1
+    echo "$(date -u +%FT%TZ) START unittest | $(sysinfo)" >> "$LOG"
+    ( cd "$HERE/../.." && OMP_NUM_THREADS=1 timeout 175 nice -n 19 "${PY:-python3}" -I -m unittest discover -s pilot/e0_timing/tests -v ) > "$EV/tests.log" 2>&1
     echo "$(date -u +%FT%TZ) END rc=$? unittest" >> "$LOG" ;;
   wrapper)  # Task A: synthetic agents in the fake 60 Hz loop. 1800 frames = 30 s per run.
     for rep in $(seq 0 $((REPS-1))); do
@@ -59,8 +61,8 @@ case "$phase" in
     done; done ;;
   jit)  # exploratory: TorchScript trace+freeze of one closed-loop rollout step (inductor breaches the RAM cap)
     for rep in $(seq 0 $((REPS-1))); do for th in 1 2; do for core in gru tx_kv mlp; do
-      guard; echo "$(date -u +%FT%TZ) START compile_probe $th $core jit | uptime: $(uptime)" >> "$LOG"
-      ( cd "$HERE" && OMP_NUM_THREADS=$th timeout 175 nice -n 19 python3 -I compile_probe.py $th $core jit ) 2>>"$EV/stderr.log" | grep '^{' >> "$EV/jit_probe.jsonl"
+      guard; echo "$(date -u +%FT%TZ) START compile_probe $th $core jit | $(sysinfo)" >> "$LOG"
+      ( cd "$HERE" && OMP_NUM_THREADS=$th timeout 175 nice -n 19 "${PY:-python3}" -I compile_probe.py $th $core jit ) 2>>"$EV/stderr.log" | grep '^{' >> "$EV/jit_probe.jsonl"
       echo "$(date -u +%FT%TZ) END compile_probe" >> "$LOG"
     done; done; done ;;
   *) echo "usage: $0 {tests|wrapper|present|e2e} [REPS]"; exit 2 ;;

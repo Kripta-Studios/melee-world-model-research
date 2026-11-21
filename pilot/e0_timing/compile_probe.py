@@ -1,6 +1,8 @@
 """Probe: does torch.compile (inductor, CPU) cut the per-step eager overhead of the W0-S + q rollout step?
 Exploratory (E0); noise is passed in as tensors so the compiled region has no generator objects."""
-import os, sys, time, json, resource
+import os, sys, time, json
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+import portable as _P  # noqa: E402  (Linux/Windows)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import torch
 th = int(sys.argv[1]) if len(sys.argv) > 1 else 1
@@ -84,6 +86,6 @@ with torch.inference_mode():
     res["backend"] = backend
     res["compile_s"] = time.perf_counter() - t0
     res["compiled"] = bench(cstep)
-res["peak_rss_mb"] = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024
-res["loadavg"] = open("/proc/loadavg").read().strip()
+res["peak_rss_mb"] = _P.peak_rss_mb()
+res["loadavg"] = _P.loadavg()
 print(json.dumps(res))

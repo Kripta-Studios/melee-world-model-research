@@ -16,6 +16,8 @@ import http.client
 import json
 import os
 import sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+import portable as _P  # noqa: E402  (Linux/Windows)
 import tarfile
 import time
 import urllib.request
@@ -31,11 +33,7 @@ MIN_LAST_FRAME = 1500  # frames de juego (post cuenta atrás); umbral de HAL sel
 
 
 def mem_available_mb() -> int:
-    with open("/proc/meminfo") as f:
-        for line in f:
-            if line.startswith("MemAvailable:"):
-                return int(line.split()[1]) // 1024
-    return 10**6
+    return _P.mem_available_mb()
 
 
 class ResumingReader:

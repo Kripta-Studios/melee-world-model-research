@@ -18,8 +18,9 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import resource
 import sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..'))
+import portable as _P  # noqa: E402  (Linux/Windows)
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -300,7 +301,7 @@ def main():
                 n_val_games=sum(g["split"] == "val" for g in games),
                 n_val_anchors_per_port=int(sum(len(C.anchors(g["n"])) for g in games if g["split"] == "val")),
                 seconds=round(time.time() - t0, 1),
-                max_rss_mb=round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024, 1))
+                max_rss_mb=round(_P.peak_rss_mb(), 1))
     json.dump(side, open(os.path.join(a.out, "floors_side.json"), "w"), indent=1)
     print(json.dumps(side)[:400])
 

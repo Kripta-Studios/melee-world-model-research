@@ -8,6 +8,8 @@ timed per stage with perf_counter_ns. Plus pi0 alone on the aged observation (ar
 Usage: python3 -I bench_present.py --core {mlp,gru,tx,tx_kv} --threads {1,2} --rep R --out FILE.jsonl
 """
 import argparse, json, os, random, sys, time
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+import portable as _P  # noqa: E402  (Linux/Windows)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -27,18 +29,30 @@ ap.add_argument("--budget_s", type=float, default=160.0)
 ap.add_argument("--rss_cap_mb", type=float, default=1050.0)
 ap.add_argument("--impl", default="ref", choices=("ref", "fast"), help="ref: per-field sampling; fast: vectorised")
 ap.add_argument("--out", required=True)
+ap.add_argument("--device", default="cpu", choices=("cpu", "cuda"),
+                help="cuda: modelo y estado en GPU; featurize crea tensores en CPU->GPU y cmd.tolist() sincroniza (transferencias incluidas)")
 a = ap.parse_args()
 
 torch = pin_threads(a.threads)
+if a.device == "cuda" and a.rss_cap_mb == 1050.0:
+    a.rss_cap_mb = 6000.0  # el contexto CUDA ya supera 1 GB de RSS; el tope de 1050 MB era del servidor
+if a.device == "cuda":
+    torch.set_default_device("cuda")  # antes de importar wm_models: sus constantes de módulo nacen en GPU
 import wm_models as M  # noqa: E402
+
+
+def sync():
+    if a.device == "cuda":
+        torch.cuda.synchronize()
 
 T0 = time.perf_counter()
 torch.manual_seed(1000 + a.rep)
-g = torch.Generator().manual_seed(a.rep)
+g = torch.Generator(device=a.device).manual_seed(a.rep)
 model = M.PresentPredictor(a.core, H=a.H, fast=a.impl == "fast").eval()
 out = open(a.out, "a")
-base = {"core": a.core, "impl": a.impl, "threads": a.threads, "rep": a.rep, "K": a.K, "H": a.H}
-out.write(json.dumps({"kind": "env", **base, "params": model.param_counts(), **env_info(a.threads)}) + "\n")
+base = {"core": a.core, "impl": a.impl, "device": a.device, "threads": a.threads, "rep": a.rep, "K": a.K, "H": a.H}
+out.write(json.dumps({"kind": "env", **base, "params": model.param_counts(), **env_info(a.threads),
+                      "gpu": torch.cuda.get_device_name(0) if a.device == "cuda" else None}) + "\n")
 out.flush()
 
 rng = random.Random(a.rep)
@@ -91,7 +105,7 @@ with torch.inference_mode():
                    "stages_p50": {k: pct(v, .5) for k, v in st.items()},
                    "stages_p99": {k: pct(v, .99) for k, v in st.items()},
                    "raw_total_ms": [round(x, 4) for x in tot],
-                   "loadavg": open("/proc/loadavg").read().strip(), "peak_rss_mb": peak_rss_mb(),
+                   "loadavg": _P.loadavg(), "peak_rss_mb": peak_rss_mb(),
                    "truncated": stop}
             out.write(json.dumps(rec) + "\n"); out.flush()
     # pi0 alone on the aged observation (arm (a) / cheap_policy fallback)
@@ -111,7 +125,7 @@ with torch.inference_mode():
             f()
         ts = []
         for _ in range(n):
-            t0 = time.perf_counter_ns(); f(); ts.append((time.perf_counter_ns() - t0) / 1e3)
+            sync(); t0 = time.perf_counter_ns(); f(); sync(); ts.append((time.perf_counter_ns() - t0) / 1e3)
         return {"p50_us": pct(ts, .5), "p99_us": pct(ts, .99)}
     fr = hist.at(-1).map(lambda x: x.expand(K, *x.shape[1:]).contiguous())
     wst, wh = model.w.E.core.prefix(model.w.E.emb.seq(hist))
@@ -131,4 +145,4 @@ with torch.inference_mode():
         comp["core_step_K_ctx35"] = T(lambda: model.w.E.core.step(st18, e))
 out.write(json.dumps({"kind": "components", **base, **comp}) + "\n")
 out.write(json.dumps({"kind": "end", **base, "elapsed_s": time.perf_counter() - T0, "peak_rss_mb": peak_rss_mb(),
-                      "loadavg_end": open("/proc/loadavg").read().strip(), "truncated": stop}) + "\n")
+                      "loadavg_end": _P.loadavg(), "truncated": stop}) + "\n")

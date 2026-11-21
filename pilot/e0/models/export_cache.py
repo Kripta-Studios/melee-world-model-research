@@ -8,8 +8,9 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import resource
 import sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..'))
+import portable as _P  # noqa: E402  (Linux/Windows)
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -77,7 +78,7 @@ def main():
                 fields={k: C.DTYPES[k] for k in C.ALL_FIELDS},
                 note="frame_id>=0; sticks/gatillos como enteros de la rejilla 1/80 y 1/140; facing=sign")
     json.dump(info, open(os.path.join(a.out, "index.json"), "w"))
-    rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024
+    rss = _P.peak_rss_mb()
     print(json.dumps(dict(n_games=len(games), n_train=sum(g['split'] == 'train' for g in games),
                           n_val=sum(g['split'] == 'val' for g in games), n_rows=N, test_skipped=n_test,
                           seconds=round(time.time() - t0, 1), max_rss_mb=round(rss, 1))))

@@ -14,6 +14,8 @@ port 2 = a trivial unwrapped agent, both called in runner order.
 CLI: python3 -I fake_runner.py --agent heavytail --mode thread --frames 1800 --out raw.jsonl
 """
 import argparse, json, os, sys, time
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+import portable as _P  # noqa: E402  (Linux/Windows)
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rt_strict import RTStrict, now  # noqa: E402
@@ -94,8 +96,7 @@ def run_loop(wrapped, frames, emu_ms=3.3, other=None, loadavg_every_s=1.0):
         iter_ns.append(now() - t_it)
         if time.monotonic() - t_last > loadavg_every_s:
             t_last = time.monotonic()
-            with open("/proc/loadavg") as fh:
-                loads.append((time.time(), fh.read().split()[0]))
+            loads.append((time.time(), _P.loadavg().split()[0]))
     trace = wrapped.close()
     return trace, {"lateness_ns": console.lateness, "agent_section_ns": iter_ns, "loadavg_samples": loads}
 
@@ -122,13 +123,13 @@ def main():
         factory = lambda: synthetic_agents.make(a.agent, seed=a.rep)
     w = RTStrict(factory=factory, budget_ms=a.budget_ms, mode=a.mode,
                  chain=a.chain.split(","), label=label)
-    up0 = open("/proc/loadavg").read().strip()
+    up0 = _P.loadavg()
     trace, aux = run_loop(w, a.frames, emu_ms=a.emu_ms)
     with open(a.out, "a") as f:
         f.write(json.dumps({"kind": "run", "label": label, "agent": a.agent, "mode": a.mode, "rep": a.rep,
                             "budget_ms": a.budget_ms, "frames": a.frames, "emu_ms": a.emu_ms,
                             "switch_ms": a.switch_ms, "chain": a.chain, "loadavg_start": up0,
-                            "loadavg_end": open("/proc/loadavg").read().strip(),
+                            "loadavg_end": _P.loadavg(),
                             "loadavg_samples": aux["loadavg_samples"],
                             "frame_lateness_ms": [x / 1e6 for x in aux["lateness_ns"]],
                             "agent_section_ms": [x / 1e6 for x in aux["agent_section_ns"]]}) + "\n")

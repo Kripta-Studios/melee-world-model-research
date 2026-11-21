@@ -149,7 +149,7 @@ def _proc_main(conn, factory):
 
 class _ProcWorker:
     def __init__(self, factory):
-        ctx = mp.get_context("fork")
+        ctx = mp.get_context("fork" if "fork" in mp.get_all_start_methods() else "spawn")  # Windows: spawn
         self.conn, child = ctx.Pipe()
         self.p = ctx.Process(target=_proc_main, args=(child, factory), daemon=True)
         self.p.start()

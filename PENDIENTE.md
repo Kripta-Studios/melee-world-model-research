@@ -3,6 +3,20 @@
 Para un agente que acaba de hacer `git pull`. Lee antes [`HECHO.md`](HECHO.md).
 El plan completo y sus puertas están en `deliverables/EXPERIMENT_PLAN.md` (§8) y `decision/DECISION.md` (§3).
 
+## Estado a 2026-11-21 (PC con GPU, Windows)
+
+| Paso | Estado |
+|---|---|
+| 0. Preparar la máquina | **Hecho.** `evidence/E1/hardware.json`. En Windows: venv de datos en `$E0_DATA/venv-e0` (con `Scripts/python.exe`) y torch de otro venv local vía `PY=...`; no se instala torch por proyecto. Usa Git Bash y `-X utf8` |
+| 1. Regenerar E0 | **Hecho**, idéntico byte a byte al servidor |
+| 2.1 Semillas de humo | **Hecho** (3 por modelo) |
+| 2.2 Banco de latencia completo | **Pendiente.** Las medidas del PC solo sirven como razones: la CPU estaba estrangulada. Repetir con el portátil en modo rendimiento y enchufado. La ruta GPU existe (`--device cuda`), pero con K=4 la limita el lanzamiento de kernels; probar CUDA Graphs o `torch.compile`. Medir también el predictor directo (`--mode direct`) |
+| 2.3 Envoltorio a 60 Hz | **Hecho en modo hilo: no cumple** (5–7 ms de exceso p99). El modo proceso falla en Windows: la factory de `fake_runner.py` es una lambda y `spawn` no la serializa, y 3 tests de modo proceso no pasan |
+| 3. Ampliar corpus | **En curso**: ~2.000 de unos 3.000 dittos nuevos en `D:/melee-data/e1/slp` (se guardan los `.slp`, ~3,5 MB cada uno). Falta parsearlo a `D:/melee-data/e1/parsed` y rehacer splits y comprobaciones |
+| 4. Preregistro | **Sellado** (`evidence/E1/preregistration.sha256`). No cambiar umbrales; cualquier enmienda, antes de entrenar y con aprobación del usuario |
+| 5. E1 | Código en construcción en `pilot/e1/`. Sin ejecuciones de E1 todavía |
+| Nuevo: E0c | Mapa de predecibilidad hecho. Propuesta abierta: enmendar G1-q (ii) para leerlo sobre frames comprometidos; decide el usuario |
+
 ## Reglas del proyecto
 
 - **Commits:** autor único Kripta-Studios. Sin `Co-Authored-By` ni líneas de atribución a IA.

@@ -1,4 +1,4 @@
-# HECHO — estado del trabajo a 2026-11-19
+# HECHO — estado del trabajo a 2026-11-21
 
 Documento de traspaso. Dice qué existe, dónde está y cuánto se puede confiar en ello.
 Lo que falta está en [`PENDIENTE.md`](PENDIENTE.md).
@@ -89,7 +89,38 @@ Código en `pilot/e0_timing/`, informe en `evidence/E0/timing/TIMING_REPORT.md`.
   de 6 frames) da 13,0 ms de mediana y 19,5 ms p99; con 12 frames, 21–26 ms de mediana.
 - La caché KV del transformer da la misma salida numérica que sin caché (test) y divide el paso entre 5 y 9.
 
-## 3. Repositorios externos usados
+## 3. Trabajo en el PC con GPU (2026-11-21)
+
+Máquina en `evidence/E1/hardware.json`: RTX 5070 Ti laptop de 12 GB, Ryzen 9 9955HX, 31 GiB y Windows 11. Datos en
+`E0_DATA=D:/melee-data`.
+
+| Qué | Dónde | Estado |
+|---|---|---|
+| Pilotos portables a Windows (`pilot/portable.py`, `pilot/timev.py`, `$PY`, `-X utf8`) | `pilot/` | Hecho; en Linux el comportamiento no cambia |
+| Datos de E0 regenerados | `D:/melee-data` | **Idénticos byte a byte** al servidor (índice, splits y manifiesto); 21 tests OK |
+| Semillas de humo que faltaban | `evidence/E0/floors/FLOORS_REPORT.md` §8 | **3 semillas por modelo**; sd entre semillas 0,002–0,007 |
+| Mapa de predecibilidad (E0c) | `evidence/E0/predictability/PREDICTABILITY.md` | Hecho; ver abajo |
+| Revisión de 4 papers de 2611 | `research/sota_2611/SYNTHESIS.md` | Hecho: 2 útiles (Fast-JEPA, SADL) y 2 marginales; ninguno cambia la decisión |
+| Preregistro de E1 | `evidence/E1/PREREGISTRATION.md`, `preregistration.json`, `eval_schedule.csv`, `.sha256` | **Sellado**: el usuario aceptó los valores por defecto |
+| Envoltorio de plazo a 60 Hz | `evidence/E0/timing/pc_probe/README.md` | Verificado en modo hilo: **excede el plazo 5–7 ms p99 con agentes lentos**. El modo proceso queda pendiente en Windows |
+| Predictor directo (P1 de Fast-JEPA) en el banco | `pilot/e0_timing/`, `pc_probe/` | Su coste no depende de D; 2,3–7× más rápido que el rollout (solo coste) |
+| Corpus para E1 | `evidence/E1/stream_manifest.jsonl` | Descarga en curso; ver PENDIENTE |
+| Código de entrenamiento de E1 | `pilot/e1/` | En construcción |
+| Panorama: repos de Mateo, leaderboard y competidores | `research/landscape_2611/` | En curso |
+
+Hallazgos nuevos:
+
+- **Dos regímenes (E0c, REP).**
+  - En los frames comprometidos (hitstun, lag, animaciones), el estado predice la acción ~99 % a cualquier horizonte
+    y ningún mando añade nada. Son el 15 % del tiempo a 7 frames y el 8 % a 13.
+  - Los mandos propios casi duplican el acierto en eventos; los del rival añaden ≤ 0,004.
+  - Del rival solo es predecible su ventana comprometida. En sus decisiones, lo honesto es medir calibración.
+- **La CPU de este portátil rindió 4–10× por debajo de lo normal** durante la sesión (probable perfil de energía). Los
+  milisegundos absolutos medidos aquí no valen; las razones entre variantes, sí.
+- **En GPU con K=4,** el predictor rollout es más lento que en CPU: está limitado por el lanzamiento de kernels.
+- **En Windows,** el temporizador de 15,6 ms rompía el plazo. `rt_strict` usa ahora `timeBeginPeriod(1)`.
+
+## 4. Repositorios externos usados
 
 Clonados en `sources/` (no versionado). Para recrearlos con las mismas revisiones, ver `ops/clone_inventory.txt`
 (`owner/repo` + SHA de HEAD) y `deliverables/sources.lock.json`.

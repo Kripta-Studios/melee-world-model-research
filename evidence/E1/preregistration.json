@@ -1,0 +1,619 @@
+{
+  "id": "E1-prereg-v0-borrador",
+  "estado": "SELLADO 2026-11-21. El usuario aceptó los valores por defecto de las decisiones U1–U6. Ninguna cifra de este fichero sale de un entrenamiento de E1; en el momento del sellado no se había entrenado ningún modelo de E1 ni leído el split de test.",
+  "fecha_redaccion": "2026-11-21",
+  "base": [
+    "decision/DECISION.md §3 (puertas G1-dyn, G1-q, G1-jepa, G1-rep, E1b)",
+    "deliverables/EXPERIMENT_PLAN.md §1-§8, §11",
+    "deliverables/CRITICAL_REVIEW.md §7 (D-3, D-7)",
+    "deliverables/DESIGN.md §2-§3",
+    "evidence/A4/model_contract.json",
+    "evidence/E0/floors/FLOORS_REPORT.md §8 y logs/summarize.out (desviación entre 3 semillas)",
+    "research/sota_2611/SYNTHESIS.md y los informes 2611.21596, 2611.25927, 2611.24778",
+    "evidence/E1/hardware.json"
+  ],
+  "etiquetas_origen": {
+    "DECISION": "fijado en decision/DECISION.md §3",
+    "EXPERIMENT_PLAN": "fijado en deliverables/EXPERIMENT_PLAN.md",
+    "CRITICAL_REVIEW": "corrección de deliverables/CRITICAL_REVIEW.md §7",
+    "DESIGN": "deliverables/DESIGN.md o evidence/A4/model_contract.json",
+    "E0": "medido en E0 (evidence/E0/floors, REP)",
+    "SOTA_2611": "propuesta de research/sota_2611 que este preregistro adopta",
+    "PROPUESTA": "propuesta nueva de este borrador; el usuario puede cambiarla antes de sellar"
+  },
+  "reglas_generales": {
+    "regla_de_efecto": {
+      "texto": "Una comparación A frente a B CUENTA si se cumplen las tres condiciones a la vez: (1) |Δ̄| > 2·σ_umbral en la dirección favorable a A; (2) el IC bootstrap por partida de Δ̄ excluye 0 en esa dirección; (3) la mejora relativa supera el mínimo de la puerta.",
+      "origen": "DECISION (1, 2) + mínimo por puerta (ver cada puerta)",
+      "definiciones": {
+        "metrica_por_partida": "media ponderada por número de anclas dentro de la partida; la métrica global es la media ponderada por anclas de todas las partidas de test (como en E0)",
+        "Δ̄": "media sobre semillas de la métrica de A menos la de B (B promediada sobre sus semillas si es aprendido; valor único si es un suelo)",
+        "σ_semillas": "desviación típica (ddof = 1) entre semillas de Δ_s; si B es aprendido, Δ_s = m_A,s − m_B,s con semillas emparejadas por índice; si B es un suelo, Δ_s = m_A,s − m_B",
+        "σ_umbral": "max(σ_semillas medida en E1, σ_ref de E0 para esa familia de métricas). Así una sd de E1 pequeña por azar no rebaja el umbral por debajo de lo medido en E0",
+        "mejora_relativa": "métricas de acierto: (err_B − err_A)/err_B con err = 1 − acierto (convención de FLOORS_REPORT, donde 0,324 frente a 0,289 = +4,9 %); métricas de pérdida (NLL, MSE, MAE): (L_B − L_A)/L_B",
+        "IC": "bootstrap percentil por partida, 10.000 réplicas, semilla del bootstrap 20261121; en cada réplica se remuestrean partidas de test con reemplazo y se recalcula Δ̄ con los valores por partida ya promediados entre semillas",
+        "nivel_IC": "95 % salvo corrección por multiplicidad indicada en la puerta"
+      },
+      "origen_definiciones": "PROPUESTA (operativización de la regla de DECISION §3)"
+    },
+    "sigma_ref_E0": {
+      "origen": "E0 (logs/summarize.out, 3 semillas, val de 12 partidas; humo de 40 partidas y 2 épocas)",
+      "accion_acierto_eventos_h4": 0.006,
+      "accion_acierto_eventos_h8": 0.0068,
+      "accion_acierto_eventos_otros_h": 0.0068,
+      "nota_accion": "máximo de la sd entre semillas sobre las tres variantes de mandos de E0 (oracle_u 0,0049/0,0068, persist_u 0,0034/0,0027, shuffled_u 0,0060/0,0048); se toma el máximo porque la variante 'q' de E1 no existía en E0",
+      "q_nll_total_h1": 0.0049,
+      "q_nll_total_h7": 0.0062,
+      "q_nll_total_h13": 0.0068,
+      "nota_q": "cota por suma de las sd de botones, stick y C-stick en 'all' (h=1: 0,00032+0,0029+0,0017; h=7: 0,0015+0,0033+0,0014; h=13: 0,0025+0,0034+0,00099)",
+      "pos_mae_eventos": 0.07,
+      "nota_pos": "máximo de la sd de MAE de pos_x/pos_y en eventos a h ∈ {4, 8} (0,013-0,062) redondeado",
+      "tareas_sin_referencia_E0": 0.005,
+      "nota_sin_referencia": "BC, V̂ y cabezas sobre encoder congelado no se midieron en E0; se fija un suelo de 0,005 (nats o unidades de MSE normalizado) del orden de las sd de NLL medidas en E0. PROPUESTA"
+    },
+    "aviso_sigma": "La sd de E0 viene de modelos de humo (40 partidas, 2 épocas) y mezcla dos máquinas. FLOORS_REPORT §8 (INF): con efectos de interés de 3-35 pp la regla 2σ casi nunca será la condición que decida; decidirán el mínimo relativo y el IC.",
+    "regimenes": {
+      "I_full": "historia con el controller_state del rival en todos los frames ≤ f. Régimen primario: decide las puertas",
+      "I_human": "se filtran TODOS los mandos del rival de la historia (patrón bot-writer: se filtra controller_state del rival antes de featurizar). Se evalúa con los mismos umbrales y se reporta como veredicto separado 'puerta[I_human]'; no cambia ninguna decisión de etapa",
+      "ORACLE": "mandos futuros reales del rival; solo diagnóstico, nunca decide",
+      "regla": "nunca se agregan ni se mezclan regímenes en un contraste",
+      "implementacion": "un único modelo por brazo y semilla, entrenado con un token de régimen y máscara de los mandos del rival con p = 0,5 por muestra; se evalúa con el token fijado a cada régimen. PROPUESTA (ahorra la mitad del cómputo frente a modelos separados; si sesga, sesga en contra de pasar en I_full)",
+      "origen": "DECISION §2, EXPERIMENT_PLAN §2; implementación PROPUESTA"
+    },
+    "uso_de_splits": {
+      "train": "todo entrenamiento, ajuste de suelos y normalización",
+      "val": "selección de λ de SIGReg, de variante de W0-S, de checkpoint (pérdida de entrenamiento en val) y diagnósticos de calibración; nunca métricas de puerta",
+      "test": "se abre UNA vez, después de congelar todos los checkpoints y escribir evidence/E1/frozen_models.sha256",
+      "guardia": "el código de E1 usa la clave split_v1_E1 con una guardia equivalente a common.assert_no_test que solo se levanta en el script de evaluación final y solo si existe frozen_models.sha256. El assert de pilot/e0/models/common.py no se toca",
+      "origen": "EXPERIMENT_PLAN §5.5 + PROPUESTA (mecanismo)"
+    },
+    "multiplicidad": {
+      "G1-dyn": "unión-intersección: pasa solo si cuentan h=4 Y h=8; IC al 95 % sin corrección",
+      "G1-q": "unión-intersección: deben contar las 4 comparaciones (NLL y acción, D=6 y D=12); IC al 95 %",
+      "G1-jepa": "regla '≥ 2 de 3 tareas': Bonferroni sobre 3, IC al 98,33 %",
+      "G1-rep": "regla 'alguna de 4 comparaciones': Bonferroni sobre 4, IC al 98,75 %",
+      "origen": "PROPUESTA"
+    }
+  },
+  "datos": {
+    "fuente": "erickfm/melee-ranked-replays@ef54ddc230e01373ff2a179b49a7e559af788081, carpeta FOX",
+    "tarballs_E1": [
+      "FOX/FOX_diamond-diamond_a1 (las 288 de E0)",
+      "FOX/FOX_diamond-diamond_a2",
+      "FOX/FOX_diamond-diamond_a3",
+      "FOX/FOX_diamond-diamond_a4",
+      "FOX/FOX_master-master_a1",
+      "FOX/FOX_master-master_a2",
+      "FOX/FOX_platinum-platinum_a1"
+    ],
+    "manifiesto": "evidence/E1/stream_manifest.jsonl (en curso al redactar: 3.052 miembros vistos de diamond_a2, 189 aceptados, 6,2 %)",
+    "filtro": "el de E0 sin cambios: 2 humanos, ambos Fox, sin teams, GameEnd TIME!/GAME!, last_frame ≥ 1500, frames contiguos, sha1 único (evidence/E0/dataset_card.json)",
+    "escenarios": "los seis legales presentes en el corpus (2, 3, 8, 28, 31, 32), con stage_id como entrada. BF (31) y FD (32) se reportan como subconjunto secundario. Desviación declarada de DECISION §2 ('BF/FD'): E0 ya incluía los seis. PROPUESTA (ver decisiones abiertas)",
+    "limites_declarados": [
+      "Slippi 3.14/3.15: sin C-stick crudo (≥ 3.17); se usa el procesado en rejilla 1/80",
+      "raw_y solo en 3.15",
+      "fuga por set inevitable en ranked anónimo: el test se titula 'partidas no vistas de la misma población'"
+    ],
+    "dedup": "pilot/e0/splits.py: sha1 exacto + casi-duplicados (semilla inicial + hash de 600 filas post-cuenta atrás), antes de asignar split",
+    "split": {
+      "version": "A6-split-v1-E1",
+      "bucket": "int(sha256('A6-split-v1|' + sha1)[:8], 16) / 2^32",
+      "umbrales": {
+        "train": "< 0.606",
+        "val": "[0.606, 0.697)",
+        "test": "≥ 0.697"
+      },
+      "proporciones_esperadas": "60,6 / 9,1 / 30,3 %",
+      "implementacion": "pilot/e0/splits.py, campo split_v1_E1",
+      "origen": "EXPERIMENT_PLAN §5.3 (PROP-int) adoptado aquí como resolución de D-3"
+    },
+    "minimos_por_split": {
+      "train": 2000,
+      "val": 300,
+      "test": 1000,
+      "unidad": "partidas tras dedup y exclusiones",
+      "corpus_necesario": "≈ 3.300 dittos deduplicados en expectativa; la descarga se cierra cuando los tres mínimos se cumplen con los conteos reales del split (contar splits no lee contenido de test)",
+      "origen": "DECISION §3"
+    },
+    "exclusiones_de_test": {
+      "regla": "se excluye del análisis confirmatorio de test toda partida cuyas métricas por partida se vieran antes de sellar",
+      "partidas": "las 12 partidas con split_v1 = 'val' en evidence/E0/splits.jsonl: las 12 caen en test de A6-split-v1-E1 y sus métricas se inspeccionaron en E0 (floors_per_game.csv, runs/*_per_game.csv)",
+      "no_excluidas": "las 18 de test de E0 (nunca leídas; siguen en test) y las 54 de train de E0 que caen en test de E1 (se usaron para ajustar suelos y el humo, pero no se inspeccionaron por partida y E1 reentrena todo desde cero)",
+      "sensibilidad": "se reporta también cada puerta sin las 66 partidas de E0 que caen en test de E1 (54 + 12)",
+      "conteo_E0_en_split_E1": {
+        "E0_test→E1_test": 18,
+        "E0_val→E1_test": 12,
+        "E0_train→E1_test": 54,
+        "E0_train→E1_val": 24,
+        "E0_train→E1_train": 180
+      },
+      "origen": "PROPUESTA (resolución de D-3, parte de fuga)"
+    },
+    "si_faltan_partidas": {
+      "paso_1": "no se tocan los umbrales del split ni se reasignan partidas",
+      "paso_2": "se añaden tarballs en este orden hasta cumplir los mínimos o llegar a 150 GB leídos en total en streaming: FOX_diamond-diamond_a5, FOX_master-master_a3, FOX_platinum-platinum_a2, FOX_diamond-diamond_a6, FOX_master-master_a4, FOX_platinum-platinum_a3 (si no existe uno, se salta)",
+      "paso_3": "si aun así faltan, E1 se ejecuta como confirmatorio reducido solo si train ≥ 1.500, val ≥ 200 y test ≥ 600; cada veredicto lleva la etiqueta 'corpus reducido' y el IC realizado. Los umbrales no cambian",
+      "paso_4": "por debajo de esos mínimos no se abre test: solo se ejecuta la calibración E1-P y se reporta como exploratorio",
+      "origen": "PROPUESTA"
+    },
+    "perspectivas": "cada partida se usa desde los dos puertos con canonicalización por espejo (DESIGN §2.1), generadas después del split",
+    "subconjunto_por_fraccion": "fracciones 10/30/100 % de train anidadas: una partida entra en la fracción p si su bucket < 0,606·p. Preentrenamiento y BC de una fracción usan el MISMO subconjunto. PROPUESTA",
+    "anclas_de_evaluacion": "todo frame f con f ≥ 15 (historia H = 16) y f + 32 dentro de la partida, con paso de 4 frames, ambos puertos; las mismas anclas para suelos y modelos. PROPUESTA (E0 usaba todas las anclas; el paso 4 abarata la evaluación a escala)",
+    "vocabularios": "los de evidence/E0/floors/vocab.json (stick top-512 + OTHER, C-stick top-64 + OTHER, 175 acciones vistas), congelados (DESIGN §3.7)"
+  },
+  "modelos": {
+    "comun": {
+      "H": 16,
+      "H_origen": "DESIGN §2.1: mismo H en todos los brazos hasta el test de aliasing de E2",
+      "encoder_E": "embeddings por campo → MLP por entidad (2 jugadores + 4 ranuras de proyectil) → 1 capa de atención entre entidades (d = 64) → transformer causal temporal de 2 capas, d = 128, 4 cabezas, sobre H. Objetivo 1,0-1,5 M de parámetros",
+      "encoder_origen": "DESIGN §3.2 con tamaño PROPUESTA",
+      "igualdad_parametros": "W0-S y W1-L dentro de ±10 % de parámetros totales (EXPERIMENT_PLAN §4.2)"
+    },
+    "W0-S-AR": {
+      "papel": "brazo principal de G1-dyn y G1-q; su encoder es E1-S",
+      "objetivo": "paso de 1 frame con mandos reales de ambos (teacher forcing) + pérdida de despliegue AR de 8 pasos con pesos 0,5^t y scheduled sampling; cabezas por campo según DESIGN §3.3",
+      "simplificaciones": "toda simplificación frente a DESIGN §3.3 (p. ej. Huber en vez de two-hot) se declara en el fichero de configuración antes de E1-P y no cambia después",
+      "origen": "DESIGN"
+    },
+    "W0-S-anc": {
+      "papel": "brazo adicional de G1-dyn: predictor directo multihorizonte",
+      "objetivo": "cabezas por campo para cada offset h ∈ {1, 4, 6, 7, 8, 12, 13, 16, 18, 19, 32}, todas desde h_f y condicionadas a la secuencia de mandos de ambos hasta f+h; distribuciones (CE/two-hot), nunca MSE de estado",
+      "origen": "SOTA_2611 (2611.25927 P2)"
+    },
+    "q": {
+      "papel": "modelo del rival; decide G1-q",
+      "objetivo": "BC del rival: distribución factorizada (8 bits de botón + stick top-512 + C-stick top-64) del mando del rival en f+h, con cabezas directas a h ∈ {1, 7, 13, 19} y una cabeza autorregresiva de 1 frame para el muestreo en bucle cerrado",
+      "cambio_desde_E0": "u^riv_f entra como entrada residual (en I_full) para que pueda copiar el mando actual; en E0 no aprendió a copiarlo (FLOORS_REPORT §4.1.4)",
+      "muestreo_eval": "K = 8 secuencias (untimed, DESIGN §2.3); en bucle cerrado sobre el estado imaginado de W0-S",
+      "origen": "DESIGN §3.5 + E0 (lección del humo)"
+    },
+    "W1-L": {
+      "papel": "gemelo latente tipo LeWorldModel; su encoder congelado es E1",
+      "objetivo": "MSE(ẑ_{t+1}, z_{t+1}) + λ·SIGReg(z), sin stop-grad ni EMA; ARPredictor d = 128, profundidad 4, 8 cabezas × 16, mlp 512 (1.186.816 parámetros); bloque k = 4 frames; historia 4 bloques; despliegue AR de 2-4 bloques; decodificador de campos sobre sg(ẑ) solo para medir",
+      "SIGReg": "M = 1024 proyecciones, 17 nodos; λ elegido en E1-P entre {0,01; 0,03; 0,09; 0,2; 0,5}; 0,09 si E1-P no llega a elegir",
+      "receta_SADL": "W1-L lleva SADL (λ_S = 0,01, α = 0,5, ρ = 9, κ = 1e-3, ε = 1e-6, FP32, Cholesky) solo si la regla de colapso de E1-P lo activa (ver calibracion)",
+      "anclado_P3": "NO se adopta la pérdida latente anclada (2611.25927 P3): se mantiene la receta LeWM por fidelidad. PROPUESTA",
+      "origen": "DESIGN §3.4, A4 model_contract; SADL de SOTA_2611 (2611.21596 P1-P2)"
+    },
+    "V̂": {
+      "papel": "solo como tarea de G1-jepa (cabeza sobre encoder congelado); no decide nada en A",
+      "objetivo": "V̂(x_f) regresada sobre el retorno descontado realizado con la recompensa de slippi-ai (stocks + daño, suma cero, γ = 0,998557), truncado al final de la partida",
+      "origen": "DESIGN §3.6"
+    },
+    "BC": {
+      "brazos": {
+        "E-rand": "encoder aleatorio congelado + cabeza (suelo de representación)",
+        "E0": "BC de extremo a extremo desde cero con los mismos pasos que la cabeza",
+        "E0b": "BC de extremo a extremo desde cero con cómputo total igual a preentrenamiento + cabeza de E1 (más pasos); control de G1-rep",
+        "E1": "encoder de W1-L congelado + cabeza",
+        "E1-S": "encoder de W0-S-AR congelado + cabeza"
+      },
+      "objetivo": "NLL del mando propio en f+1 con el mismo códec que q",
+      "cabeza": "MLP de 2 capas de 256, idéntica en todos los brazos y tareas",
+      "fracciones": [
+        10,
+        30,
+        100
+      ],
+      "origen": "DECISION §3, EXPERIMENT_PLAN §4"
+    },
+    "suelos": {
+      "dinamica": [
+        "persist",
+        "constvel",
+        "constvel_fd",
+        "condmean",
+        "majority",
+        "marginal"
+      ],
+      "control_acciones_barajadas": "el propio W0-S con la secuencia de mandos de otra ancla del mismo lote (shuffled_u)",
+      "q": [
+        "marginal",
+        "persist",
+        "cond_act",
+        "cond_act_prev"
+      ],
+      "ajuste": "en E1 train, con el código de pilot/e0/models (mismas definiciones que FLOORS_REPORT §1)",
+      "mejor_suelo": "el mejor valor en test entre los suelos aplicables a esa métrica y horizonte (elección conservadora: favorece al suelo)",
+      "origen": "DECISION §3, E0"
+    }
+  },
+  "hiperparametros_fijos": {
+    "batch": 1024,
+    "batch_nota": "ventanas (anclas) por paso en todos los brazos; en W1-L la muestra de SIGReg es el lote. Sin barrido de batch en E1",
+    "precision": "FP32 en todos los brazos; torch.backends.cuda.matmul.allow_tf32 = False y torch.backends.cudnn.allow_tf32 = False; SIGReg y SADL siempre en FP32",
+    "atencion": "SDPA con backend MATH fijado de forma explícita (torch.nn.attention.sdpa_kernel(SDPBackend.MATH)) en todos los brazos; Flash solo en el diagnóstico de E1-P",
+    "precision_atencion_origen": "SOTA_2611 (2611.21596: Flash dispara el colapso; MATH no) + PROPUESTA (FP32)",
+    "optimizador": "AdamW, β = (0,9; 0,999), weight decay 0,01, OneCycle con pico de lr 1e-3 y 2 % de calentamiento, recorte de gradiente 1,0",
+    "pasos": {
+      "unidad": "muestras vistas (anclas × perspectiva)",
+      "modelos_de_puerta_100pct": "50 M de muestras (≈ 48.800 pasos de 1024; ≈ 1,3 épocas sobre ≈ 39 M anclas-perspectiva de 2.000 partidas)",
+      "q": "50 M",
+      "cabezas_sobre_encoder_congelado": "10 M",
+      "E0b": "pasos tales que FLOPs(E0b) = FLOPs(preentrenamiento W1-L de esa fracción) + FLOPs(cabeza), contados con el contador de FLOPs de torch (torch.utils.flop_counter) sobre un lote",
+      "fracciones_10_30": "las mismas muestras vistas que a 100 % (más épocas sobre menos partidas)",
+      "seleccion_checkpoint": "evaluación en val cada 10 % de los pasos; se conserva el checkpoint con menor pérdida de entrenamiento en val (nunca una métrica de puerta)",
+      "origen": "PROPUESTA; regla de selección en val de EXPERIMENT_PLAN §5.5"
+    },
+    "semillas": {
+      "W0-S-AR": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "q": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "W1-L_100pct": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "cabezas_G1-jepa (BC, q, V̂ sobre E1 y E1-S, 100 %)": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "W0-S-anc": "[0, 1, 2]; si se elige en val como variante decisora, se entrenan 3 y 4 antes de abrir test",
+      "G1-rep (E1, E1-S, E0b al 10 y 100 %; preentrenamiento a 10 % incluido)": [
+        0,
+        1,
+        2
+      ],
+      "E0 al 100 % (= π0 de D-7)": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "E0 al 10/30 % y E-rand (10/30/100 %)": [
+        0,
+        1,
+        2
+      ],
+      "fraccion_30pct (E1, E1-S, E0b)": [
+        0
+      ],
+      "emparejamiento": "la semilla i del encoder se usa con la semilla i de su cabeza; la tripleta (π0_i = BC E0 al 100 %, W0-S_i, q_i) es la unidad de D-7",
+      "fallos": "si una corrida diverge (NaN o pérdida > 10× la inicial), se repite una vez con la misma semilla y lr/2 declarado; si vuelve a fallar se reporta como fallida y se usa la semilla siguiente (5, 6); con más de 2 semillas fallidas el brazo es inválido",
+      "origen": "DECISION §3 ('5 semillas para cualquier resultado que cambie la decisión'); 3 en G1-rep: PROPUESTA (G1-rep no mueve ninguna etapa según DECISION §5)"
+    }
+  },
+  "calibracion_E1-P": {
+    "cuando": "antes de entrenar ningún modelo de puerta; usa solo train y val",
+    "pasos": [
+      "1. Medir el rendimiento (muestras/s) de cada arquitectura en la GPU con 2.000 pasos y proyectar las horas-GPU del plan completo",
+      "2. Sonda de colapso en W1-L con 3 semillas a 10 % de los pasos, backend MATH; más 1 semilla con Flash como diagnóstico (2611.21596 P3)",
+      "3. Barrido de λ de SIGReg con 1 semilla a 20 % de los pasos: se elige el λ con mayor acierto de acción en eventos a h = 4 en val (decodificador sobre sg(ẑ), mandos reales), entre los que cumplan f_H ≥ 0,5",
+      "4. Escribir evidence/E1/calibration.json con las decisiones antes de lanzar ningún brazo"
+    ],
+    "sonda_de_colapso": {
+      "datos": "4.096 frames fijos de ≥ 64 partidas de val (los primeros por sha1, 64 frames por partida con paso fijo)",
+      "metricas": [
+        "f_H y f_Z (fracción de energía en variación entre muestras)",
+        "erank(H) y erank(Z) (Roy-Vetterli)",
+        "coseno medio entre muestras",
+        "clase N/O/D/C de 2611.21596 §4.1"
+      ],
+      "H_Z": "H = salida del encoder antes del proyector; Z = salida del proyector con BatchNorm",
+      "regla_SADL": "si en E1-P alguna de las 3 semillas MATH acaba con f_H < 0,5, todos los W1-L de E1 usan SADL; si no, ninguno. La decisión solo mira la sonda y se registra antes de ver métricas de G1",
+      "regla_validez_G1-jepa": "si en E1 algún W1-L final tiene f_H < 0,5 (degradado) o < 0,05 (colapsado), G1-jepa se informa como INVÁLIDA PARA ESTA RECETA, no como negativa; lo mismo para G1-rep en las comparaciones con E1",
+      "tambien_en": "encoder de W0-S (E1-S), para informar de su geometría junto a G1-rep",
+      "origen": "SOTA_2611 (2611.21596 P1, P2, P4)"
+    },
+    "regla_de_recorte_por_computo": "si la proyección del paso 1 supera 70 h-GPU, se recorta en este orden hasta caber, y se registra antes de lanzar: (a) brazos del 30 %; (b) W0-S-anc a 3 semillas como exploratorio, sin selección en val; (c) muestras vistas de 50 M a 30 M en TODOS los brazos por igual; (d) autocast BF16 en TODOS los brazos por igual. Nunca se bajan las semillas de los brazos de G1-dyn, G1-q y G1-jepa por debajo de 5, ni las de G1-rep por debajo de 3",
+    "origen": "PROPUESTA"
+  },
+  "puertas": {
+    "G1-dyn": {
+      "definicion_DECISION": "W0-S mejora ≥ 10 % relativo al mejor suelo trivial (persistencia, velocidad constante, mayoritaria condicionada, acciones barajadas) en error de eventos a h ∈ {4, 8}. Si no: se paran W0/W1.",
+      "variante_decisora": {
+        "regla": "se elige en val entre W0-S-AR y W0-S-anc con la métrica primaria (media de h = 4 y h = 8, condición q, I_full) sobre las semillas 0-2 de cada una; gana anc solo si supera a AR por más de 2·σ_umbral; en otro caso decide AR. Solo la variante elegida se evalúa como decisora en test; la otra se reporta como exploratoria",
+        "origen": "SOTA_2611 (2611.25927 P2, advertencia de multiplicidad) + PROPUESTA"
+      },
+      "metrica_primaria": "acierto de action del jugador predicho en el subconjunto 'event' (cambio de acción, inicio de hitstun o pérdida de stock en (f, f+h]), ambos puertos juntos",
+      "condicion_de_mandos": "u^yo reales (la cola propia es conocida en A) y u^riv muestreados de q (K = 8, bucle cerrado); predicción = argmax de la mezcla de las K distribuciones predictivas",
+      "comparacion": "frente al mejor suelo de dinámica para action (majority en E0: 0,289 a h = 4 y 0,282 a h = 8) y frente al control de acciones barajadas",
+      "horizontes": [
+        4,
+        8
+      ],
+      "umbrales": {
+        "mejora_relativa_min": {
+          "valor": 0.1,
+          "origen": "DECISION"
+        },
+        "ruido": {
+          "valor": "2·max(σ_semillas_E1, 0,0060 a h = 4 / 0,0068 a h = 8)",
+          "origen": "DECISION (regla) + E0 (σ_ref)"
+        },
+        "IC": {
+          "valor": "IC95 bootstrap por partida excluye 0",
+          "origen": "DECISION"
+        }
+      },
+      "pasa_si": "las tres condiciones se cumplen a h = 4 Y a h = 8 en I_full",
+      "si_falla": "se paran W0-S y W1-L (DECISION §3); quedan q, V̂ y la línea de búsqueda exacta",
+      "secundarias": [
+        "mismas métricas con oracle_u, persist_u (= información de los suelos) y shuffled_u",
+        "MAE de pos_x/pos_y en eventos y en todo, h ∈ {1, 4, 8, 16, 32}",
+        "NLL y ECE de action; acierto en ev_action_change, ev_hitstun_start y ev_stock_loss",
+        "precisión/recall de eventos a ±1 y ±3 frames; % de estados inválidos",
+        "AUROC del desacuerdo del ensamble (las 5 semillas como ensamble)",
+        "error de 'predecir el presente' con D ∈ {6, 12, 18}, rival oracle / q / marginal",
+        "por escenario (BF/FD aparte) y por bucket de habilidad"
+      ],
+      "diagnostico_residuo": {
+        "que": "con W0-S y q congelados, una corrección lineal y un MLP de 2 capas predicen el residuo (continuos) o corrigen logits (categóricos) desde la misma entrada; se ajustan en la mitad de val con bucket < 0,6515 y se miden en la otra mitad",
+        "lectura": "si la corrección recupera > 1 % de la energía del residuo (o de la NLL) con IC por partida que excluye el 1 %: 'falta de ajuste'; si no: 'límite de información'. Es solo interpretativo: no cambia el veredicto ni dispara reentrenamientos",
+        "cuando": "tras congelar los modelos y antes de abrir test",
+        "origen": "SOTA_2611 (2611.24778 P2)"
+      },
+      "I_human": "misma métrica y umbrales; veredicto separado 'G1-dyn[I_human]', no decide"
+    },
+    "G1-q": {
+      "definicion_DECISION": "q mejora la NLL del mando del rival sobre la marginal, y el acierto de acción del rival en frames de cambio a h = D+1 supera al mejor suelo para D = 6 y 12. Si no: E3 no se ejecuta.",
+      "parte_i_NLL": {
+        "metrica": "NLL total del mando del rival en f+h (suma de 8 bits de botón + stick top-512 + C-stick top-64), subconjunto 'all'",
+        "comparacion": "q frente al suelo marginal",
+        "horizontes": [
+          7,
+          13
+        ],
+        "umbrales": {
+          "mejora_relativa_min": {
+            "valor": 0.05,
+            "origen": "PROPUESTA (DECISION no fija mínimo; en E0 q ya mejora 11-35 %)"
+          },
+          "ruido": {
+            "valor": "2·max(σ_semillas_E1, 0,0062 a h = 7 / 0,0068 a h = 13)",
+            "origen": "DECISION + E0"
+          },
+          "IC": {
+            "valor": "IC95 excluye 0",
+            "origen": "DECISION"
+          }
+        }
+      },
+      "parte_ii_accion_rival": {
+        "metrica": "acierto de action del RIVAL en el subconjunto ev_action_change del rival a h = D+1, con W0-S (variante decisora) desplegado con u^yo reales y u^riv ~ q (K = 8)",
+        "interpretacion": "operativización de FLOORS_REPORT §2 ('el suelo en frames de cambio de acción es majority: 0,287 a h = 7 y 0,233 a h = 13'). Se reporta también el acierto del MANDO del rival en frames de cambio de mando frente a la marginal (secundaria)",
+        "comparacion": "frente al mejor suelo de dinámica para action del rival (majority en E0)",
+        "horizontes": [
+          7,
+          13
+        ],
+        "umbrales": {
+          "mejora_relativa_min": {
+            "valor": 0.05,
+            "origen": "PROPUESTA (DECISION dice 'supera' sin mínimo)"
+          },
+          "ruido": {
+            "valor": "2·max(σ_semillas_E1, 0,0068)",
+            "origen": "DECISION + E0"
+          },
+          "IC": {
+            "valor": "IC95 excluye 0",
+            "origen": "DECISION"
+          }
+        }
+      },
+      "pasa_si": "cuentan las 4 comparaciones (NLL a h = 7 y 13; acción del rival a h = 7 y 13) en I_full",
+      "si_falla": "E3 no se ejecuta; la ISO solo se justifica por E4 (DECISION §3)",
+      "secundarias": [
+        "NLL por componente (botones, stick, C-stick) y por bit; h = 1 y 19",
+        "acierto y NLL en frames de cambio de mando frente a marginal, cond_act y cond_act_prev",
+        "ECE"
+      ],
+      "I_human": "veredicto separado 'G1-q[I_human]'"
+    },
+    "G1-jepa": {
+      "definicion_DECISION": "W1-L frente a W0-S y E1 frente a E1-S, en ≥ 2 de 3 tareas (BC, q, V̂). Si no gana: se cierra la etiqueta JEPA y sigue solo W0-S.",
+      "tareas": {
+        "BC": "NLL del mando propio en f+1",
+        "q": "NLL total del mando del rival, media de h = 7 y h = 13",
+        "V̂": "MSE de V̂(x_f) frente al retorno descontado realizado, normalizado por la varianza del retorno en train"
+      },
+      "comparacion": "cabeza idéntica sobre E1 (encoder W1-L congelado) frente a la misma cabeza sobre E1-S (encoder W0-S-AR congelado), 100 % de datos, semillas emparejadas",
+      "umbrales": {
+        "mejora_relativa_min": {
+          "valor": 0.02,
+          "origen": "PROPUESTA (DECISION no fija mínimo)"
+        },
+        "ruido": {
+          "valor": "2·max(σ_semillas_E1, 0,005)",
+          "origen": "DECISION + PROPUESTA (σ_ref sin medida en E0)"
+        },
+        "IC": {
+          "valor": "IC 98,33 % excluye 0 (Bonferroni sobre 3 tareas)",
+          "origen": "DECISION + PROPUESTA (corrección)"
+        }
+      },
+      "pasa_si": "E1 gana con las tres condiciones en ≥ 2 de las 3 tareas, en I_full, y la sonda de colapso no invalida la receta",
+      "si_falla": "se cierra la etiqueta JEPA; lo que sobreviva se llama 'modelo predictivo aprendido' (DECISION §2)",
+      "validez": "regla_validez_G1-jepa de la calibración (f_H)",
+      "secundarias": [
+        "W1-L frente a W0-S-AR en error de 'predecir el presente' (campos decodificados sobre sg(ẑ)) con D ∈ {6, 12, 18}",
+        "geometría de ambos encoders (f_H, erank, coseno)",
+        "sondas lineales de campos con techo (entrada cruda) y suelo (E-rand)"
+      ],
+      "I_human": "veredicto separado"
+    },
+    "G1-rep": {
+      "definicion_DECISION": "E1 o E1-S frente a E0b (igual cómputo) al 10 % y al 100 % de datos. Si ninguno gana: el preentrenamiento predictivo no aporta a la representación offline.",
+      "metrica": "NLL del mando propio en f+1 (BC)",
+      "comparaciones": [
+        "E1 vs E0b al 10 %",
+        "E1-S vs E0b al 10 %",
+        "E1 vs E0b al 100 %",
+        "E1-S vs E0b al 100 %"
+      ],
+      "interpretacion": "'ninguno gana' = ninguna de las 4 comparaciones cuenta; pasa si cuenta al menos una. Preentrenamiento y BC usan el mismo subconjunto de cada fracción. PROPUESTA (lectura de DECISION, ver decisiones abiertas)",
+      "umbrales": {
+        "mejora_relativa_min": {
+          "valor": 0.02,
+          "origen": "PROPUESTA"
+        },
+        "ruido": {
+          "valor": "2·max(σ_semillas_E1, 0,005)",
+          "origen": "DECISION + PROPUESTA"
+        },
+        "IC": {
+          "valor": "IC 98,75 % excluye 0 (Bonferroni sobre 4)",
+          "origen": "DECISION + PROPUESTA (corrección)"
+        }
+      },
+      "semillas": 3,
+      "pasa_si": "cuenta al menos una de las 4 comparaciones en I_full",
+      "si_falla": "el preentrenamiento predictivo no aporta a la representación offline en este corpus; no cierra la pregunta a 10k+ partidas (DECISION §7.7)",
+      "lectura_degradada": "si el encoder de la comparación ganadora o perdedora está degradado según la sonda, el resultado se lee como 'receta degradada' (2611.21596 P4)",
+      "descriptivas": [
+        "fracción 30 % (1 semilla)",
+        "E0 y E-rand en las tres fracciones"
+      ],
+      "I_human": "veredicto separado"
+    },
+    "E1b": {
+      "definicion_DECISION": "transiciones/s de política + dinámica juntas en GPU; < 10× la granja documentada (6.337 frames/s, DOC-autor, otra máquina) → W2 descartado",
+      "umbral": {
+        "valor": "≥ 63.370 transiciones/s",
+        "origen": "DECISION (10 × 6.337)"
+      },
+      "configuracion_decisora": "π0 (arquitectura BC E0) + W0-S-AR tal como se entrenaron, en la RTX 5070 Ti de portátil, CUDA graphs, sincronizado con torch.cuda.Event, batch ∈ {4.096; 16.384; 65.536} (el mayor que quepa en 12 GB), FP32 y BF16; vale el mejor",
+      "protocolo": "300 iteraciones de calentamiento descartadas; ≥ 5 repeticiones de ≥ 30 s; se reporta la mediana",
+      "secundaria": "dinámica de 5 M de parámetros con la misma política",
+      "aviso": "la referencia es de otra máquina (8 procesos, RTX 3090): solo vale un cociente grande",
+      "origen": "DECISION + PROPUESTA (configuración)"
+    }
+  },
+  "resolucion_D-3": {
+    "problema": "E1 pide ~2.000 / 300 / ≥ 1.000 con el split por sha1 de A6 (90/5/5), que exigiría ~20.000 partidas para 1.000 de test (CRITICAL_REVIEW §7 D-3)",
+    "resolucion": "se adopta A6-split-v1-E1: mismo bucket por sha1, umbrales train < 0,606, val < 0,697, test el resto (60,6/9,1/30,3 %), ya implementado en pilot/e0/splits.py como split_v1_E1. A6-split-v1 (90/5/5) queda solo para E0. Los umbrales no cambian si el corpus crece o se queda corto (ver datos.si_faltan_partidas)",
+    "efecto_secundario_y_tratamiento": "con los umbrales nuevos, 12 partidas de val de E0 (inspeccionadas) y 54 de train de E0 pasan a test de E1. Las 12 se excluyen del análisis confirmatorio; las 66 se quitan en un análisis de sensibilidad (datos.exclusiones_de_test)",
+    "justificacion": "conserva la identidad por sha1 y la asignación determinista e independiente del contenido; da los tamaños que pide DECISION con ~3.300 partidas, que es lo que se está descargando; y el test de E0 (18 partidas, nunca leído) sigue dentro del test de E1",
+    "origen": "EXPERIMENT_PLAN §5.3 (PROP-int) + PROPUESTA (exclusiones)"
+  },
+  "resolucion_D-7": {
+    "problema": "en E3, c (π_delay) se compara con 5 semillas × 200 partidas (estimando de receta, EST-R) frente a b, que usa un único π0/W0-S/q (CRITICAL_REVIEW §7 D-7)",
+    "resolucion": "b0 y a se evalúan con 5 tripletas independientes (π0_i, W0-S_i, q_i), i = 0..4, que salen de E1 (semillas emparejadas por índice), con 200 partidas por tripleta, igual que c con 5 semillas × 200. HP-2 (c − b0) se analiza a nivel de semilla en ambos lados; HP-1 (b0 − a) se empareja dentro de cada tripleta (mismo π0_i) y generaliza a 5 checkpoints (EXPERIMENT_PLAN §1 pide ≥ 3 para hablar de receta)",
+    "coste": "en E1 es casi nulo: W0-S y q ya llevan 5 semillas por G1-dyn/G1-q, y π0 = BC E0 al 100 % se sube de 3 a 5 semillas (2 cabezas-BC extremo a extremo más). En E3, a y b0 pasan de ≥ 400 a 1.000 partidas por brazo (más que el mínimo de DECISION)",
+    "computo_igualado": "el cómputo de entrenamiento de c_i se iguala al de la tripleta i (FLOPs de π0_i + W0-S_i + q_i registrados en E1, en evidence/E1/flops.json)",
+    "alternativa_descartada": "declarar que HP-2 solo generaliza al checkpoint de b: deja un contraste asimétrico (receta frente a checkpoint) con el 26 % de falsos positivos por pseudorreplicación que mide power.py",
+    "salvaguarda": "si en E3 no hubiera presupuesto para 5 × 200 en a y b0, HP-2 se declara 'solo para la tripleta 0' y pasa a exploratorio; esto se decide antes de jugar ninguna partida",
+    "origen": "PROPUESTA (decisión abierta del ejecutor según CRITICAL_REVIEW §7 D-7)"
+  },
+  "computo": {
+    "maquina": "PC portátil del usuario: RTX 5070 Ti Laptop 12 GB, Ryzen 9 9955HX, 31 GB RAM (evidence/E1/hardware.json)",
+    "coste_euros": 0,
+    "tope_duro": {
+      "valor": "80 h-GPU para E1 + E1b (incluida E1-P y toda evaluación)",
+      "origen": "PROPUESTA (DECISION preveía 10-35 h-GPU en una GPU alquilada de 24 GB; una GPU de portátil es más lenta y la escala de brazos de este preregistro es mayor)"
+    },
+    "revision_blanda": "a las 60 h-GPU se revisa la proyección; si no cabe, se aplica la regla de recorte en el orden fijado",
+    "tope_CPU": "20 h-CPU para suelos, caché y bootstrap",
+    "contabilidad": "tiempo de reloj de todo proceso que ocupe la GPU, en evidence/E1/compute_log.jsonl (comando, inicio, fin, GPU, pico de VRAM)",
+    "estimacion": "≈ 45-55 h-GPU (EST sin medir: suponiendo ≈ 1 h por corrida de 50 M muestras; E1-P lo recalcula)",
+    "orden_de_ejecucion": [
+      "E1-P calibración",
+      "suelos (CPU)",
+      "W0-S-AR ×5 y q ×5 (G1-dyn, G1-q)",
+      "W0-S-anc ×3 (+2 si se elige)",
+      "W1-L ×5 y cabezas BC/q/V̂ sobre E1 y E1-S (G1-jepa)",
+      "BC E0 ×5 al 100 % (π0 de D-7)",
+      "G1-rep: preentrenamiento al 10 %, E0b 10/100 %, cabezas",
+      "E1b",
+      "descriptivos al 30 %"
+    ],
+    "origen": "PROPUESTA"
+  },
+  "criterios_de_parada": [
+    {
+      "condicion": "falla una puerta de adaptador o de fuga (alineación de mandos, split, guardia de test)",
+      "accion": "se detiene todo lo que dependa de ella",
+      "origen": "EXPERIMENT_PLAN §11"
+    },
+    {
+      "condicion": "se alcanzan 80 h-GPU",
+      "accion": "parada dura; se conservan los parciales y solo se analizan las puertas cuyos brazos estén completos con todas sus semillas; las demás se reportan como 'no ejecutada'",
+      "origen": "PROPUESTA"
+    },
+    {
+      "condicion": "un brazo pierde más de 2 semillas por divergencia",
+      "accion": "brazo inválido; su puerta se reporta como 'no evaluable'",
+      "origen": "PROPUESTA"
+    },
+    {
+      "condicion": "W1-L degradado o colapsado en E1",
+      "accion": "G1-jepa (y las comparaciones de G1-rep con E1) 'inválida para esta receta'; no se reentrena con otra receta tras ver métricas",
+      "origen": "SOTA_2611"
+    },
+    {
+      "condicion": "corpus por debajo de 1.500 / 200 / 600",
+      "accion": "no se abre test",
+      "origen": "PROPUESTA"
+    },
+    {
+      "condicion": "test abierto",
+      "accion": "no se entrena ni se ajusta nada más; una corrida exploratoria que toque test obliga a sellar un test nuevo",
+      "origen": "EXPERIMENT_PLAN (regla de congelación 4)"
+    }
+  ],
+  "no_es_una_puerta": [
+    "Pasar G1 es condición necesaria, no prueba de ventaja al jugar (DECISION §3)",
+    "El diagnóstico de residuo y la sonda de colapso solo interpretan o invalidan; nunca convierten un fallo en un pase",
+    "Las cifras de autores (6.337 frames/s, colapso 5/10 de SADL, Fast-JEPA) están atribuidas y no reproducidas"
+  ],
+  "sellado": {
+    "comando": "sha256sum deliverables/EXPERIMENT_PLAN.md evidence/E1/preregistration.json evidence/E1/eval_schedule.csv > evidence/E1/preregistration.sha256",
+    "estado": "pendiente: lo hace el usuario tras revisar"
+  },
+  "decisiones_del_usuario": [
+    {
+      "id": "U1",
+      "decision": "Mínimos relativos nuevos: 5 % en G1-q y 2 % en G1-jepa y G1-rep",
+      "por_defecto": "los de este borrador",
+      "resuelta": "2026-11-21: aceptado el valor por defecto"
+    },
+    {
+      "id": "U2",
+      "decision": "Lectura de G1-q (ii) como acierto de la ACCIÓN del rival con W0-S + q (FLOORS_REPORT §2), no del MANDO del rival",
+      "por_defecto": "acción; el mando va como secundaria",
+      "resuelta": "2026-11-21: aceptado el valor por defecto"
+    },
+    {
+      "id": "U3",
+      "decision": "Lectura de G1-rep como 'pasa si cuenta al menos una de 4 comparaciones' y preentrenamiento sobre la misma fracción",
+      "por_defecto": "la de este borrador",
+      "resuelta": "2026-11-21: aceptado el valor por defecto"
+    },
+    {
+      "id": "U4",
+      "decision": "Seis escenarios con stage_id (más datos) frente a solo BF/FD (DECISION §2)",
+      "por_defecto": "seis escenarios, BF/FD como subconjunto",
+      "resuelta": "2026-11-21: aceptado el valor por defecto"
+    },
+    {
+      "id": "U5",
+      "decision": "Tope de 80 h-GPU en el portátil y política para corpus corto (mínimos 1.500 / 200 / 600 y 150 GB de lectura)",
+      "por_defecto": "los de este borrador",
+      "resuelta": "2026-11-21: aceptado el valor por defecto"
+    },
+    {
+      "id": "U6",
+      "decision": "D-7 sube a y b0 de E3 a 5 × 200 partidas por brazo",
+      "por_defecto": "sí",
+      "resuelta": "2026-11-21: aceptado el valor por defecto"
+    }
+  ]
+}

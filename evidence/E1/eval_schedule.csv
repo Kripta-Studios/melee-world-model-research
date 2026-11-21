@@ -1,0 +1,43 @@
+id,puerta,papel,brazo,comparacion,metrica,subconjunto,horizonte,regimen,split,semillas,mejora_rel_min,ruido_2sigma_ref,nivel_IC,decide,origen_umbral
+CAL-01,calibracion,throughput,todos,-,muestras/s y proyeccion de h-GPU,-,-,-,train,1,-,-,-,regla de recorte,PROPUESTA
+CAL-02,calibracion,validez,W1-L (MATH),-,"f_H; f_Z; erank(H); erank(Z); coseno medio; clase N/O/D/C",sonda 4096 frames de >=64 partidas,-,I_full,val,0;1;2,f_H < 0.5 en alguna semilla -> SADL,-,-,receta W1-L (SADL si/no),SOTA_2611
+CAL-03,calibracion,diagnostico,W1-L (Flash),W1-L (MATH),"f_H; erank(H)",sonda,-,I_full,val,0,-,-,-,no,SOTA_2611
+CAL-04,calibracion,seleccion,W1-L,barrido lambda {0.01;0.03;0.09;0.2;0.5},acierto action decodificado,event,4,I_full,val,0,"solo lambdas con f_H >= 0.5",-,-,lambda de SIGReg,DESIGN + PROPUESTA
+SEL-01,G1-dyn,seleccion,W0-S-anc,W0-S-AR,acierto action (media h=4 y h=8; condicion q),event,4;8,I_full,val,0;1;2,anc gana solo si supera por > 2*sigma_umbral,0.0068,-,variante decisora,SOTA_2611 + PROPUESTA
+G1D-01,G1-dyn,decisora,W0-S (variante elegida),mejor suelo (majority/persist/marginal) y shuffled_u,acierto action (u_yo real + u_riv~q K=8),event,4,I_full,test,0;1;2;3;4,0.10 (reduccion relativa del error),"2*max(sd_E1, 0.0060)",95%,si,DECISION + E0
+G1D-02,G1-dyn,decisora,W0-S (variante elegida),mejor suelo y shuffled_u,acierto action (u_yo real + u_riv~q K=8),event,8,I_full,test,0;1;2;3;4,0.10 (reduccion relativa del error),"2*max(sd_E1, 0.0068)",95%,si,DECISION + E0
+G1D-03,G1-dyn,reporte,W0-S (variante elegida),mejor suelo y shuffled_u,acierto action (u_yo real + u_riv~q K=8),event,4,I_human,test,0;1;2;3;4,0.10,"2*max(sd_E1, 0.0060)",95%,veredicto separado,DECISION + E0
+G1D-04,G1-dyn,reporte,W0-S (variante elegida),mejor suelo y shuffled_u,acierto action (u_yo real + u_riv~q K=8),event,8,I_human,test,0;1;2;3;4,0.10,"2*max(sd_E1, 0.0068)",95%,veredicto separado,DECISION + E0
+G1D-05,G1-dyn,secundaria,W0-S-AR y W0-S-anc,mejor suelo,acierto action con oracle_u / persist_u / shuffled_u,event; ev_action_change; ev_hitstun_start; ev_stock_loss; all,1;4;8;16;32,I_full; I_human,test,todas las del brazo,-,-,95%,no,-
+G1D-06,G1-dyn,secundaria,W0-S-AR y W0-S-anc,mejor suelo (constvel/condmean/persist),MAE pos_x; MAE pos_y,event; all,1;4;8;16;32,I_full; I_human,test,todas las del brazo,-,"2*max(sd_E1, 0.07)",95%,no,E0
+G1D-07,G1-dyn,secundaria,W0-S-AR,mejor suelo,"NLL y ECE de action; precision/recall de eventos +-1 y +-3; % estados invalidos",event; all,1;4;8;16;32,I_full; I_human,test,0;1;2;3;4,-,-,95%,no,-
+G1D-08,G1-dyn,secundaria,W0-S-AR (ensamble de 5 semillas),-,AUROC del desacuerdo del ensamble frente al error,all,4;8,I_full,test,0;1;2;3;4,-,-,95%,no,DESIGN
+G1D-09,G1-dyn,secundaria,W0-S-AR y W1-L,rival oracle / q / marginal,"error de predecir el presente (acierto action en eventos, MAE pos)",event; all,D=6;12;18,I_full; I_human,test,0;1;2;3;4,-,-,95%,no,DECISION
+G1D-10,G1-dyn,secundaria,W0-S (variante elegida),mejor suelo,acierto action (condicion q),event por escenario (BF/FD aparte) y por bucket de habilidad,4;8,I_full,test,0;1;2;3;4,-,-,95%,no,PROPUESTA
+G1D-11,G1-dyn,sensibilidad,W0-S (variante elegida),mejor suelo y shuffled_u,igual que G1D-01/02 sin las 66 partidas de E0 en test,event,4;8,I_full,test,0;1;2;3;4,0.10,igual,95%,no,PROPUESTA
+G1D-12,G1-dyn,interpretativo,W0-S-AR y q congelados,correccion lineal y MLP-2 sobre el residuo,fraccion de energia del residuo (o NLL) recuperada,all; event,4;8,I_full,val (mitad A ajusta / mitad B mide),0;1;2;3;4,margen 1% con IC por partida,-,95%,no (solo lectura),SOTA_2611
+G1Q-01,G1-q,decisora,q,suelo marginal,NLL total del mando del rival (botones+stick top512+cstick top64),all,7 (D=6),I_full,test,0;1;2;3;4,0.05,"2*max(sd_E1, 0.0062)",95%,si,DECISION + PROPUESTA + E0
+G1Q-02,G1-q,decisora,q,suelo marginal,NLL total del mando del rival,all,13 (D=12),I_full,test,0;1;2;3;4,0.05,"2*max(sd_E1, 0.0068)",95%,si,DECISION + PROPUESTA + E0
+G1Q-03,G1-q,decisora,W0-S (variante elegida) + q,mejor suelo (majority),acierto action del rival,ev_action_change del rival,7 (D=6),I_full,test,0;1;2;3;4,0.05 (reduccion relativa del error),"2*max(sd_E1, 0.0068)",95%,si,DECISION + PROPUESTA + E0
+G1Q-04,G1-q,decisora,W0-S (variante elegida) + q,mejor suelo (majority),acierto action del rival,ev_action_change del rival,13 (D=12),I_full,test,0;1;2;3;4,0.05 (reduccion relativa del error),"2*max(sd_E1, 0.0068)",95%,si,DECISION + PROPUESTA + E0
+G1Q-05,G1-q,reporte,q,suelo marginal,NLL total del mando del rival,all,7;13,I_human,test,0;1;2;3;4,0.05,"2*max(sd_E1, 0.0062/0.0068)",95%,veredicto separado,DECISION + PROPUESTA + E0
+G1Q-06,G1-q,reporte,W0-S (variante elegida) + q,mejor suelo (majority),acierto action del rival,ev_action_change del rival,7;13,I_human,test,0;1;2;3;4,0.05,"2*max(sd_E1, 0.0068)",95%,veredicto separado,DECISION + PROPUESTA + E0
+G1Q-07,G1-q,secundaria,q,"marginal; persist; cond_act; cond_act_prev","NLL y acierto por componente (botones, stick, cstick, cada bit)",all; change,1;7;13;19,I_full; I_human,test,0;1;2;3;4,-,-,95%,no,E0
+G1Q-08,G1-q,secundaria,q,marginal,acierto del MANDO del rival en frames de cambio de mando,change,7;13,I_full; I_human,test,0;1;2;3;4,-,-,95%,no,PROPUESTA
+G1Q-09,G1-q,sensibilidad,q y W0-S + q,igual que G1Q-01..04,sin las 66 partidas de E0 en test,igual,7;13,I_full,test,0;1;2;3;4,0.05,igual,95%,no,PROPUESTA
+G1J-01,G1-jepa,decisora (1 de 3),cabeza BC sobre E1 (W1-L congelado),cabeza BC sobre E1-S (W0-S-AR congelado),NLL del mando propio en f+1,all,1,I_full,test,0;1;2;3;4,0.02,"2*max(sd_E1, 0.005)",98.33%,si (>=2 de 3),DECISION + PROPUESTA
+G1J-02,G1-jepa,decisora (2 de 3),cabeza q sobre E1,cabeza q sobre E1-S,NLL total del mando del rival (media h=7 y 13),all,7;13,I_full,test,0;1;2;3;4,0.02,"2*max(sd_E1, 0.005)",98.33%,si (>=2 de 3),DECISION + PROPUESTA
+G1J-03,G1-jepa,decisora (3 de 3),cabeza V sobre E1,cabeza V sobre E1-S,MSE normalizado de V frente al retorno descontado realizado,all,-,I_full,test,0;1;2;3;4,0.02,"2*max(sd_E1, 0.005)",98.33%,si (>=2 de 3),DECISION + PROPUESTA
+G1J-04,G1-jepa,reporte,cabezas BC/q/V sobre E1,las mismas sobre E1-S,igual que G1J-01..03,all,igual,I_human,test,0;1;2;3;4,0.02,"2*max(sd_E1, 0.005)",98.33%,veredicto separado,DECISION + PROPUESTA
+G1J-05,G1-jepa,validez,W1-L final (todas las semillas),-,f_H; erank(H); coseno medio,sonda,-,I_full,val,0;1;2;3;4,f_H < 0.5 degradado / < 0.05 colapsado -> G1-jepa invalida para la receta,-,-,invalida (no convierte en pase),SOTA_2611
+G1J-06,G1-jepa,secundaria,W1-L (decodificado sobre sg(z)),W0-S-AR,"error de predecir el presente (acierto action en eventos, MAE pos)",event; all,D=6;12;18,I_full; I_human,test,0;1;2;3;4,-,-,95%,no,DECISION
+G1J-07,G1-jepa,secundaria,E1 y E1-S,techo (entrada cruda) y suelo (E-rand),R2 / acierto de sondas lineales de campos,all,-,I_full,test,0;1;2;3;4,-,-,95%,no,EXPERIMENT_PLAN
+G1R-01,G1-rep,decisora (alguna de 4),E1 (preentrenado al 10%) + cabeza BC,E0b al 10% (igual computo),NLL del mando propio en f+1,all,1,I_full,test,0;1;2,0.02,"2*max(sd_E1, 0.005)",98.75%,si (alguna de 4),DECISION + PROPUESTA
+G1R-02,G1-rep,decisora (alguna de 4),E1-S (preentrenado al 10%) + cabeza BC,E0b al 10%,NLL del mando propio en f+1,all,1,I_full,test,0;1;2,0.02,"2*max(sd_E1, 0.005)",98.75%,si (alguna de 4),DECISION + PROPUESTA
+G1R-03,G1-rep,decisora (alguna de 4),E1 (100%) + cabeza BC,E0b al 100%,NLL del mando propio en f+1,all,1,I_full,test,0;1;2,0.02,"2*max(sd_E1, 0.005)",98.75%,si (alguna de 4),DECISION + PROPUESTA
+G1R-04,G1-rep,decisora (alguna de 4),E1-S (100%) + cabeza BC,E0b al 100%,NLL del mando propio en f+1,all,1,I_full,test,0;1;2,0.02,"2*max(sd_E1, 0.005)",98.75%,si (alguna de 4),DECISION + PROPUESTA
+G1R-05,G1-rep,reporte,E1 y E1-S + cabeza BC,E0b,NLL del mando propio en f+1 (10% y 100%),all,1,I_human,test,0;1;2,0.02,"2*max(sd_E1, 0.005)",98.75%,veredicto separado,DECISION + PROPUESTA
+G1R-06,G1-rep,descriptiva,"E-rand, E0, E0b, E1, E1-S",-,NLL del mando propio en f+1 (curva 10/30/100%),all,1,I_full; I_human,test,0;1;2 (30%: 0),-,-,95%,no,DECISION
+G1R-07,G1-rep,validez,encoders E1 y E1-S de cada fraccion,-,f_H; erank(H); coseno medio,sonda,-,I_full,val,0;1;2,f_H < 0.5 -> lectura 'receta degradada',-,-,interpretativo,SOTA_2611
+E1B-01,E1b,decisora,pi0 (BC E0) + W0-S-AR fusionados en GPU,6337 frames/s (Faynt; otra maquina),transiciones/s (mediana de >=5 reps de >=30 s; mejor batch y precision),-,-,-,-,-,">= 63370 transiciones/s (10x)",-,-,si (W2 sigue o se descarta),DECISION
+E1B-02,E1b,secundaria,pi0 + dinamica de 5 M parametros,6337 frames/s,transiciones/s,-,-,-,-,-,-,-,-,no,DECISION

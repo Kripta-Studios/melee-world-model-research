@@ -152,35 +152,50 @@ def parse_game(path: str) -> tuple[dict, dict]:
     return out, meta
 
 
+def _one(args):
+    f, out_dir = args
+    rec = {"sha1": os.path.basename(f)[:-4]}
+    try:
+        arrs, meta = parse_game(f)
+        dst = os.path.join(out_dir, meta["sha1"] + ".npz")
+        np.savez_compressed(dst + ".tmp.npz", meta_json=np.array(json.dumps(meta)), **arrs)
+        os.replace(dst + ".tmp.npz", dst)
+        meta["npz_bytes"] = os.path.getsize(dst)
+        meta["raw_array_bytes"] = int(sum(v.nbytes for v in arrs.values()))
+        rec.update(meta, ok=True)
+    except Exception as e:  # noqa: BLE001
+        rec.update(ok=False, error=f"{type(e).__name__}: {e}"[:300])
+    return rec
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--slp-dir", required=True)
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--index", required=True)
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--workers", type=int, default=1, help="procesos; el índice sale en el mismo orden (sha1) que con 1")
     a = ap.parse_args()
     os.makedirs(a.out_dir, exist_ok=True)
     files = sorted(glob.glob(os.path.join(a.slp_dir, "*.slp")))
     if a.limit:
         files = files[: a.limit]
     t0 = time.time()
+    jobs = [(f, a.out_dir) for f in files]
+    if a.workers > 1:
+        import multiprocessing as mp
+        pool = mp.get_context("spawn").Pool(a.workers)
+        it = pool.imap(_one, jobs, chunksize=4)
+    else:
+        pool, it = None, map(_one, jobs)
     with open(a.index, "w") as idx:
-        for i, f in enumerate(files):
-            rec = {"sha1": os.path.basename(f)[:-4]}
-            try:
-                arrs, meta = parse_game(f)
-                dst = os.path.join(a.out_dir, meta["sha1"] + ".npz")
-                np.savez_compressed(dst + ".tmp.npz", meta_json=np.array(json.dumps(meta)), **arrs)
-                os.replace(dst + ".tmp.npz", dst)
-                meta["npz_bytes"] = os.path.getsize(dst)
-                meta["raw_array_bytes"] = int(sum(v.nbytes for v in arrs.values()))
-                rec.update(meta, ok=True)
-            except Exception as e:  # noqa: BLE001
-                rec.update(ok=False, error=f"{type(e).__name__}: {e}"[:300])
+        for i, rec in enumerate(it):
             idx.write(json.dumps(rec) + "\n")
             if (i + 1) % 25 == 0:
                 idx.flush()
                 print(f"[{time.time()-t0:6.0f}s] {i+1}/{len(files)}", flush=True)
+    if pool:
+        pool.close(); pool.join()
     print(f"done {len(files)} in {time.time()-t0:.0f}s")
 
 

@@ -1,3 +1,4 @@
-091e997ce3f0600d93f29ae79facb356c50043d93bf46a39aed3a915e6887823 *ep
-07f1e094e2b63a8d90e5bce67f079a4f5b406678c253f7bfa5e02265c56c90b6 *pj
-40a955f456d65baf07d281f9ffc46b88ebf3aece528cd07983784331c55815a7 *es
+091e997ce3f0600d93f29ae79facb356c50043d93bf46a39aed3a915e6887823  deliverables/EXPERIMENT_PLAN.md
+07f1e094e2b63a8d90e5bce67f079a4f5b406678c253f7bfa5e02265c56c90b6  evidence/E1/preregistration.json
+40a955f456d65baf07d281f9ffc46b88ebf3aece528cd07983784331c55815a7  evidence/E1/eval_schedule.csv
+# hashes de los blobs de git (LF), commit a68d52d; verificar con: git show a68d52d:<ruta> | sha256sum

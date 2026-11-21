@@ -6,6 +6,10 @@ Implementador E0 (paso "suelos + humo"), 2026-11-19. Etiquetas: **REP** (medido 
 **Estado: cerrado con lo que hay en disco, por orden del coordinador** (servidor sin memoria; no se lanza ningún
 proceso más con torch).
 
+> **Actualización 2026-11-21: las 3 semillas están completas.** Las tres corridas que faltaban (`smoke_q_s1`,
+> `smoke_q_s2`, `smoke_w0s_s2`) se ejecutaron en el PC del usuario. Está en el anexo [§8](#8-anexo-2026-11-21-semillas-completadas-en-el-pc).
+> Las cifras de §4 basadas en 2 semillas siguen siendo válidas; la desviación entre semillas ya está estimada.
+
 Los suelos triviales están **completos**. Del humo terminaron **3 de 6 corridas**:
 
 | modelo | semillas terminadas | semillas cortadas y motivo |
@@ -269,3 +273,39 @@ Otros campos:
 - `logs/`: `commands.log`, más el stdout/stderr y `/usr/bin/time -v` de cada ejecución, `summarize.out` y los tests.
 - Código: `pilot/e0/models/`. Tests: `pilot/e0/tests/test_floors_metrics.py`, 10 tests, OK con torch
   (`logs/tests_floors.out`). La suite completa en el venv da 21 OK y 2 saltados (`logs/tests_all_venv.out`).
+
+## 8. Anexo 2026-11-21: semillas completadas en el PC
+
+**Qué se ejecutó (REP).** Las tres corridas que faltaban se lanzaron en paralelo con el mismo comando y la misma
+configuración que en el servidor: CPU, 2 hilos, `--games 40 --epochs 2`. La máquina era el PC del usuario (Windows 11,
+Ryzen 9 9955HX, 31 GiB; `evidence/E1/hardware.json`), con torch 2.10.0, la misma versión que en el servidor. Antes se
+regeneró el dataset con `run_all.sh`: salieron las mismas 288 partidas y los mismos 2.829.740 frames, con
+`parsed_index.jsonl`, `splits.jsonl` y `stream_manifest.jsonl` idénticos byte a byte. Después se reexportó la caché:
+270 partidas, test excluido. Registro completo en `logs/commands.log`: unos 2–2,6 min de reloj y unos 880 MB de pico
+por corrida.
+
+**Mezcla de máquinas.** W0-S s0 y s1 y q s0 vienen del servidor (Linux); W0-S s2, q s1 y q s2, del PC. La varianza
+entre semillas incluye por tanto la que pueda haber entre máquinas. Si existe, aumenta la desviación, de modo que el
+umbral "2× sd" queda del lado conservador (INF).
+
+**Resultados (REP, val de 12 partidas; tablas completas en `logs/summarize.out`).**
+
+| Medida | Mejor suelo | Media (sd entre 3 semillas) | Por semilla | Mejora relativa |
+|---|---|---|---|---|
+| W0-S, acción en eventos, h=4, `oracle_u` | 0,289 | 0,642 (0,0049) | 0,639 / 0,640 / 0,648 | +49,7 % |
+| W0-S, acción en eventos, h=4, `persist_u` | 0,289 | 0,324 (0,0034) | 0,320 / 0,327 / 0,324 | +4,9 % |
+| W0-S, acción en eventos, h=8, `persist_u` | 0,282 | 0,226 (0,0027) | 0,223 / 0,227 / 0,228 | −7,8 % |
+| W0-S, acción en eventos, h=4, `shuffled_u` | 0,289 | 0,268 (0,0060) | 0,261 / 0,271 / 0,272 | −2,9 % |
+| q, NLL de botones, todo, h=7 | 0,884 | 0,798 (0,0015) | 0,800 / 0,797 / 0,799 | +9,7 % |
+| q, NLL de botones, cambio de acción, h=7 | 2,139 | 2,020 (0,0042) | 2,025 / 2,018 / 2,018 | +5,5 % |
+| q, NLL del stick, cambio de acción, h=1 | 5,213 | 4,053 (0,0063) | — | +22,3 % |
+
+**Lectura.**
+- La semilla nueva confirma lo que se veía con 2 semillas (REP).
+- **La desviación entre semillas es muy pequeña** (0,002–0,007 en acierto y NLL) frente a los efectos de interés.
+  Con la regla "2× sd", el umbral de ruido es de unos 0,01. En la práctica, las puertas de E1 las decidirán la mejora
+  relativa mínima y el IC95 por partida, no la varianza entre semillas (INF).
+- Esta desviación es de modelos de humo (40 partidas, 2 épocas). En E1, con más datos y más épocas, hay que volver a
+  estimarla con las semillas de E1 (PROP).
+- La conclusión de §4 no cambia: W0-S sin los mandos futuros reales queda por debajo del 10 % de G1-dyn a h=4 y es
+  peor que el suelo a h=8 (REP, humo; no decide G1).

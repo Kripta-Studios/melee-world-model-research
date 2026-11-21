@@ -1,2 +1,10 @@
-modelo w0s: 687502 parámetros; train 40 partidas (372732 frames), val 12; carga 0.3s rss 789MB
-WATCHDOG: VmRSS 915 MB > 880 MB, abortando
+modelo w0s: 687502 parámetros; train 40 partidas (372732 frames), val 12; carga 0.3s rss 688MB
+  ep0 step 200/727 loss 3.8252 21300 muestras/s rss 773MB
+  ep0 step 400/727 loss 2.6421 19247 muestras/s rss 773MB
+  ep0 step 600/727 loss 2.1652 16490 muestras/s rss 773MB
+{"epoch": 0, "loss": 1.9745394892508914, "seconds": 24.856324672698975, "samples": 372224, "samples_per_s": 14975.021645449999, "rss_mb": 772.93359375}
+  ep1 step 200/727 loss 0.8588 11412 muestras/s rss 773MB
+  ep1 step 400/727 loss 0.8171 10385 muestras/s rss 773MB
+  ep1 step 600/727 loss 0.7916 10390 muestras/s rss 773MB
+{"epoch": 1, "loss": 0.7807906256089349, "seconds": 38.86694264411926, "samples": 372224, "samples_per_s": 9576.878824975422, "rss_mb": 772.93359375}
+{"model": "w0s", "seed": 2, "params": 687502, "train_games": 40, "train_frames": 372732, "train_anchors": 372412, "epochs": 2, "batch": 512, "lr": 0.002, "w_change": 3.0, "hist": 8, "threads": 2, "load_seconds": 0.26404237747192383, "train_seconds": 63.74624443054199, "epochs_log": [{"epoch": 0, "loss": 1.9745394892508914, "seconds": 24.856324672698975, "samples": 372224, "samples_per_s": 14975.021645449999, "rss_mb": 772.93359375}, {"epoch": 1, "loss": 0.7807906256089349, "seconds": 38.86694264411926, "samples": 372224, "samples_per_s": 9576.878824975422, "rss_mb": 772.93359375}], "eval_seconds": 80.00951766967773, "eval_forward_samples": 3242184, "eval_forward_samples_per_s": 40522.4790053788, "total_seconds": 155.50244879722595, "max_rss_mb": 851.63671875, "torch": "2.10.0+cu128"}

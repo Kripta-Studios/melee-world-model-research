@@ -1,27 +1,7 @@
-/home/kripta/melee-research/pilot/e0/models/smoke.py:253: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
-Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+<repo>\pilot\e0\models\smoke.py:257: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:837.)
   tot += float(loss)
-Command exited with non-zero status 3
-	Command being timed: "nice -n 19 python3 pilot/e0/models/smoke.py --model w0s --seed 2 --games 40 --epochs 2"
-	User time (seconds): 3.29
-	System time (seconds): 0.76
-	Percent of CPU this job got: 114%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.53
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 936052
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 164
-	Minor (reclaiming a frame) page faults: 162918
-	Voluntary context switches: 2888
-	Involuntary context switches: 835
-	Swaps: 0
-	File system inputs: 164072
-	File system outputs: 24
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 3
+	User time (seconds): 264.17
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:38.62
+	Maximum resident set size (kbytes): 874852
+	Exit status: 0

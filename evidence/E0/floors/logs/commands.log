@@ -33,3 +33,11 @@
 2026-11-19T16:16:23Z END summarize rc=0 wall=0:04.30 user_s=4.26 maxrss_kb=47952
 2026-11-19T16:16:27Z START summarize | python3 pilot/e0/models/summarize.py | avail=1589MB | load=99.89
 2026-11-19T16:16:32Z END summarize rc=0 wall=0:04.03 user_s=4.07 maxrss_kb=48576
+2026-11-21T12:51:30Z START export_cache_pc | D:/melee-data/venv-e0/Scripts/python.exe -X utf8 -I pilot/e0/models/export_cache.py | host=DESKTOP-2N393IP os=windows threads=2
+2026-11-21T12:51:33Z END export_cache_pc rc=0 wall=0:02.95 user_s=2.11 maxrss_kb=355580
+2026-11-21T12:51:38Z START smoke_q_s1 | $PY -X utf8 pilot/e0/models/smoke.py --model q --seed 1 --games 40 --epochs 2 | host=DESKTOP-2N393IP os=windows threads=2
+2026-11-21T12:51:38Z START smoke_w0s_s2 | $PY -X utf8 pilot/e0/models/smoke.py --model w0s --seed 2 --games 40 --epochs 2 | host=DESKTOP-2N393IP os=windows threads=2
+2026-11-21T12:51:38Z START smoke_q_s2 | $PY -X utf8 pilot/e0/models/smoke.py --model q --seed 2 --games 40 --epochs 2 | host=DESKTOP-2N393IP os=windows threads=2
+2026-11-21T12:53:37Z END smoke_q_s2 rc=0 wall=1:58.87 user_s=189.94 maxrss_kb=886456
+2026-11-21T12:53:37Z END smoke_q_s1 rc=0 wall=1:59.47 user_s=189.33 maxrss_kb=886204
+2026-11-21T12:54:17Z END smoke_w0s_s2 rc=0 wall=2:38.62 user_s=264.17 maxrss_kb=874852

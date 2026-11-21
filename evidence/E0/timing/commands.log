@@ -20,3 +20,87 @@
 2026-11-19T15:57:23Z WAIT-TIMEOUT running anyway avail=2527MB load1=34.60
 2026-11-19T15:57:23Z START bench_present.py --core tx_kv --threads 1 --impl fast --rep 0 --n 150 --out /home/kripta/melee-research/pilot/e0_timing/../../evidence/E0/timing/present_raw.jsonl | uptime:  16:57:23 up  8:27,  2 users,  load average: 34.60, 41.56, 45.33 | free: used=5054 avail=2695
 2026-11-19T16:00:18Z END rc=124 bench_present.py --core tx_kv --threads 1 --impl fast --rep 0 --n 150 --out /home/kripta/melee-research/pilot/e0_timing/../../evidence/E0/timing/present_raw.jsonl | 46.80 43.11 45.07 14/1346 966337
+2026-11-21T12:56:51Z START fake_runner.py --agent zero --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T12:57:23Z END rc=0 fake_runner.py --agent zero --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 4.92 4.92 4.92 1/35
+2026-11-21T12:57:28Z START fake_runner.py --agent zero --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T12:57:30Z END rc=1 fake_runner.py --agent zero --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 5.37 5.01 4.95 1/37
+2026-11-21T12:57:35Z START fake_runner.py --agent const4 --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T12:58:07Z END rc=0 fake_runner.py --agent const4 --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 8.12 5.75 5.21 2/31
+2026-11-21T12:58:12Z START fake_runner.py --agent const4 --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T12:58:14Z END rc=1 fake_runner.py --agent const4 --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 8.41 5.85 5.25 2/31
+2026-11-21T12:58:19Z START fake_runner.py --agent heavytail --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T12:58:51Z END rc=0 fake_runner.py --agent heavytail --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 9.72 6.48 5.49 1/31
+2026-11-21T12:58:55Z START fake_runner.py --agent heavytail --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T12:58:57Z END rc=1 fake_runner.py --agent heavytail --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 9.58 6.52 5.51 1/31
+2026-11-21T12:59:01Z START fake_runner.py --agent exceed14 --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T12:59:33Z END rc=0 fake_runner.py --agent exceed14 --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 9.84 6.93 5.69 1/31
+2026-11-21T12:59:37Z START fake_runner.py --agent exceed14 --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T12:59:39Z END rc=1 fake_runner.py --agent exceed14 --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 10.35 7.09 5.75 2/31
+2026-11-21T12:59:43Z START fake_runner.py --agent anytime13 --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:00:15Z END rc=0 fake_runner.py --agent anytime13 --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 8.53 7.00 5.77 1/31
+2026-11-21T13:00:19Z START fake_runner.py --agent anytime13 --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:00:21Z END rc=1 fake_runner.py --agent anytime13 --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 8.70 7.07 5.80 2/31
+2026-11-21T13:00:26Z START fake_runner.py --agent pycpu --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:00:58Z END rc=0 fake_runner.py --agent pycpu --mode thread --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 7.05 6.84 5.78 1/32
+2026-11-21T13:01:02Z START fake_runner.py --agent pycpu --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:01:04Z END rc=1 fake_runner.py --agent pycpu --mode process --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 7.97 7.04 5.85 2/35
+2026-11-21T13:01:10Z START fake_runner.py --agent pycpu --mode thread --switch_ms 0.5 --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:01:42Z END rc=0 fake_runner.py --agent pycpu --mode thread --switch_ms 0.5 --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 14.45 8.77 6.50 1/29
+2026-11-21T13:01:46Z START fake_runner.py --agent zero --mode inline --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:02:18Z END rc=0 fake_runner.py --agent zero --mode inline --frames 1800 --rep 0 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 14.48 9.44 6.82 1/34
+2026-11-21T13:02:24Z START fake_runner.py --agent zero --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:02:56Z END rc=0 fake_runner.py --agent zero --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 11.54 9.28 6.87 2/29
+2026-11-21T13:03:00Z START fake_runner.py --agent zero --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:03:02Z END rc=1 fake_runner.py --agent zero --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 10.44 9.10 6.83 1/30
+2026-11-21T13:03:06Z START fake_runner.py --agent const4 --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:03:38Z END rc=0 fake_runner.py --agent const4 --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 11.21 9.44 7.04 2/29
+2026-11-21T13:03:42Z START fake_runner.py --agent const4 --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:03:44Z END rc=1 fake_runner.py --agent const4 --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 11.01 9.43 7.05 2/31
+2026-11-21T13:03:48Z START fake_runner.py --agent heavytail --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:04:20Z END rc=0 fake_runner.py --agent heavytail --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 9.05 9.12 7.03 2/29
+2026-11-21T13:04:24Z START fake_runner.py --agent heavytail --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:04:26Z END rc=1 fake_runner.py --agent heavytail --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 8.37 8.98 7.00 2/31
+2026-11-21T13:04:30Z START fake_runner.py --agent exceed14 --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:05:02Z END rc=0 fake_runner.py --agent exceed14 --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 8.72 9.00 7.09 1/29
+2026-11-21T13:05:06Z START fake_runner.py --agent exceed14 --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:05:08Z END rc=1 fake_runner.py --agent exceed14 --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 9.50 9.16 7.15 1/29
+2026-11-21T13:05:13Z START fake_runner.py --agent anytime13 --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:05:45Z END rc=0 fake_runner.py --agent anytime13 --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 7.26 8.63 7.05 1/29
+2026-11-21T13:05:49Z START fake_runner.py --agent anytime13 --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:05:51Z END rc=1 fake_runner.py --agent anytime13 --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 7.18 8.59 7.05 1/29
+2026-11-21T13:05:55Z START fake_runner.py --agent pycpu --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:06:27Z END rc=0 fake_runner.py --agent pycpu --mode thread --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 7.96 8.62 7.12 1/28
+2026-11-21T13:06:32Z START fake_runner.py --agent pycpu --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:06:33Z END rc=1 fake_runner.py --agent pycpu --mode process --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 7.45 8.51 7.09 1/28
+2026-11-21T13:06:37Z START fake_runner.py --agent pycpu --mode thread --switch_ms 0.5 --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:07:09Z END rc=0 fake_runner.py --agent pycpu --mode thread --switch_ms 0.5 --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 6.87 8.24 7.05 1/28
+2026-11-21T13:07:13Z START fake_runner.py --agent zero --mode inline --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:07:45Z END rc=0 fake_runner.py --agent zero --mode inline --frames 1800 --rep 1 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 7.59 8.27 7.11 1/28
+2026-11-21T13:07:49Z START fake_runner.py --agent zero --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:08:21Z END rc=0 fake_runner.py --agent zero --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 6.38 7.89 7.02 2/30
+2026-11-21T13:08:25Z START fake_runner.py --agent zero --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:08:27Z END rc=1 fake_runner.py --agent zero --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 6.58 7.90 7.03 1/28
+2026-11-21T13:08:30Z START fake_runner.py --agent const4 --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:09:02Z END rc=0 fake_runner.py --agent const4 --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 9.24 8.42 7.24 1/28
+2026-11-21T13:09:05Z START fake_runner.py --agent const4 --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:09:06Z END rc=1 fake_runner.py --agent const4 --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 9.24 8.42 7.24 1/28
+2026-11-21T13:09:07Z START fake_runner.py --agent heavytail --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:09:38Z END rc=0 fake_runner.py --agent heavytail --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 8.70 8.38 7.28 2/28
+2026-11-21T13:09:42Z START fake_runner.py --agent heavytail --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:09:44Z END rc=1 fake_runner.py --agent heavytail --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 9.39 8.53 7.34 2/28
+2026-11-21T13:09:48Z START fake_runner.py --agent exceed14 --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:10:20Z END rc=0 fake_runner.py --agent exceed14 --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 6.69 7.95 7.18 1/28
+2026-11-21T13:10:24Z START fake_runner.py --agent exceed14 --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:10:26Z END rc=1 fake_runner.py --agent exceed14 --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 6.36 7.86 7.15 2/28
+2026-11-21T13:10:30Z START fake_runner.py --agent anytime13 --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:11:02Z END rc=0 fake_runner.py --agent anytime13 --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 3.75 7.04 6.90 1/28
+2026-11-21T13:11:05Z START fake_runner.py --agent anytime13 --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:11:07Z END rc=1 fake_runner.py --agent anytime13 --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 3.40 6.90 6.85 2/28
+2026-11-21T13:11:11Z START fake_runner.py --agent pycpu --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:11:42Z END rc=0 fake_runner.py --agent pycpu --mode thread --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 1.99 6.20 6.61 1/28
+2026-11-21T13:11:43Z START fake_runner.py --agent pycpu --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:11:44Z END rc=1 fake_runner.py --agent pycpu --mode process --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 1.99 6.20 6.61 1/28
+2026-11-21T13:11:44Z START fake_runner.py --agent pycpu --mode thread --switch_ms 0.5 --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:12:15Z END rc=0 fake_runner.py --agent pycpu --mode thread --switch_ms 0.5 --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 2.43 5.87 6.49 1/28
+2026-11-21T13:12:16Z START fake_runner.py --agent zero --mode inline --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | windows pc
+2026-11-21T13:12:48Z END rc=0 fake_runner.py --agent zero --mode inline --frames 1800 --rep 2 --out D:/melee-data/e0_timing_raw/wrapper.jsonl | 6.25 6.44 6.66 1/28

@@ -48,7 +48,12 @@ def run_stats(run):
     ontime = [r for r in d if r["fallback_used"] == "none"]
     fb = Counter(r["fallback_used"] for r in d)
     late = h["frame_lateness_ms"]
-    loads = [float(x[1]) for x in h["loadavg_samples"]] or [float(h["loadavg_start"].split()[0])]
+    def _f(v):  # Windows no tiene loadavg (portable.loadavg da "win ..."): se registra como NaN
+        try:
+            return float(v)
+        except ValueError:
+            return float("nan")
+    loads = [_f(x[1]) for x in h["loadavg_samples"]] or [_f(h["loadavg_start"].split()[0])]
     return {
         "n": len(d),
         "latency_p50_ms": pct(lat, .5), "latency_p95_ms": pct(lat, .95), "latency_p99_ms": pct(lat, .99),

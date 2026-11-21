@@ -41,3 +41,41 @@ Con batch 4, la GPU es **más lenta que la CPU** en la misma sesión: `gru` con 
 mediana. El rollout son cientos de kernels diminutos, y lo limita el coste de lanzarlos desde una CPU lenta (INF).
 **PROPUESTA:** en GPU, capturar un paso con CUDA Graphs o usar `torch.compile(mode="reduce-overhead")` antes de
 concluir nada. Para el predictor del presente con K pequeño, lo razonable es la CPU o el directo.
+
+## Resultado 3 (REP): envoltorio de plazo a 60 Hz (paso 2.3 de PENDIENTE), 3 repeticiones × 1.800 frames
+
+Comando: `PY=<python con torch> E0_RAW=D:/melee-data/e0_timing_raw bash pilot/e0_timing/run_e0_timing.sh wrapper 3`.
+Resumen completo en `wrapper_timing_summary_pc.json`. Presupuesto de 10 ms. Medianas entre repeticiones; el exceso
+máximo es el peor de las 3.
+
+| agente | modo | latencia p99 ms | exceso p99 ms | exceso máx ms | plazos fallados % | overhead p99 ms |
+|---|---|---|---|---|---|---|
+| zero | inline | 0,18 | 0 | — | 0 | 0,10 |
+| zero | hilo | 0,92 | 0 | — | 0 | 0,88 |
+| const4 (4 ms) | hilo | 6,04 | 0 | — | 0 | 0,98 |
+| heavytail | hilo | 14,77 | 4,77 | 15,9 | 3,4 | 1,42 |
+| anytime13 | hilo | 14,84 | 4,84 | 23,8 | 100 | 0,85 |
+| exceed14 | hilo | 15,71 | 5,71 | 25,5 | 100 | 0,88 |
+| pycpu (CPU en Python) | hilo | 16,91 | 6,91 | 10,6 | 5,6 | 0,87 |
+| pycpu, switch 0,5 ms | hilo | 15,75 | 5,75 | 10,3 | 5,8 | 1,14 |
+
+**Veredicto (REP): en este PC, con el backend de hilo, "nunca bloquea más allá del plazo" es FALSO.**
+- Cuando el agente se pasa del presupuesto, el bucle sigue esperando unos 5–7 ms en p99 y hasta 25 ms en el peor
+  caso.
+- Cuando el agente cabe (zero, const4), no hay exceso y el overhead p99 es de unos 1 ms.
+- Ya se aplica `timeBeginPeriod(1)`: sin él, los tests daban unos 11 ms de exceso.
+
+**Causas posibles (INF, sin verificar):**
+- El GIL: el hilo del agente retiene el intérprete y el hilo del bucle no recupera el control a tiempo.
+- La CPU estrangulada de esta sesión.
+
+Para distinguirlas, el backend de proceso no comparte GIL; está pendiente.
+
+**Backend de proceso (no ejecutado):** las 18 corridas de modo proceso fallaron al arrancar (`stderr.log` local).
+`fake_runner.py` pasa una lambda como factory y `spawn` no puede serializarla. Tampoco pasan 3 tests de modo proceso
+en `tests/test_rt_strict.py`; la causa probable es el arranque lento de `spawn` frente al primer plazo (INF).
+
+**PENDIENTE:**
+1. Factory importable en `fake_runner.py` y precalentamiento del worker en `spawn`; repetir con la CPU a pleno
+   rendimiento.
+2. Si el exceso persiste en modo hilo, el agente de E3 debe ir en proceso aparte o en código nativo.

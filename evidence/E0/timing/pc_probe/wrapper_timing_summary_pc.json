@@ -1,0 +1,1122 @@
+{
+ "note": "RT-strict wrapper in a fake 60 Hz blocking loop; per-config stats are per-rep values aggregated as median [min,max] across reps. Raw traces: D:/melee-data/e0_timing_raw",
+ "wrapper": {
+  "anytime13|thread|None": {
+   "agent": "anytime13",
+   "mode": "thread",
+   "switch_ms": null,
+   "budget_ms": 10.0,
+   "frames_per_rep": 1800,
+   "n": {
+    "median": 1800,
+    "min": 1800,
+    "max": 1800,
+    "n_reps": 3
+   },
+   "latency_p50_ms": {
+    "median": 12.33,
+    "min": 12.276,
+    "max": 12.341,
+    "n_reps": 3
+   },
+   "latency_p95_ms": {
+    "median": 14.312,
+    "min": 14.308,
+    "max": 14.403,
+    "n_reps": 3
+   },
+   "latency_p99_ms": {
+    "median": 14.837,
+    "min": 14.594,
+    "max": 14.849,
+    "n_reps": 3
+   },
+   "latency_max_ms": {
+    "median": 24.916,
+    "min": 15.979,
+    "max": 33.761,
+    "n_reps": 3
+   },
+   "compute_p50_ms": {
+    "median": 13.43,
+    "min": 13.425,
+    "max": 13.451,
+    "n_reps": 3
+   },
+   "compute_p99_ms": {
+    "median": 14.574,
+    "min": 14.362,
+    "max": 14.661,
+    "n_reps": 3
+   },
+   "missed_pct": {
+    "median": 100.0,
+    "min": 100.0,
+    "max": 100.0,
+    "n_reps": 3
+   },
+   "fallback_pct": {
+    "best_so_far": {
+     "median": 68.833,
+     "min": 68.111,
+     "max": 69.333,
+     "n_reps": 3
+    },
+    "none": {
+     "median": 31.167,
+     "min": 30.667,
+     "max": 31.889,
+     "n_reps": 3
+    }
+   },
+   "overrun_p99_ms": {
+    "median": 4.837,
+    "min": 4.594,
+    "max": 4.849,
+    "n_reps": 3
+   },
+   "overrun_max_ms": {
+    "median": 14.916,
+    "min": 5.979,
+    "max": 23.761,
+    "n_reps": 3
+   },
+   "overrun_gt1ms_pct": {
+    "median": 88.278,
+    "min": 87.944,
+    "max": 89.056,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p50_ms": {
+    "median": 0.538,
+    "min": 0.519,
+    "max": 0.581,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p99_ms": {
+    "median": 0.852,
+    "min": 0.787,
+    "max": 1.234,
+    "n_reps": 3
+   },
+   "begin_cost_p99_ms": {
+    "median": 0.226,
+    "min": 0.179,
+    "max": 0.23,
+    "n_reps": 3
+   },
+   "agent_section_p99_ms": {
+    "median": 14.895,
+    "min": 14.646,
+    "max": 14.901,
+    "n_reps": 3
+   },
+   "agent_section_max_ms": {
+    "median": 24.956,
+    "min": 16.016,
+    "max": 33.795,
+    "n_reps": 3
+   },
+   "frame_late_gt1ms_pct": {
+    "median": 75.722,
+    "min": 75.611,
+    "max": 78.389,
+    "n_reps": 3
+   },
+   "frame_late_max_ms": {
+    "median": 18.247,
+    "min": 17.542,
+    "max": 26.313,
+    "n_reps": 3
+   },
+   "load1_min": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   },
+   "load1_max": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   }
+  },
+  "const4|thread|None": {
+   "agent": "const4",
+   "mode": "thread",
+   "switch_ms": null,
+   "budget_ms": 10.0,
+   "frames_per_rep": 1800,
+   "n": {
+    "median": 1800,
+    "min": 1800,
+    "max": 1800,
+    "n_reps": 3
+   },
+   "latency_p50_ms": {
+    "median": 4.957,
+    "min": 4.931,
+    "max": 4.985,
+    "n_reps": 3
+   },
+   "latency_p95_ms": {
+    "median": 5.623,
+    "min": 5.569,
+    "max": 5.683,
+    "n_reps": 3
+   },
+   "latency_p99_ms": {
+    "median": 6.038,
+    "min": 5.968,
+    "max": 6.106,
+    "n_reps": 3
+   },
+   "latency_max_ms": {
+    "median": 9.118,
+    "min": 8.148,
+    "max": 9.532,
+    "n_reps": 3
+   },
+   "compute_p50_ms": {
+    "median": 4.393,
+    "min": 4.379,
+    "max": 4.396,
+    "n_reps": 3
+   },
+   "compute_p99_ms": {
+    "median": 5.344,
+    "min": 5.295,
+    "max": 5.442,
+    "n_reps": 3
+   },
+   "missed_pct": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "fallback_pct": {
+    "none": {
+     "median": 100.0,
+     "min": 100.0,
+     "max": 100.0,
+     "n_reps": 3
+    }
+   },
+   "overrun_p99_ms": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "overrun_max_ms": {
+    "median": -0.882,
+    "min": -1.852,
+    "max": -0.468,
+    "n_reps": 3
+   },
+   "overrun_gt1ms_pct": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p50_ms": {
+    "median": 0.579,
+    "min": 0.548,
+    "max": 0.581,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p99_ms": {
+    "median": 0.982,
+    "min": 0.874,
+    "max": 1.109,
+    "n_reps": 3
+   },
+   "begin_cost_p99_ms": {
+    "median": 0.284,
+    "min": 0.272,
+    "max": 0.32,
+    "n_reps": 3
+   },
+   "agent_section_p99_ms": {
+    "median": 6.096,
+    "min": 6.019,
+    "max": 6.156,
+    "n_reps": 3
+   },
+   "agent_section_max_ms": {
+    "median": 9.163,
+    "min": 8.203,
+    "max": 9.575,
+    "n_reps": 3
+   },
+   "frame_late_gt1ms_pct": {
+    "median": 4.722,
+    "min": 4.056,
+    "max": 5.833,
+    "n_reps": 3
+   },
+   "frame_late_max_ms": {
+    "median": 7.176,
+    "min": 3.87,
+    "max": 8.102,
+    "n_reps": 3
+   },
+   "load1_min": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   },
+   "load1_max": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   }
+  },
+  "exceed14|thread|None": {
+   "agent": "exceed14",
+   "mode": "thread",
+   "switch_ms": null,
+   "budget_ms": 10.0,
+   "frames_per_rep": 1800,
+   "n": {
+    "median": 1800,
+    "min": 1800,
+    "max": 1800,
+    "n_reps": 3
+   },
+   "latency_p50_ms": {
+    "median": 11.953,
+    "min": 11.916,
+    "max": 11.959,
+    "n_reps": 3
+   },
+   "latency_p95_ms": {
+    "median": 15.264,
+    "min": 15.264,
+    "max": 15.268,
+    "n_reps": 3
+   },
+   "latency_p99_ms": {
+    "median": 15.705,
+    "min": 15.564,
+    "max": 15.773,
+    "n_reps": 3
+   },
+   "latency_max_ms": {
+    "median": 21.679,
+    "min": 16.487,
+    "max": 35.504,
+    "n_reps": 3
+   },
+   "compute_p50_ms": {
+    "median": 14.492,
+    "min": 14.487,
+    "max": 14.517,
+    "n_reps": 3
+   },
+   "compute_p99_ms": {
+    "median": 15.577,
+    "min": 15.491,
+    "max": 15.772,
+    "n_reps": 3
+   },
+   "missed_pct": {
+    "median": 100.0,
+    "min": 100.0,
+    "max": 100.0,
+    "n_reps": 3
+   },
+   "fallback_pct": {
+    "neutral": {
+     "median": 0.278,
+     "min": 0.278,
+     "max": 0.278,
+     "n_reps": 3
+    },
+    "none": {
+     "median": 20.556,
+     "min": 20.278,
+     "max": 21.667,
+     "n_reps": 3
+    },
+    "repeat_last": {
+     "median": 79.167,
+     "min": 78.056,
+     "max": 79.444,
+     "n_reps": 3
+    }
+   },
+   "overrun_p99_ms": {
+    "median": 5.705,
+    "min": 5.564,
+    "max": 5.773,
+    "n_reps": 3
+   },
+   "overrun_max_ms": {
+    "median": 11.679,
+    "min": 6.487,
+    "max": 25.504,
+    "n_reps": 3
+   },
+   "overrun_gt1ms_pct": {
+    "median": 83.722,
+    "min": 81.278,
+    "max": 85.056,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p50_ms": {
+    "median": 0.58,
+    "min": 0.555,
+    "max": 0.584,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p99_ms": {
+    "median": 0.884,
+    "min": 0.831,
+    "max": 1.072,
+    "n_reps": 3
+   },
+   "begin_cost_p99_ms": {
+    "median": 0.217,
+    "min": 0.205,
+    "max": 0.221,
+    "n_reps": 3
+   },
+   "agent_section_p99_ms": {
+    "median": 15.752,
+    "min": 15.609,
+    "max": 15.81,
+    "n_reps": 3
+   },
+   "agent_section_max_ms": {
+    "median": 21.726,
+    "min": 16.539,
+    "max": 35.544,
+    "n_reps": 3
+   },
+   "frame_late_gt1ms_pct": {
+    "median": 76.444,
+    "min": 76.444,
+    "max": 78.389,
+    "n_reps": 3
+   },
+   "frame_late_max_ms": {
+    "median": 18.945,
+    "min": 17.938,
+    "max": 29.665,
+    "n_reps": 3
+   },
+   "load1_min": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   },
+   "load1_max": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   }
+  },
+  "heavytail|thread|None": {
+   "agent": "heavytail",
+   "mode": "thread",
+   "switch_ms": null,
+   "budget_ms": 10.0,
+   "frames_per_rep": 1800,
+   "n": {
+    "median": 1800,
+    "min": 1800,
+    "max": 1800,
+    "n_reps": 3
+   },
+   "latency_p50_ms": {
+    "median": 4.857,
+    "min": 4.849,
+    "max": 4.88,
+    "n_reps": 3
+   },
+   "latency_p95_ms": {
+    "median": 8.805,
+    "min": 8.552,
+    "max": 9.301,
+    "n_reps": 3
+   },
+   "latency_p99_ms": {
+    "median": 14.774,
+    "min": 10.945,
+    "max": 14.821,
+    "n_reps": 3
+   },
+   "latency_max_ms": {
+    "median": 22.737,
+    "min": 11.941,
+    "max": 25.949,
+    "n_reps": 3
+   },
+   "compute_p50_ms": {
+    "median": 4.308,
+    "min": 4.295,
+    "max": 4.333,
+    "n_reps": 3
+   },
+   "compute_p99_ms": {
+    "median": 22.072,
+    "min": 19.027,
+    "max": 22.602,
+    "n_reps": 3
+   },
+   "missed_pct": {
+    "median": 3.444,
+    "min": 2.722,
+    "max": 4.389,
+    "n_reps": 3
+   },
+   "fallback_pct": {
+    "none": {
+     "median": 97.889,
+     "min": 95.944,
+     "max": 98.389,
+     "n_reps": 3
+    },
+    "repeat_last": {
+     "median": 2.111,
+     "min": 1.611,
+     "max": 4.056,
+     "n_reps": 3
+    }
+   },
+   "overrun_p99_ms": {
+    "median": 4.774,
+    "min": 0.945,
+    "max": 4.821,
+    "n_reps": 3
+   },
+   "overrun_max_ms": {
+    "median": 12.737,
+    "min": 1.941,
+    "max": 15.949,
+    "n_reps": 3
+   },
+   "overrun_gt1ms_pct": {
+    "median": 2.0,
+    "min": 0.833,
+    "max": 2.556,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p50_ms": {
+    "median": 0.537,
+    "min": 0.505,
+    "max": 0.563,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p99_ms": {
+    "median": 1.421,
+    "min": 0.918,
+    "max": 1.51,
+    "n_reps": 3
+   },
+   "begin_cost_p99_ms": {
+    "median": 0.18,
+    "min": 0.178,
+    "max": 0.265,
+    "n_reps": 3
+   },
+   "agent_section_p99_ms": {
+    "median": 14.844,
+    "min": 10.978,
+    "max": 14.863,
+    "n_reps": 3
+   },
+   "agent_section_max_ms": {
+    "median": 22.782,
+    "min": 11.969,
+    "max": 25.994,
+    "n_reps": 3
+   },
+   "frame_late_gt1ms_pct": {
+    "median": 7.611,
+    "min": 4.667,
+    "max": 13.944,
+    "n_reps": 3
+   },
+   "frame_late_max_ms": {
+    "median": 10.201,
+    "min": 6.878,
+    "max": 13.757,
+    "n_reps": 3
+   },
+   "load1_min": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   },
+   "load1_max": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   }
+  },
+  "pycpu|thread|0.5": {
+   "agent": "pycpu",
+   "mode": "thread",
+   "switch_ms": 0.5,
+   "budget_ms": 10.0,
+   "frames_per_rep": 1800,
+   "n": {
+    "median": 1800,
+    "min": 1800,
+    "max": 1800,
+    "n_reps": 3
+   },
+   "latency_p50_ms": {
+    "median": 5.376,
+    "min": 4.87,
+    "max": 5.484,
+    "n_reps": 3
+   },
+   "latency_p95_ms": {
+    "median": 10.47,
+    "min": 9.9,
+    "max": 10.514,
+    "n_reps": 3
+   },
+   "latency_p99_ms": {
+    "median": 15.751,
+    "min": 15.529,
+    "max": 15.845,
+    "n_reps": 3
+   },
+   "latency_max_ms": {
+    "median": 20.303,
+    "min": 19.189,
+    "max": 20.334,
+    "n_reps": 3
+   },
+   "compute_p50_ms": {
+    "median": 4.756,
+    "min": 4.726,
+    "max": 4.825,
+    "n_reps": 3
+   },
+   "compute_p99_ms": {
+    "median": 16.459,
+    "min": 16.343,
+    "max": 17.657,
+    "n_reps": 3
+   },
+   "missed_pct": {
+    "median": 5.778,
+    "min": 4.778,
+    "max": 5.889,
+    "n_reps": 3
+   },
+   "fallback_pct": {
+    "none": {
+     "median": 98.444,
+     "min": 97.722,
+     "max": 98.556,
+     "n_reps": 3
+    },
+    "repeat_last": {
+     "median": 1.556,
+     "min": 1.444,
+     "max": 2.278,
+     "n_reps": 3
+    }
+   },
+   "overrun_p99_ms": {
+    "median": 5.751,
+    "min": 5.529,
+    "max": 5.845,
+    "n_reps": 3
+   },
+   "overrun_max_ms": {
+    "median": 10.303,
+    "min": 9.189,
+    "max": 10.334,
+    "n_reps": 3
+   },
+   "overrun_gt1ms_pct": {
+    "median": 4.0,
+    "min": 3.556,
+    "max": 4.278,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p50_ms": {
+    "median": 0.62,
+    "min": 0.128,
+    "max": 0.629,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p99_ms": {
+    "median": 1.14,
+    "min": 0.699,
+    "max": 1.429,
+    "n_reps": 3
+   },
+   "begin_cost_p99_ms": {
+    "median": 0.225,
+    "min": 0.11,
+    "max": 0.308,
+    "n_reps": 3
+   },
+   "agent_section_p99_ms": {
+    "median": 15.808,
+    "min": 15.597,
+    "max": 15.857,
+    "n_reps": 3
+   },
+   "agent_section_max_ms": {
+    "median": 20.363,
+    "min": 19.236,
+    "max": 20.374,
+    "n_reps": 3
+   },
+   "frame_late_gt1ms_pct": {
+    "median": 7.444,
+    "min": 2.778,
+    "max": 8.333,
+    "n_reps": 3
+   },
+   "frame_late_max_ms": {
+    "median": 8.118,
+    "min": 6.971,
+    "max": 8.136,
+    "n_reps": 3
+   },
+   "load1_min": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   },
+   "load1_max": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   }
+  },
+  "pycpu|thread|None": {
+   "agent": "pycpu",
+   "mode": "thread",
+   "switch_ms": null,
+   "budget_ms": 10.0,
+   "frames_per_rep": 1800,
+   "n": {
+    "median": 1800,
+    "min": 1800,
+    "max": 1800,
+    "n_reps": 3
+   },
+   "latency_p50_ms": {
+    "median": 5.336,
+    "min": 5.029,
+    "max": 5.396,
+    "n_reps": 3
+   },
+   "latency_p95_ms": {
+    "median": 10.338,
+    "min": 10.185,
+    "max": 10.577,
+    "n_reps": 3
+   },
+   "latency_p99_ms": {
+    "median": 16.909,
+    "min": 16.634,
+    "max": 17.915,
+    "n_reps": 3
+   },
+   "latency_max_ms": {
+    "median": 20.332,
+    "min": 20.205,
+    "max": 20.614,
+    "n_reps": 3
+   },
+   "compute_p50_ms": {
+    "median": 4.755,
+    "min": 4.742,
+    "max": 4.818,
+    "n_reps": 3
+   },
+   "compute_p99_ms": {
+    "median": 16.358,
+    "min": 16.338,
+    "max": 17.761,
+    "n_reps": 3
+   },
+   "missed_pct": {
+    "median": 5.556,
+    "min": 5.222,
+    "max": 5.833,
+    "n_reps": 3
+   },
+   "fallback_pct": {
+    "none": {
+     "median": 99.833,
+     "min": 99.722,
+     "max": 99.889,
+     "n_reps": 3
+    },
+    "repeat_last": {
+     "median": 0.167,
+     "min": 0.111,
+     "max": 0.278,
+     "n_reps": 3
+    }
+   },
+   "overrun_p99_ms": {
+    "median": 6.909,
+    "min": 6.634,
+    "max": 7.915,
+    "n_reps": 3
+   },
+   "overrun_max_ms": {
+    "median": 10.332,
+    "min": 10.205,
+    "max": 10.614,
+    "n_reps": 3
+   },
+   "overrun_gt1ms_pct": {
+    "median": 4.333,
+    "min": 4.333,
+    "max": 4.556,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p50_ms": {
+    "median": 0.556,
+    "min": 0.37,
+    "max": 0.571,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p99_ms": {
+    "median": 0.871,
+    "min": 0.734,
+    "max": 0.908,
+    "n_reps": 3
+   },
+   "begin_cost_p99_ms": {
+    "median": 0.293,
+    "min": 0.194,
+    "max": 0.326,
+    "n_reps": 3
+   },
+   "agent_section_p99_ms": {
+    "median": 16.958,
+    "min": 16.748,
+    "max": 17.922,
+    "n_reps": 3
+   },
+   "agent_section_max_ms": {
+    "median": 20.384,
+    "min": 20.259,
+    "max": 20.664,
+    "n_reps": 3
+   },
+   "frame_late_gt1ms_pct": {
+    "median": 8.722,
+    "min": 6.444,
+    "max": 9.056,
+    "n_reps": 3
+   },
+   "frame_late_max_ms": {
+    "median": 8.718,
+    "min": 8.056,
+    "max": 10.258,
+    "n_reps": 3
+   },
+   "load1_min": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   },
+   "load1_max": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   }
+  },
+  "zero|inline|None": {
+   "agent": "zero",
+   "mode": "inline",
+   "switch_ms": null,
+   "budget_ms": 10.0,
+   "frames_per_rep": 1800,
+   "n": {
+    "median": 1800,
+    "min": 1800,
+    "max": 1800,
+    "n_reps": 3
+   },
+   "latency_p50_ms": {
+    "median": 0.061,
+    "min": 0.06,
+    "max": 0.065,
+    "n_reps": 3
+   },
+   "latency_p95_ms": {
+    "median": 0.09,
+    "min": 0.086,
+    "max": 0.103,
+    "n_reps": 3
+   },
+   "latency_p99_ms": {
+    "median": 0.18,
+    "min": 0.132,
+    "max": 0.181,
+    "n_reps": 3
+   },
+   "latency_max_ms": {
+    "median": 0.452,
+    "min": 0.388,
+    "max": 0.925,
+    "n_reps": 3
+   },
+   "compute_p50_ms": {
+    "median": 0.027,
+    "min": 0.027,
+    "max": 0.03,
+    "n_reps": 3
+   },
+   "compute_p99_ms": {
+    "median": 0.083,
+    "min": 0.083,
+    "max": 0.1,
+    "n_reps": 3
+   },
+   "missed_pct": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "fallback_pct": {
+    "none": {
+     "median": 100.0,
+     "min": 100.0,
+     "max": 100.0,
+     "n_reps": 3
+    }
+   },
+   "overrun_p99_ms": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "overrun_max_ms": {
+    "median": -9.549,
+    "min": -9.613,
+    "max": -9.075,
+    "n_reps": 3
+   },
+   "overrun_gt1ms_pct": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p50_ms": {
+    "median": 0.033,
+    "min": 0.032,
+    "max": 0.035,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p99_ms": {
+    "median": 0.095,
+    "min": 0.08,
+    "max": 0.097,
+    "n_reps": 3
+   },
+   "begin_cost_p99_ms": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "agent_section_p99_ms": {
+    "median": 0.28,
+    "min": 0.243,
+    "max": 0.314,
+    "n_reps": 3
+   },
+   "agent_section_max_ms": {
+    "median": 0.681,
+    "min": 0.615,
+    "max": 1.0,
+    "n_reps": 3
+   },
+   "frame_late_gt1ms_pct": {
+    "median": 5.722,
+    "min": 4.778,
+    "max": 6.111,
+    "n_reps": 3
+   },
+   "frame_late_max_ms": {
+    "median": 11.632,
+    "min": 2.901,
+    "max": 40.065,
+    "n_reps": 3
+   },
+   "load1_min": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   },
+   "load1_max": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   }
+  },
+  "zero|thread|None": {
+   "agent": "zero",
+   "mode": "thread",
+   "switch_ms": null,
+   "budget_ms": 10.0,
+   "frames_per_rep": 1800,
+   "n": {
+    "median": 1800,
+    "min": 1800,
+    "max": 1800,
+    "n_reps": 3
+   },
+   "latency_p50_ms": {
+    "median": 0.562,
+    "min": 0.507,
+    "max": 0.565,
+    "n_reps": 3
+   },
+   "latency_p95_ms": {
+    "median": 0.719,
+    "min": 0.688,
+    "max": 0.737,
+    "n_reps": 3
+   },
+   "latency_p99_ms": {
+    "median": 0.915,
+    "min": 0.818,
+    "max": 1.402,
+    "n_reps": 3
+   },
+   "latency_max_ms": {
+    "median": 2.439,
+    "min": 2.104,
+    "max": 2.737,
+    "n_reps": 3
+   },
+   "compute_p50_ms": {
+    "median": 0.033,
+    "min": 0.029,
+    "max": 0.033,
+    "n_reps": 3
+   },
+   "compute_p99_ms": {
+    "median": 0.056,
+    "min": 0.055,
+    "max": 0.058,
+    "n_reps": 3
+   },
+   "missed_pct": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "fallback_pct": {
+    "none": {
+     "median": 100.0,
+     "min": 100.0,
+     "max": 100.0,
+     "n_reps": 3
+    }
+   },
+   "overrun_p99_ms": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "overrun_max_ms": {
+    "median": -7.561,
+    "min": -7.896,
+    "max": -7.263,
+    "n_reps": 3
+   },
+   "overrun_gt1ms_pct": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p50_ms": {
+    "median": 0.528,
+    "min": 0.476,
+    "max": 0.531,
+    "n_reps": 3
+   },
+   "wrapper_overhead_p99_ms": {
+    "median": 0.878,
+    "min": 0.782,
+    "max": 1.348,
+    "n_reps": 3
+   },
+   "begin_cost_p99_ms": {
+    "median": 0.275,
+    "min": 0.213,
+    "max": 0.304,
+    "n_reps": 3
+   },
+   "agent_section_p99_ms": {
+    "median": 0.983,
+    "min": 0.907,
+    "max": 1.445,
+    "n_reps": 3
+   },
+   "agent_section_max_ms": {
+    "median": 2.485,
+    "min": 2.285,
+    "max": 2.781,
+    "n_reps": 3
+   },
+   "frame_late_gt1ms_pct": {
+    "median": 5.0,
+    "min": 4.056,
+    "max": 5.611,
+    "n_reps": 3
+   },
+   "frame_late_max_ms": {
+    "median": 22.691,
+    "min": 18.563,
+    "max": 36.67,
+    "n_reps": 3
+   },
+   "load1_min": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   },
+   "load1_max": {
+    "median": NaN,
+    "min": NaN,
+    "max": NaN,
+    "n_reps": 3
+   }
+  }
+ },
+ "e2e_present_in_wrapper": {}
+}
